@@ -17,6 +17,7 @@ The current processed target is `projects/m31-andromeda-2013`.
 Start here for the repository structure:
 
 - [Project layout](docs/project-layout.md) - how the repo is organized for more targets and local-only work products.
+- [Agent bootstrap guide](AGENTS.md) - conventions for AI agents creating or extending projects.
 
 M31 / Andromeda 2013 processing notes:
 
