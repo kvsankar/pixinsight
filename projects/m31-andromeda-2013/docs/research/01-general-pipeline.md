@@ -5,6 +5,8 @@
 **Last reviewed:** 2026-05-23
 **Author:** research compiled from PixInsight Reference Documentation, Light Vortex Astronomy, Chaotic Nebula, Stirling Astrophoto, Adam Block / RBA / CloudyNights consensus discussions, and the PixInsight forum.
 
+> Correction note, 2026-05-24: This research note was generated while the dataset was incorrectly assumed to be Canon 60D + 50mm. The original 2013 notes and the PixInsight plate solve confirm Canon EOS 60D + Explore Scientific ED80 at ~386 mm effective focal length. Treat 50mm-specific recommendations here as historical context, not the final project state.
+
 ---
 
 ## TL;DR — The Pipeline at a Glance

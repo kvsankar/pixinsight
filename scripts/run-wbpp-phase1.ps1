@@ -57,7 +57,7 @@ if ($darks.Count  -lt 1) { throw "No darks found in $DarkDir" }
 $params = @(
     'automationMode=true',
     "outputDirectory=$($outDir -replace '\\','/')",
-    # Registration — distortion ON because 50mm wide-field has noticeable corner distortion
+    # Registration — distortion ON; useful for older optical data and edge aberrations.
     'imageRegistration=true',
     'distortionCorrection=true',
     'pixelInterpolation=3',

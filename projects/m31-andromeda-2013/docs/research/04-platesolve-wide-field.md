@@ -1,4 +1,6 @@
-# Plate-solving ultra-wide DSLR images (25 deg FOV, M31, 50 mm) in PixInsight
+# Plate-solving notes from the failed 50mm assumption
+
+> Correction note, 2026-05-24: This note documents the dead-end investigation caused by the incorrect 50mm/25° field assumption. The actual data was captured with an Explore Scientific ED80 refractor and solved at ~386 mm effective focal length with a 3°18' × 2°12' field. Keep this file as a record of the debugging path, not as the final plate-solving model for this dataset.
 
 Scope: ImageSolver v6.4.1 failing with "Failed to perform the initial field
 alignment" / RANSAC "Unable to find a valid set of star pair matches" on a

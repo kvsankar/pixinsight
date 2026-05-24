@@ -1,5 +1,7 @@
 # PixInsight Workflow Research: Canon EOS 60D (OSC) with Master Darks but No Flat Frames
 
+> Correction note, 2026-05-24: This note was partly written under an incorrect 50mm-lens assumption. The actual M31 data used a Canon EOS 60D on an Explore Scientific ED80 refractor, solved at ~386 mm effective focal length. The darks/no-flats guidance remains useful; 50mm-specific vignetting and undersampling notes are historical context.
+
 **Target setup**
 - Camera: Canon EOS 60D (APS-C CMOS, ~18 MP, 14-bit CR2)
 - Exposure: 240 s subs, ISO 1600

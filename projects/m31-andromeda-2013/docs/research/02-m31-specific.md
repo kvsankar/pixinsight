@@ -1,9 +1,11 @@
 # M31 (Andromeda Galaxy) — Image Processing Challenges and Techniques
 
-**Target dataset:** 24 × 240 s @ ISO 1600, Canon EOS 60D + 50 mm lens, NEQ6 tracked, rural dark site, 2013.
+**Target dataset:** 28 × 240 s @ ISO 1600 captured, Canon EOS 60D + Explore Scientific ED80 refractor, Sky-Watcher NEQ6 Pro, Keemale Estate, Coorg, Karnataka, India, 2013.
 **Software focus:** PixInsight (with notes on legacy / non-StarXTerminator workflows because the data is from 2013).
-**Total integration:** 96 minutes.
-**Field of view (APS-C, 50 mm):** approximately 25.5° × 17° (the entire Andromeda–Mirach–Triangulum region fits comfortably).
+**Original integration:** 112 minutes of good long-exposure frames found on disk, split as 27 × 240 s at ISO 1600 plus 1 × 240 s at ISO 800. Current PixInsight rerun used the 27 ISO 1600 frames, 108 minutes.
+**Solved field of view:** 3°18'11.2" × 2°12'6.0" at 2.301 arcsec/px, effective focal length 386.29 mm.
+
+> Correction note, 2026-05-24: Much of this research note was generated under an incorrect 50mm wide-field assumption. The project status and pipeline docs now supersede the 50mm-specific recommendations below.
 
 ---
 

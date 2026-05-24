@@ -1,7 +1,7 @@
 # M31 Andromeda Processing — Status
 
-**As of:** 2026-05-24, v2 final export complete
-**Pipeline progress:** 93% — Phase 1 done, Phase 2 done, Phase 3 nonlinear stretch/enhancement/crop/export done, plus a conservative v2 color/chroma refinement. Optional star/halo refinements remain.
+**As of:** 2026-05-24, v3 ED80-aware final export complete
+**Pipeline progress:** 95% — Phase 1 done, Phase 2 done, Phase 3 nonlinear stretch/enhancement/crop/export done, plus v2 color/chroma refinement and v3 ED80-aware star/detail polish. Optional external-tool experiments remain.
 
 ---
 
@@ -15,10 +15,11 @@ PHASE 2 — Linear Post-Integration
   ├─ 2c SPCC Color Calibration                   ✅ DONE
   ├─ 2d SCNR (residual green removal)            ✅ DONE
   └─ 2e MultiscaleLinearTransform NR             ✅ DONE
-PHASE 3 — Non-linear                              ✅ FIRST PASS DONE
+PHASE 3 — Non-linear                              ✅ V3 DONE
   Stretch → Mask building → HDRMT → LHE → Curves
   → Crop → Export → v2 color/chroma cleanup → v2 Export
-  Optional: star reduction → Mirach halo treatment
+  → v3 mild star reduction/detail polish → v3 Export
+  Optional: bright-star halo treatment / external tools
 ```
 
 ## Final-looking images are ready to inspect
@@ -27,15 +28,24 @@ PHASE 3 — Non-linear                              ✅ FIRST PASS DONE
 `work/03-nonlinear/m31-final.tif` — 16-bit archival TIFF export.
 `work/03-nonlinear/03c-final.xisf` — PixInsight working final.
 
-`work/03-nonlinear/m31-final-v2.jpg` — current recommended JPEG export.
-`work/03-nonlinear/m31-final-v2.tif` — current recommended 16-bit archival TIFF export.
-`work/03-nonlinear/03e-final-v2.xisf` — current recommended PixInsight working final.
+`work/03-nonlinear/m31-final-v2.jpg` — conservative v2 JPEG export.
+`work/03-nonlinear/m31-final-v2.tif` — conservative v2 16-bit archival TIFF export.
+`work/03-nonlinear/03e-final-v2.xisf` — conservative v2 PixInsight working final.
+
+`work/03-nonlinear/m31-final-v3.jpg` — current recommended ED80-aware JPEG export.
+`work/03-nonlinear/m31-final-v3.tif` — current recommended ED80-aware 16-bit archival TIFF export.
+`work/03-nonlinear/03g-final-v3.xisf` — current recommended ED80-aware PixInsight working final.
+
+Compressed images checked into the repo for quick comparison:
+
+- [2013 Photoshop result](images/original-2013-photoshop.jpg)
+- [2026 PixInsight v3 result](images/pixinsight-v3-ed80.jpg)
 
 What you should see:
 - Sky background: neutral gray/brown (no green tint — fixed by SPCC/SCNR)
 - M31 bulge: pale warm yellow
-- M31 disk: faint, with blue-gray spiral arms and reduced green/cyan bias in v2
-- Stars: round near center, comatic at corners
+- M31 disk: faint, with blue-gray spiral arms, stronger dust lanes in v3, and reduced green/cyan bias
+- Stars: round near center, comatic at corners, mildly reduced in v3
 - Image is now **nonlinear** and ready to view/export.
 
 ---
@@ -45,16 +55,21 @@ What you should see:
 | Field | Value |
 |---|---|
 | Target | M31 (Andromeda Galaxy) |
-| Camera | Canon EOS 60D (APS-C CMOS, 14-bit CR2, RGGB Bayer) |
-| Lens / focal length | Solved effective focal length 386.29 mm (earlier 50 mm assumption was wrong) |
-| Mount | Skywatcher NEQ6 (tracked) |
-| Site | Rural dark site (Bortle ~3-4) |
+| Camera | Canon EOS 60D DSLR, unmodified (APS-C CMOS, 14-bit CR2, RGGB Bayer) |
+| Imaging telescope | Explore Scientific ED80 air-spaced doublet refractor |
+| Solved focal length | 386.29 mm effective focal length (earlier 50 mm assumption was wrong) |
+| Mount | Sky-Watcher NEQ6 Pro |
+| Guide scope / camera | Orion Short Tube 80 + Orion StarShoot AutoGuider (SSAG) |
+| Capture/control software | PHD2, BackyardEOS, EQMOD |
+| Original 2013 processing software | DeepSkyStacker and Adobe Photoshop CS6 |
+| Site | Keemale Estate, Coorg, Karnataka, India |
 | Date | 2013-12-30 (raw lights), 2013-12-31 (matched darks) |
-| Lights kept | 27× 240s @ ISO 1600 |
+| Good long lights found on disk | 27× 240s @ ISO 1600 plus 1× 240s @ ISO 800 |
+| Lights used in current PixInsight rerun | 27× 240s @ ISO 1600 |
 | Darks | 9× 240s @ ISO 1600 (+25 to +30°C) |
 | Flats | None — handled with ABE |
 | Bias | None — not needed with matched-exposure darks |
-| Total integration | 108 minutes |
+| Current rerun integration | 108 minutes |
 | Image size | 5184×3456 (raw) → 5202×3464 (registered) → 5167×3444 (autocrop) |
 | Pixel scale | 2.301 arcsec/pixel |
 | Field of view | 3°18'11.2" × 2°12'6.0" |
@@ -73,6 +88,10 @@ What you should see:
 │       ├── docs/
 │       │   ├── pipeline.md                 Original tuned pipeline plan
 │       │   ├── status.md                   This file
+│       │   ├── original-2013-processing.md  Evidence from old DSS/Photoshop files
+│       │   ├── images/
+│       │   │   ├── original-2013-photoshop.jpg
+│       │   │   └── pixinsight-v3-ed80.jpg
 │       │   └── research/
 │       │       ├── 01-general-pipeline.md         PixInsight M31 stock pipeline (470 lines)
 │       │       ├── 02-m31-specific.md             M31 HDR / dust lanes / Mirach (440 lines)
@@ -89,6 +108,7 @@ What you should see:
 │       ├── 02c-manualcolor.js         Phase 2c: manual BN+CC fallback
 │       ├── 02d-scnr.js                Phase 2d: residual green removal
 │       ├── 02e-mlt-nr.js              Phase 2e: conservative linear NR
+│       ├── 03f-ed80-v3.js             Phase 3f: ED80-aware star/detail polish
 │       ├── test-hello.js              Debug helper
 │       ├── test-include.js            #engine v8 discovery
 │       └── test-progress.js           File-logging diagnostic
@@ -116,10 +136,14 @@ What you should see:
     │   ├── 03c-final.xisf                           180 MB  (cropped final)
     │   ├── 03d-refined-v2.xisf                      213 MB  (subtle green cleanup + masked chroma smoothing)
     │   ├── 03e-final-v2.xisf                        180 MB  (cropped v2 final)
+    │   ├── 03f-ed80-v3.xisf                         213 MB  (mild star reduction + restrained detail/color polish)
+    │   ├── 03g-final-v3.xisf                        180 MB  (cropped v3 final)
     │   ├── m31-final.tif                            180 MB  (archive export)
     │   ├── m31-final.jpg                            2.3 MB   (share export)
-    │   ├── m31-final-v2.tif                         180 MB  (recommended archive export)
-    │   ├── m31-final-v2.jpg                         2.3 MB   (recommended share export)
+    │   ├── m31-final-v2.tif                         180 MB  (conservative archive export)
+    │   ├── m31-final-v2.jpg                         2.3 MB   (conservative share export)
+    │   ├── m31-final-v3.tif                         180 MB  (recommended archive export)
+    │   ├── m31-final-v3.jpg                         2.2 MB   (recommended share export)
     │   └── masks/                                   generated range/star masks
     └── logs/                                        Per-stage PJSR logs
 ```
@@ -130,12 +154,14 @@ What you should see:
 
 ### Equipment & dataset
 - **Dropped the 800 ISO frame** in `good/240s-800iso/`. Different ISO, no matching dark.
+- Original 2013 notes described **28× 240s** lights. The files currently on disk show **27 good ISO 1600 lights plus 1 good ISO 800 light**; the current PixInsight automation rerun used the 27 ISO 1600 files for 108 minutes integrated.
+- The preserved 2013 DSS reports show two historical stack attempts: a 24-frame quality-pruned stack using Auto Adaptive Weighted Average, then a 27-frame ISO 1600 stack using Kappa-Sigma rejection. See `docs/original-2013-processing.md`.
 - **Built fresh master dark** from the 9 raw CR2 darks rather than reusing the 2014 DSS master. PixInsight's Winsorized Sigma Clipping is statistically better than DSS's Kappa-Sigma.
 - **No bias frames acquired** — confirmed not needed with matched-exposure darks. Optimize Darks OFF.
 
 ### Plate-solve (recovered after bad scale assumption)
 - **Why we tried:** SPCC color calibration needs WCS metadata.
-- **Why earlier attempts failed:** ImageSolver was seeded as Canon 60D + 50 mm, giving ~17.78"/px and a ~25° field. The rendered preview showed M31 filling much of the frame, not a 50 mm wide field.
+- **Why earlier attempts failed:** ImageSolver was seeded as Canon 60D + 50 mm, giving ~17.78"/px and a ~25° field. Your original 2013 notes confirm the actual imaging telescope was an Explore Scientific ED80 refractor, which matches the solved ~386 mm effective focal length.
 - **Actual solution:** Re-ran ImageSolver on `02a-abe.xisf` with a telephoto/telescope seed. It solved successfully and refined to 2.301"/px, 386.29 mm effective focal length, 3°18' × 2°12' FoV, stereographic projection, TYCHO-2 catalog, 417 control points.
 - **Tried:**
   1. Default settings (non-exhaustive) — 30s, failed
@@ -169,11 +195,21 @@ What you should see:
 ### Phase 3 v2 refinement
 - Added `03d-refine-v2.js`, using a subtle nonlinear SCNR pass (`amount=0.18`) to reduce residual green/cyan bias without pushing the image magenta.
 - Reused the `03b-galaxy-range-mask.xisf` mask inverted, then applied MultiscaleLinearTransform to chrominance only. This smooths background color noise while protecting the galaxy/dust-lane structure.
-- Exported the current recommended final set:
+- Exported the conservative v2 final set:
   - `work/03-nonlinear/03e-final-v2.xisf`
   - `work/03-nonlinear/m31-final-v2.tif`
   - `work/03-nonlinear/m31-final-v2.jpg`
 - Visual inspection: v2 is subtly less green/cyan than the first final; dust lanes and the galaxy core remain intact.
+
+### Phase 3 v3 ED80-aware refinement
+- Added `03f-ed80-v3.js`, starting from `03d-refined-v2.xisf`.
+- Loaded the generated `03b-star-mask.xisf` and applied mild MorphologicalTransformation star reduction with a 5×5 structure, Selection operator, `selectionPoint=0.24`, `amount=0.22`, one iteration.
+- Applied restrained CurvesTransformation contrast/saturation polish to make better use of the solved ED80-scale data without heavy deconvolution.
+- Exported the current recommended final set:
+  - `work/03-nonlinear/03g-final-v3.xisf`
+  - `work/03-nonlinear/m31-final-v3.tif`
+  - `work/03-nonlinear/m31-final-v3.jpg`
+- Visual inspection: v3 keeps M31 intact, makes the dust lanes more legible, and mildly reduces the star field. It is the current best stock-PixInsight result.
 
 ---
 
@@ -221,14 +257,19 @@ These are durable lessons that should apply to any future astro / PixInsight wor
 & .\scripts\run-phase3.ps1 -FromStage d
 ```
 
-**Continue from current point:** Optional refinements: light star reduction or bright-star halo treatment.
+**Phase 3 v3 ED80-aware refinement/export rerun:**
+```powershell
+& .\scripts\run-phase3.ps1 -FromStage f
+```
+
+**Continue from current point:** Optional refinements: bright-star halo treatment, DBE/GraXpert comparison, or BlurXTerminator/StarXTerminator experiments.
 
 ---
 
 ## Outstanding questions for you
 
-1. **Inspect `m31-final-v2.jpg`** — this is the recommended current final.
-2. Optional next refinements: light star reduction or halo cleanup on bright stars.
+1. **Inspect `m31-final-v3.jpg`** — this is the recommended current final.
+2. Optional next refinements: DBE/GraXpert comparison, external-tool trial, or halo cleanup on bright stars.
 
 ---
 
@@ -245,5 +286,6 @@ These are durable lessons that should apply to any future astro / PixInsight wor
 | Phase 2d/e — SCNR + MLT linear NR | ~3 min |
 | Phase 3 first-pass stretch/enhance/export | ~15 min |
 | Phase 3 v2 color/chroma refinement/export | ~1 min |
+| Phase 3 v3 ED80-aware refinement/export | ~75 sec |
 | Debugging / log infrastructure / research delegation | ~20 min |
 | **Total wall-clock from project start** | **~2.5 hours** |

@@ -1,8 +1,10 @@
 # M31 Andromeda — Tuned Processing Pipeline
 
-**Dataset:** 24× 240s @ ISO 1600, Canon EOS 60D + 50mm prime (likely EF 50mm f/1.8 wide open), NEQ6 tracked, rural dark site, 2013-12-30.
-**Total integration:** 96 minutes.
+**Dataset:** 27× 240s @ ISO 1600 plus 1× 240s @ ISO 800 found in the good long-exposure folders, Canon EOS 60D on an Explore Scientific ED80 air-spaced doublet refractor, Sky-Watcher NEQ6 Pro, Keemale Estate, Coorg, Karnataka, India, 2013-12-30.
+**Original integration:** 112 minutes of good long-exposure frames were found on disk, but only 108 minutes are ISO 1600. The current PixInsight rerun used the 27× 240s ISO 1600 light directory, for 108 minutes integrated.
 **Calibration available:** 9× matched-exposure raw darks (240s, ISO 1600, +25 to +30°C, taken 2013-12-31 same trip). No flats. No bias.
+**Original 2013 capture/control software:** PHD2 guiding, BackyardEOS capture, EQMOD mount control.
+**Original 2013 processing software:** DeepSkyStacker stacking and Adobe Photoshop CS6 processing.
 **Software target:** PixInsight 1.8.9+, stock processes only (no BlurXT / NoiseXT / StarXT assumed).
 **Mode:** Headless scripting via `PixInsight.exe -r=script.js`, with interactive GUI inspection at key checkpoints.
 
@@ -12,21 +14,21 @@
 
 This dataset has three structural constraints that shape every decision below.
 
-**1. M31's core is almost certainly clipped.** 240s × ISO 1600 × f/1.8 from Bortle ~3 dark sky is very aggressive exposure for M31's nucleus. No software recovers clipped pixels. Plan: protect what survived, compress what's bright, don't try to "rebuild" the core.
+**1. M31's core may be clipped or near-clipped.** 240s × ISO 1600 on an ED80 from a dark site is still a long exposure for M31's nucleus. No software recovers truly clipped pixels. Plan: protect what survived, compress what's bright, don't try to "rebuild" the core.
 
-**2. 50mm = wide field, M31 is ~1% of the frame.** Pixel scale ≈ 17.7 arcsec/px. The main inner dust lanes (~30-60") are only **2-3 pixels wide**. There is no fine galaxy structure to deconvolve or sharpen — anything you "reveal" with high-frequency tools is noise enhancement / hallucination, not detail. Stars dominate the visual impression more than the galaxy does.
+**2. ED80 refractor data, not 50mm wide field.** Early notes assumed a 50mm lens, but plate solving and the original 2013 notes confirm an Explore Scientific ED80. The solved effective focal length is 386.29 mm, pixel scale is 2.301 arcsec/px, and the field is 3°18' × 2°12'. M31 is large enough in the frame for real broad dust-lane work, though the 2013 DSLR data still does not justify aggressive high-frequency sharpening.
 
-**3. 24 subs = √24 ≈ 4.9× per-sub SNR.** Hard ceiling on how far you can stretch before the background goes blotchy. The bright disk will come up clean; the outer plumes / IFN won't — don't chase them.
+**3. About 27-28 subs = ~5.2× per-sub SNR.** There is still a hard ceiling on how far you can stretch before the background goes blotchy. The bright disk will come up clean; the outer plumes / IFN won't — don't chase them.
 
 Two consequences flow from this:
-- **No deconvolution.** Skip it. It will only hurt at 50mm undersampled.
+- **No heavy deconvolution.** This is not the 50mm undersampled case, but the current stock-process pipeline still avoids aggressive deconvolution. A BlurXTerminator/StarXTerminator experiment can be evaluated separately.
 - **No "recover the core" wizardry.** Accept that the nucleus saturates and protect the surrounding bulge instead.
 
 ---
 
 ## What WILL be in the final image
 
-Yellow-orange bulge, blue spiral arms with the famous dust lane wrapping the south-west side, M32 as a tight bright dot ~25' south of nucleus, M110 as a diffuse oval ~35' NW, Mirach (β And, mag 2.07) as a bright bloated star roughly 3.5° away — likely in-frame and bringing a halo problem with it. Foreground Milky Way stars everywhere; their color and shape will define the aesthetic more than M31's structure will.
+Yellow-orange bulge, blue spiral arms with the famous dust lane wrapping the south-west side, M32 as a tight bright companion, and M110 as a diffuse oval. The 3°18' × 2°12' solved field excludes the old 50mm-wide-field assumption and does not include Mirach.
 
 ---
 
@@ -36,7 +38,7 @@ Yellow-orange bulge, blue spiral arms with the famous dust lane wrapping the sou
 PHASE 1 — CALIBRATION + INTEGRATION (WBPP)
   9 raw darks ──► Master Dark (Winsorized σ-clip)
                        │
-  24 raw lights ──────►├─► Calibrate ─► CosmeticCorrection ─► Debayer (RGGB/VNG)
+  raw lights ─────────►├─► Calibrate ─► CosmeticCorrection ─► Debayer (RGGB/VNG)
                        │     (no bias, no flats, no optimization)
                        ▼
                  SubframeSelector (PSFSignalWeight, reject worst ~10%)
@@ -81,10 +83,10 @@ PHASE 3 — NON-LINEAR
   CurvesTransformation (S-curve K, saturation hump S through galaxy mask)
        │
        ▼
-  MorphologicalTransformation star reduction (Morph Selection 0.25, 5x5 circ., through star mask)
+  MorphologicalTransformation star reduction (Selection 0.24, amount 0.22, 5x5 structure, through star mask)
        │
        ▼
-  Mirach halo: PixelMath circular mask + Curves highlight pull
+  Optional bright-star halo treatment
        │
        ▼
   ACDNR chroma (background mask) ─► Final crop ─► Export TIFF + JPEG
@@ -98,10 +100,10 @@ PHASE 3 — NON-LINEAR
 
 | Role | Files | Path |
 |---|---|---|
-| Lights | 24× CR2 @ 240s/1600 ISO | configured locally with `PI_LIGHT_DIR` in `.env` |
+| Lights | 27× CR2 @ 240s/1600 ISO used in current PixInsight rerun; 1 additional good 240s/800 ISO light dropped | configured locally with `PI_LIGHT_DIR` in `.env` |
 | Darks (raw, for fresh master) | 9× CR2 @ 240s/1600 ISO | configured locally with `PI_DARK_DIR` in `.env` |
 
-**Decision:** Drop the single 800 ISO light frame in `good/240s-800iso/`. Different ISO, no matching dark, would only contaminate the stack.
+**Decision:** Drop the single 800 ISO light frame in `good/240s-800iso/`. Different ISO, no matching dark, and not part of the historical 27-frame DSS stack.
 
 **Decision:** Build a **fresh master dark** from the 9 raw darks rather than reusing the 2014 DSS-built master. The DSS master was made with different statistics (`Dark_Method=2, Kappa-Sigma`) and the underlying raw data is right there — better to redo with PixInsight's superior rejection.
 
@@ -121,7 +123,7 @@ Run `ImageIntegration` directly on the 9 raw dark CR2s:
 WBPP 2.x handles calibration → cosmetic correction → debayer → registration → normalization → integration end-to-end. For this dataset it's the right tool — no exotic complications.
 
 **Lights tab:**
-- All 24 CR2s, group auto
+- All 27 ISO 1600 CR2s, group auto
 - **CFA images:** ON
 - **CFA pattern override:** **RGGB** (explicit — don't rely on auto-detect for CR2)
 - **Debayer method:** **VNG**
@@ -141,10 +143,10 @@ WBPP 2.x handles calibration → cosmetic correction → debayer → registratio
 
 **Pre-processing tab:**
 - **Subframe weighting:** ON, **PSFSignalWeight** (single-metric, well-matched to ImageIntegration)
-- **Subframe rejection:** drop frames with `FWHM > 1.30 × median` OR `Eccentricity > 0.575`. With 24 frames we expect to keep ~20-22; don't be more aggressive than that.
+- **Subframe rejection:** drop frames with `FWHM > 1.30 × median` OR `Eccentricity > 0.575`. With fewer than 30 frames, don't be too aggressive.
 - **Image registration:** ON
   - **Registration model:** 2-D Surface Splines
-  - **Distortion correction:** ON (50mm has visible distortion at frame edges)
+  - **Distortion correction:** ON (useful for edge aberrations and older optical data)
   - **Pixel interpolation:** Bicubic B-Spline, clamping 0.30
   - **Reference frame:** Auto (best PSFSignalWeight)
 - **LocalNormalization:** ON, reference = Auto
@@ -174,7 +176,7 @@ Crop just inside the ragged stacking edges. Leave **generous margin around M31**
 
 ### 2.2 DBE Pass 1 — Vignetting (Division)
 
-50mm at f/1.8 means 2-3 stops corner falloff. Without flats, this is what DBE pass 1 addresses.
+No flats were captured, so this stage addresses smooth optical falloff and sky gradients.
 
 - **Correction:** **Division** (vignetting is multiplicative)
 - **Tolerance:** 1.0
@@ -187,7 +189,7 @@ Crop just inside the ragged stacking edges. Leave **generous margin around M31**
 
 **Sample placement procedure:**
 1. Click "Generate" to get the default symmetric grid.
-2. **Delete every sample that overlaps M31, M32, M110, or sits within ~2× sample radius of any bright star** (Mirach especially).
+2. **Delete every sample that overlaps M31, M32, M110, or sits within ~2× sample radius of any bright star.**
 3. Keep samples concentrated on the **outer perimeter** of the frame — that's where vignette information lives.
 4. Before clicking Execute, set Correction temporarily to "None" → click Execute → inspect the generated model image. It should look like a smooth bright-center / dim-corners bowl. If it looks like M31 or has weird bumps, samples are misplaced.
 5. Set Correction back to Division, Execute for real.
@@ -209,7 +211,7 @@ Light pollution + sky glow gradients are additive, not multiplicative.
 
 **Sample placement:**
 1. Generate a denser grid this time, spread evenly across the frame.
-2. Same deletion rules — anything near M31, the companions, Mirach, the IFN region, or bright star halos goes.
+2. Same deletion rules — anything near M31, the companions, the IFN region, or bright star halos goes.
 3. Inspect the model — should look like a low-amplitude tilted ramp (or a slight bowl if pass 1 didn't fully flatten).
 4. Execute.
 
@@ -222,9 +224,9 @@ Save as `master_flat_linear.xisf`.
 Run **Script → Image Analysis → ImageSolver** on the linear image.
 - **Image parameters:**
   - Search target: "M31" or "NGC 224" (PI will resolve coordinates)
-  - Focal length: 50 mm
+  - Focal length seed: telephoto/refractor seed; solved effective focal length 386.29 mm
   - Pixel size: 4.31 µm (60D)
-  - Resolution: auto-computed → ~17.7 arcsec/px
+  - Resolution: solved at 2.301 arcsec/px
 - **Catalogue:** Auto / Gaia DR3
 - Execute. On success the image has astrometric metadata embedded.
 
@@ -235,7 +237,7 @@ If the solve fails (most common cause at wide field: too many faint stars confus
 - **White reference:** **Average Spiral Galaxy** (textbook choice for M31)
 - **Filters:** under "Sony Color Sensor" group — pick Red/Green/Blue. Canon stock UV-IR cut + Bayer filters are close enough to the Sony curves that this is the standard substitute. (PixInsight's curve database doesn't have explicit "Canon 60D" entries; the Sony OSC curves are the closest match.)
 - **Background Neutralization:** ON
-  - **Reference image:** create a small (~200×200 px) preview on a clean sky region — avoid the IFN around M31, avoid Mirach's halo, avoid corners where DBE residual may remain
+  - **Reference image:** create a small (~200×200 px) preview on a clean sky region — avoid the IFN around M31, avoid bright-star halos, avoid corners where DBE residual may remain
   - **Upper limit:** Readout the preview mean and set ~0.5σ above
 - **Generate graphs:** ON (visually verify fit is flat)
 - **Limit magnitude:** Auto
@@ -391,7 +393,7 @@ Run a second light pass on just the S curve if galaxy color still looks washed o
 
 ### 3.7 MorphologicalTransformation — star reduction
 
-Stars at 50mm dominate the visual field. Reduce them after all galaxy work is done, through `star_mask`.
+Stars remain dense in the field. If star reduction is used, do it after all galaxy work is done, through `star_mask`.
 
 - **Operator:** **Morphological Selection** (NOT Erosion — Erosion makes square-edged stars)
 - **Selection:** 0.25 (lower = more erosion-like, stronger reduction)
@@ -402,9 +404,9 @@ Stars at 50mm dominate the visual field. Reduce them after all galaxy work is do
 
 Inspect. If stars are still too bloated, a second light pass at Amount 0.4 will blend better than a single strong pass.
 
-### 3.8 Mirach halo treatment (special case)
+### 3.8 Bright-star halo treatment (optional)
 
-Mirach (β And) is mag 2.07 and almost certainly in-frame. After star reduction it will still have a soft halo and may look like a bright disk.
+The solved ED80 field does not include Mirach. Use this step only if a future target or alternate crop has a bright-star halo in-frame.
 
 **If the halo is bothering you:**
 
@@ -424,7 +426,7 @@ Mirach (β And) is mag 2.07 and almost certainly in-frame. After star reduction 
 
 6. Apply `CurvesTransformation` through the mask: gentle pull-down on highlights (right side of curve, drag down by 0.05-0.10). This fades the halo without creating a black hole.
 
-**Use a light hand.** Overpulling = dark crater where Mirach used to be.
+**Use a light hand.** Overpulling = a dark crater where the bright star used to be.
 
 ### 3.9 Final noise reduction — chroma only
 
@@ -446,8 +448,7 @@ Pick whichever feels right on inspection — they produce similar results.
 
 ### 3.10 Final crop + export
 
-- **Crop the worst comatic corners** (f/1.8 50mm primes have visible coma in the outer field — no software fix; just remove).
-- Compose with M31 slightly off-center toward Mirach for visual balance.
+- **Crop the worst edge artifacts** while keeping M31, M32, and M110 comfortably framed.
 - Aim for ~3:2 or 16:9 aspect ratio.
 
 **Exports:**
@@ -458,9 +459,9 @@ Pick whichever feels right on inspection — they produce similar results.
 
 ## Things this pipeline deliberately does NOT do
 
-- **No deconvolution.** 50mm undersampled, no resolved structure to deconvolve.
+- **No heavy deconvolution in this stock-process pass.** Evaluate deconvolution/BlurXTerminator separately.
 - **No HDR Composition.** Need a separate short-exposure stack we don't have.
-- **No drizzle.** 24 frames is too few for drizzle benefit; processing time would balloon.
+- **No drizzle.** Fewer than 30 frames is too little for meaningful drizzle benefit; processing time would balloon.
 - **No StarXTerminator-based star-removal-and-recompose workflows.** Stock tools can't reliably separate stars from this density of foreground.
 - **No third-party plugins (BlurXT / NoiseXT / NXT / GraXpert).** If you do have these installed, tell me and I'll substitute — they would materially upgrade NR, deconvolution, and gradient removal.
 
@@ -469,10 +470,10 @@ Pick whichever feels right on inspection — they produce similar results.
 ## Watchpoints (things that will surprise you)
 
 1. **The core will be solid white** after stretching. That's clipped-data physics, not a pipeline bug. HDRMT can darken it slightly to look less offensive but cannot recover what was never recorded.
-2. **Corner stars will be smeared** (coma at f/1.8). Crop them out — there is no software fix.
+2. **Corner stars may be distorted.** Crop the worst edge artifacts if they distract from the galaxy.
 3. **NGC 206 (the brightest HII complex in M31) will be faint.** Unmodified 60D blocks ~75% of H-α, so the red knots will be desaturated. Don't try to "push the red" — you'll just lift chroma noise.
-4. **Mirach's halo is part of the image now.** It can be tamed (§3.8) but probably can't be made invisible.
-5. **The background will go blotchy** if you stretch too hard. With 24 frames, the SNR ceiling is real. The sky preview standard-deviation test (§9.2 of research doc 2) is a good objective check.
+4. **Bright-star halos, if present, need local treatment.** The solved M31 field does not include Mirach.
+5. **The background will go blotchy** if you stretch too hard. With fewer than 30 frames, the SNR ceiling is real. The sky preview standard-deviation test (§9.2 of research doc 2) is a good objective check.
 6. **DBE will look "almost right" and then be wrong in the corners** if sample density is too low there. Specifically check corner background after pass 1.
 
 ---

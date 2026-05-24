@@ -5,6 +5,8 @@
 #   c) Final crop + TIFF/JPEG exports
 #   d) v2 color/chroma refinement
 #   e) v2 final crop + TIFF/JPEG exports
+#   f) v3 ED80-aware star/detail polish
+#   g) v3 final crop + TIFF/JPEG exports
 #
 # Each stage: input -> output xisf file. Skip-if-exists by default.
 # Flags:
@@ -81,6 +83,22 @@ $stages = @(
         Input  = "$outDir\03d-refined-v2.xisf"
         Output = "$outDir\03e-final-v2.xisf"
         ExtraArgs = ",tiff=$($outDir -replace '\\','/')/m31-final-v2.tif,jpg=$($outDir -replace '\\','/')/m31-final-v2.jpg"
+    },
+    [ordered]@{
+        Letter = 'f'
+        Name   = 'ED80V3'
+        Script = "$scriptsDir\03f-ed80-v3.js"
+        Input  = "$outDir\03d-refined-v2.xisf"
+        Output = "$outDir\03f-ed80-v3.xisf"
+        ExtraArgs = ",maskdir=$($outDir -replace '\\','/')/masks"
+    },
+    [ordered]@{
+        Letter = 'g'
+        Name   = 'FinalExportV3'
+        Script = "$scriptsDir\03c-final-export.js"
+        Input  = "$outDir\03f-ed80-v3.xisf"
+        Output = "$outDir\03g-final-v3.xisf"
+        ExtraArgs = ",tiff=$($outDir -replace '\\','/')/m31-final-v3.tif,jpg=$($outDir -replace '\\','/')/m31-final-v3.jpg"
     }
 )
 

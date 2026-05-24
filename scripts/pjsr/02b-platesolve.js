@@ -2,8 +2,8 @@
 // Adds WCS astrometric metadata to the image (needed for SPCC).
 // Usage: -r=02b-platesolve.js,input=<path>,output=<path>
 //
-// Tuned for the solved M31 / Canon 60D setup. Earlier notes assumed 50 mm,
-// but the solved field is 3.3 x 2.2 degrees, equivalent to ~386 mm.
+// Tuned for the solved M31 / Canon 60D / ED80 setup. Earlier notes assumed a
+// 50 mm lens, but the solved field is 3.3 x 2.2 degrees, equivalent to ~386 mm.
 
 #engine v8
 #define USE_SOLVER_LIBRARY true
@@ -135,7 +135,7 @@ try
       logMsg( "Initializing solver..." );
       solver.initialize( mainWin, false /*prioritizeSettings*/ );
 
-      // Now force the known M31 / Canon 60D / 50 mm seed.
+      // Now force the known M31 / Canon 60D / ED80 seed.
       solver.metadata.ra              = RA_M31;
       solver.metadata.dec             = DEC_M31;
       solver.metadata.focal           = FOCAL_MM;
@@ -165,7 +165,7 @@ try
       solver.solverCfg.noiseReductionFilterRadius = 0;
       solver.solverCfg.sensitivity          = 0.3;  // force detection on brighter cores (less coma noise)
       solver.solverCfg.peakResponse         = 0.5;
-      solver.solverCfg.brightThreshold      = 1.5;  // de-emphasize Mirach's saturated halo
+      solver.solverCfg.brightThreshold      = 1.5;  // de-emphasize saturated star halos
       solver.solverCfg.maxStarDistortion    = 0.6;
       solver.solverCfg.autoPSF              = false;
       solver.solverCfg.generateErrorImg     = false;
@@ -187,7 +187,7 @@ try
       solver.solverCfg.outlierDetectionSigma = 5.0;
       solver.solverCfg.generateDistortModel = false;
       solver.solverCfg.outSuffix            = "_ast";
-      solver.solverCfg.projection           = 1;   // 0=Gnomonic/TAN, 1=Stereographic. STEREOGRAPHIC for 25° wide field — fixes RANSAC outlier rejection.
+      solver.solverCfg.projection           = 1;   // 0=Gnomonic/TAN, 1=Stereographic.
       solver.solverCfg.projectionOriginMode = 0;
       solver.solverCfg.restrictToHQStars    = true;  // skip comatic corner stars
       solver.solverCfg.intersectionMode     = IntersectionMode.Automatic;
