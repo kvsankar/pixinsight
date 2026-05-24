@@ -41,6 +41,12 @@ Compressed images checked into the repo for quick comparison:
 - [2013 Photoshop result](images/original-2013-photoshop.jpg)
 - [2026 PixInsight v3 result](images/pixinsight-v3-ed80.jpg)
 
+## Quick visual comparison
+
+| Original 2013 Photoshop result | 2026 PixInsight automation v3 |
+|---|---|
+| ![Original 2013 Photoshop result](images/original-2013-photoshop.jpg) | ![2026 PixInsight automation v3 result](images/pixinsight-v3-ed80.jpg) |
+
 What you should see:
 - Sky background: neutral gray/brown (no green tint — fixed by SPCC/SCNR)
 - M31 bulge: pale warm yellow
