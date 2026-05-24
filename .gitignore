@@ -1,0 +1,27 @@
+# PixInsight generated data and large intermediates
+projects/*/work/
+.env
+.env.*
+!.env.example
+
+# Raw camera frames and common astro image products
+*.CR2
+*.CR3
+*.NEF
+*.ARW
+*.RAF
+*.DNG
+*.FIT
+*.FITS
+*.xisf
+*.xdrz
+*.xnml
+*.tif
+*.tiff
+
+# Local/editor noise
+.DS_Store
+Thumbs.db
+*.tmp
+*.bak
+*.bak-*
