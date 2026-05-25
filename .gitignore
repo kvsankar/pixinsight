@@ -22,6 +22,8 @@ projects/*/work/
 # Local/editor noise
 .DS_Store
 Thumbs.db
+__pycache__/
+*.pyc
 *.tmp
 *.bak
 *.bak-*

@@ -8,9 +8,11 @@
 param(
     [string]$ProjectDir = '',
     [string]$LightDir = '',
+    [string[]]$LightDirs = @(),
     [string]$DarkDir = '',
     [string]$PixInsightExe = '',
     [string]$WbppScript = '',
+    [string]$CfaPattern = '',
     [switch]$Fresh
 )
 
@@ -22,12 +24,28 @@ Import-ProjectEnv (Join-Path $repoRoot.Path '.env')
 
 $ProjectDir = Get-ConfigValue $ProjectDir 'PI_PROJECT_DIR' (Join-Path $repoRoot.Path 'projects\m31-andromeda-2013')
 $LightDir = Get-ConfigValue $LightDir 'PI_LIGHT_DIR'
+$envLightDirs = [Environment]::GetEnvironmentVariable('PI_LIGHT_DIRS', 'Process')
 $DarkDir = Get-ConfigValue $DarkDir 'PI_DARK_DIR'
 $piExe = Get-ConfigValue $PixInsightExe 'PIXINSIGHT_EXE' 'C:\Program Files\PixInsight\bin\PixInsight.exe'
 $wbpp = Get-ConfigValue $WbppScript 'PI_WBPP_SCRIPT' 'C:\Program Files\PixInsight\src\scripts\BatchPreprocessing\WBPP.js'
+$CfaPattern = Get-ConfigValue $CfaPattern 'PI_CFA_PATTERN'
 
-if (-not $LightDir) { throw "Light directory not set. Pass -LightDir or define PI_LIGHT_DIR in .env." }
+if ($LightDirs.Count -eq 0 -and $envLightDirs) {
+    $LightDirs = $envLightDirs -split ';' | Where-Object { $_.Trim() } | ForEach-Object { $_.Trim() }
+}
+if ($LightDirs.Count -eq 0 -and $LightDir) {
+    $LightDirs = @($LightDir)
+}
+
+if ($LightDirs.Count -lt 1) { throw "Light directory not set. Pass -LightDir/-LightDirs or define PI_LIGHT_DIR/PI_LIGHT_DIRS in .env." }
 if (-not $DarkDir) { throw "Dark directory not set. Pass -DarkDir or define PI_DARK_DIR in .env." }
+if ($CfaPattern) {
+    $CfaPattern = $CfaPattern.ToUpperInvariant()
+    $validCfaPatterns = @('AUTO', 'RGGB', 'BGGR', 'GBRG', 'GRBG')
+    if ($validCfaPatterns -notcontains $CfaPattern) {
+        throw "Unsupported CFA pattern '$CfaPattern'. Use one of: $($validCfaPatterns -join ', ')"
+    }
+}
 
 $outDir   = Join-Path $ProjectDir 'work\wbpp-out'
 $logFile  = Join-Path $ProjectDir 'work\logs\wbpp-phase1.log'
@@ -41,14 +59,29 @@ New-Item -Force -ItemType Directory $outDir | Out-Null
 New-Item -Force -ItemType Directory (Split-Path $logFile) | Out-Null
 
 # Enumerate frames (top-level CR2 only — skip subfolders / TIFs / sidecars)
-$lights = Get-ChildItem -Path $LightDir -Filter *.CR2 -File
-$darks  = Get-ChildItem -Path $DarkDir  -Filter *.CR2 -File
+$lights = foreach ($dir in $LightDirs) {
+    if (-not (Test-Path -LiteralPath $dir)) {
+        throw "Light directory not found: $dir"
+    }
+    Get-ChildItem -LiteralPath $dir -Filter *.CR2 -File
+}
+$lights = $lights | Sort-Object FullName -Unique
+
+if (-not (Test-Path -LiteralPath $DarkDir)) {
+    throw "Dark directory not found: $DarkDir"
+}
+$darks  = Get-ChildItem -LiteralPath $DarkDir -Filter *.CR2 -File
 
 Write-Host "Project: $ProjectDir"
-Write-Host "Lights: $($lights.Count) files in $LightDir"
+Write-Host "Light directories:"
+foreach ($dir in $LightDirs) { Write-Host "  $dir" }
+Write-Host "Lights: $($lights.Count) files"
 Write-Host "Darks : $($darks.Count) files in $DarkDir"
+if ($CfaPattern) {
+    Write-Host "Forced CFA pattern: $CfaPattern"
+}
 
-if ($lights.Count -lt 1) { throw "No lights found in $LightDir" }
+if ($lights.Count -lt 1) { throw "No lights found in configured light directories" }
 if ($darks.Count  -lt 1) { throw "No darks found in $DarkDir" }
 
 # WBPP pipeline parameters — only deviations from defaults.
@@ -92,6 +125,15 @@ $params = @(
     # Plate-solve once in Phase 2 before SPCC instead.
     'platesolve=false'
 )
+
+if ($CfaPattern -and $CfaPattern -ne 'AUTO') {
+    $builderScript = Join-Path $repoRoot.Path 'scripts\pjsr\wbpp-force-cfa-builder.js'
+    $params += @(
+        'usePipelineBuilderScript=true',
+        "pipelineBuilderScriptFile=$($builderScript -replace '\\','/')",
+        "forceCfaPattern=$CfaPattern"
+    )
+}
 
 foreach ($f in $lights) { $params += "file=$($f.FullName -replace '\\','/')" }
 foreach ($f in $darks)  { $params += "file=$($f.FullName -replace '\\','/')" }

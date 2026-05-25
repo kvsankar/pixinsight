@@ -36,6 +36,15 @@ function getArg( name )
    return null;
 }
 
+function intArg( name, def )
+{
+   let v = getArg( name );
+   if ( v == null || v.length == 0 )
+      return def;
+   let n = parseInt( v, 10 );
+   return isNaN( n ) ? def : n;
+}
+
 try
 {
    logMsg( "=== Phase 2a starting ===" );
@@ -82,10 +91,11 @@ try
       ABE.abeDownsample     = 2.0;
       ABE.writeSampleBoxes  = false;
       ABE.justTrySamples    = false;
-      ABE.targetCorrection  = 1;  // 0=None, 1=Subtract, 2=Divide (PixInsight ABE convention)
+      ABE.targetCorrection  = intArg( "correction", 1 );  // 0=None, 1=Subtract, 2=Divide
       ABE.normalize         = true;
       ABE.discardBackgroundModel = true;
       ABE.replaceTarget     = true;
+      logMsg( "ABE targetCorrection = " + ABE.targetCorrection );
 
       logMsg( "Executing ABE..." );
       let ok = ABE.executeOn( view );

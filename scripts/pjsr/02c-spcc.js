@@ -39,6 +39,27 @@ function getArg( name )
    return null;
 }
 
+function boolArg( name, def )
+{
+   let v = getArg( name );
+   if ( v == null )
+      return def;
+   v = v.toLowerCase();
+   return v == "1" || v == "true" || v == "yes";
+}
+
+function stringArg( name, def )
+{
+   let v = getArg( name );
+   return v == null || v.length == 0 ? def : v;
+}
+
+function numericArg( name, def )
+{
+   let v = getArg( name );
+   return v == null || v.length == 0 ? def : Number( v );
+}
+
 try
 {
    logMsg( "=== Phase 2c: SPCC starting ===" );
@@ -68,7 +89,10 @@ try
       logMsg( "Astrometric summary:" );
       logMsg( mainWin.astrometricSolutionSummary().trim() );
 
-      // Clean sky ROI in the upper-right corner, avoiding M31/M110.
+      let neutralize = boolArg( "neutralize", true );
+
+      // Default clean-sky ROI in the upper-right corner. Target-specific runs
+      // can disable neutralization if this region contains faint nebulosity.
       let bgRect = new Rect(
          Math.floor( w * 0.84 ), Math.floor( h * 0.05 ),
          Math.floor( w * 0.98 ), Math.floor( h * 0.20 )
@@ -77,10 +101,10 @@ try
               " - " + bgRect.x1 + "," + bgRect.y1 );
 
       let SPCC = new SpectrophotometricColorCalibration;
-      SPCC.whiteReferenceName = "Average Spiral Galaxy";
+      SPCC.whiteReferenceName = stringArg( "whiteReference", "Average Spiral Galaxy" );
       SPCC.catalogId = "GaiaDR3SP";
       SPCC.autoLimitMagnitude = true;
-      SPCC.neutralizeBackground = true;
+      SPCC.neutralizeBackground = neutralize;
       SPCC.backgroundReferenceViewId = "";
       SPCC.backgroundUseROI = true;
       SPCC.backgroundROIX0 = bgRect.x0;
@@ -94,10 +118,28 @@ try
       SPCC.generateStarMaps = false;
       SPCC.generateTextFiles = false;
 
-      // Defaults are appropriate for a stock DSLR/OSC sensor:
-      // Sony Color Sensor R/G/B-UVIRcut and Ideal QE curve.
+      SPCC.redFilterName = stringArg( "redFilter", SPCC.redFilterName );
+      SPCC.greenFilterName = stringArg( "greenFilter", SPCC.greenFilterName );
+      SPCC.blueFilterName = stringArg( "blueFilter", SPCC.blueFilterName );
+      SPCC.psfMinSNR = numericArg( "psfMinSNR", SPCC.psfMinSNR );
+      SPCC.psfNoiseReductionFilterRadius = numericArg( "psfNoise", SPCC.psfNoiseReductionFilterRadius );
+      SPCC.psfMaxStars = numericArg( "psfMaxStars", SPCC.psfMaxStars );
+      SPCC.saturationThreshold = numericArg( "saturation", SPCC.saturationThreshold );
+      SPCC.generateTextFiles = boolArg( "text", SPCC.generateTextFiles );
+      SPCC.generateStarMaps = boolArg( "starMaps", SPCC.generateStarMaps );
+      SPCC.outputDirectory = stringArg( "outputDirectory", SPCC.outputDirectory );
+
+      logMsg( "SPCC neutralizeBackground: " + SPCC.neutralizeBackground );
+      logMsg( "SPCC whiteReferenceName: " + SPCC.whiteReferenceName );
       logMsg( "SPCC filters: " + SPCC.redFilterName + ", " +
               SPCC.greenFilterName + ", " + SPCC.blueFilterName );
+      logMsg( "SPCC signal: psfMinSNR=" + SPCC.psfMinSNR +
+              ", psfNoiseReductionFilterRadius=" + SPCC.psfNoiseReductionFilterRadius +
+              ", psfMaxStars=" + SPCC.psfMaxStars +
+              ", saturationThreshold=" + SPCC.saturationThreshold +
+              ", generateTextFiles=" + SPCC.generateTextFiles +
+              ", generateStarMaps=" + SPCC.generateStarMaps +
+              ", outputDirectory=" + SPCC.outputDirectory );
 
       SPCC.canExecuteOnOrThrow( view );
       let ok = SPCC.executeOn( view );

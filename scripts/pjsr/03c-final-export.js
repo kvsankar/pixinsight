@@ -70,7 +70,7 @@ try
       let h = view.image.height;
       logMsg( "Image before crop: " + w + "x" + h );
 
-      // Trim only the outer margins/corners; keep M31, M32, and M110 with room.
+      // Trim only the outer margins/corners; keep the main target and context with room.
       let crop = new DynamicCrop;
       crop.centerX = 0.5000;
       crop.centerY = 0.5000;

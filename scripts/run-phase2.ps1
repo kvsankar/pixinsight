@@ -16,6 +16,16 @@ param(
     [string]$ProjectDir = '',
     [string]$Phase1Master = '',
     [string]$PixInsightExe = '',
+    [string]$SolveRa = '',
+    [string]$SolveDec = '',
+    [string]$SolveFocal = '',
+    [string]$SolvePixel = '',
+    [string]$SolveTargetMax = '',
+    [string]$SolveMaxBox = '',
+    [string]$SolveMagnitude = '',
+    [string]$SpccRedFilter = '',
+    [string]$SpccGreenFilter = '',
+    [string]$SpccBlueFilter = '',
     [string]$FromStage = '',
     [string]$OnlyStage = '',
     [switch]$Fresh
@@ -29,6 +39,16 @@ Import-ProjectEnv (Join-Path $repoRoot.Path '.env')
 
 $ProjectDir = Get-ConfigValue $ProjectDir 'PI_PROJECT_DIR' (Join-Path $repoRoot.Path 'projects\m31-andromeda-2013')
 $piExe = Get-ConfigValue $PixInsightExe 'PIXINSIGHT_EXE' 'C:\Program Files\PixInsight\bin\PixInsight.exe'
+$SolveRa = Get-ConfigValue $SolveRa 'PI_SOLVE_RA' ''
+$SolveDec = Get-ConfigValue $SolveDec 'PI_SOLVE_DEC' ''
+$SolveFocal = Get-ConfigValue $SolveFocal 'PI_SOLVE_FOCAL_MM' ''
+$SolvePixel = Get-ConfigValue $SolvePixel 'PI_SOLVE_PIXEL_UM' ''
+$SolveTargetMax = Get-ConfigValue $SolveTargetMax 'PI_SOLVE_TARGET_MAX' ''
+$SolveMaxBox = Get-ConfigValue $SolveMaxBox 'PI_SOLVE_MAX_BOX' ''
+$SolveMagnitude = Get-ConfigValue $SolveMagnitude 'PI_SOLVE_MAGNITUDE' ''
+$SpccRedFilter = Get-ConfigValue $SpccRedFilter 'PI_SPCC_RED_FILTER' ''
+$SpccGreenFilter = Get-ConfigValue $SpccGreenFilter 'PI_SPCC_GREEN_FILTER' ''
+$SpccBlueFilter = Get-ConfigValue $SpccBlueFilter 'PI_SPCC_BLUE_FILTER' ''
 $scriptsDir = Join-Path $repoRoot.Path 'scripts\pjsr'
 $outDir = Join-Path $ProjectDir 'work\02-linear'
 $logDir = Join-Path $ProjectDir 'work\logs'
@@ -119,6 +139,20 @@ foreach ($s in $stages) {
     $scriptFwd = $s.Script -replace '\\','/'
     $stageLogFwd = (Join-Path $logDir "phase2$($s.Letter)-pjsr.log") -replace '\\','/'
     $rArg = "$scriptFwd,input=$inFwd,output=$outFwd,log=$stageLogFwd"
+    if ($s.Letter -eq 'b') {
+        if ($SolveRa) { $rArg += ",ra=$SolveRa" }
+        if ($SolveDec) { $rArg += ",dec=$SolveDec" }
+        if ($SolveFocal) { $rArg += ",focal=$SolveFocal" }
+        if ($SolvePixel) { $rArg += ",pixel=$SolvePixel" }
+        if ($SolveTargetMax) { $rArg += ",targetMax=$SolveTargetMax" }
+        if ($SolveMaxBox) { $rArg += ",maxBox=$SolveMaxBox" }
+        if ($SolveMagnitude) { $rArg += ",magnitude=$SolveMagnitude" }
+    }
+    if ($s.Letter -eq 'c') {
+        if ($SpccRedFilter) { $rArg += ",redFilter=$SpccRedFilter" }
+        if ($SpccGreenFilter) { $rArg += ",greenFilter=$SpccGreenFilter" }
+        if ($SpccBlueFilter) { $rArg += ",blueFilter=$SpccBlueFilter" }
+    }
     Write-Host "Running: PixInsight.exe -r=$rArg"
     & $piExe -n "-r=$rArg" --force-exit *>&1 | Tee-Object -FilePath $logFile
     if ($LASTEXITCODE -ne 0) {

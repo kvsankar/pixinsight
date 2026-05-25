@@ -34,7 +34,16 @@ Use lowercase hyphenated project slugs, for example `m31-andromeda-2013` or `ori
    ```text
    PI_PROJECT_DIR=<repo>\projects\target-name-date
    PI_LIGHT_DIR=<local raw light folder>
+   PI_LIGHT_DIRS=<optional semicolon-separated raw light folders>
    PI_DARK_DIR=<local raw dark folder>
+   PI_CFA_PATTERN=<optional WBPP CFA override: AUTO, RGGB, BGGR, GBRG, or GRBG>
+   PI_SOLVE_RA=<optional target RA in degrees>
+   PI_SOLVE_DEC=<optional target Dec in degrees>
+   PI_SOLVE_FOCAL_MM=<optional solved/estimated focal length>
+   PI_SOLVE_PIXEL_UM=<optional camera pixel size>
+   PI_SPCC_RED_FILTER=<optional SPCC red filter name>
+   PI_SPCC_GREEN_FILTER=<optional SPCC green filter name>
+   PI_SPCC_BLUE_FILTER=<optional SPCC blue filter name>
    PIXINSIGHT_EXE=C:\Program Files\PixInsight\bin\PixInsight.exe
    PI_WBPP_SCRIPT=C:\Program Files\PixInsight\src\scripts\BatchPreprocessing\WBPP.js
    PI_GAIA_DR3SP_DIR=<optional local Gaia DR3/SP catalog path>
@@ -46,6 +55,8 @@ Use lowercase hyphenated project slugs, for example `m31-andromeda-2013` or `ori
    - Camera, telescope/lens, mount, guiding setup
    - Light/dark/flat/bias counts, exposure, ISO/gain, temperature
    - Capture and original processing software, if known
+
+   For longer investigations, also maintain `projects/<slug>/docs/processing-journey.md` as a chronological record of what was tried and what was learned.
 
 4. Run the pipeline in phases:
 
@@ -59,10 +70,15 @@ Use lowercase hyphenated project slugs, for example `m31-andromeda-2013` or `ori
 
 - Do not commit `.env`, raw frames, PixInsight intermediates, XISF/TIFF/FITS products, or project `work/` directories.
 - Keep machine-specific paths in `.env`, not in checked-in scripts or docs.
+- Use `PI_LIGHT_DIRS` or `-LightDirs` when a target's usable lights are split across folders.
+- Use `PI_CFA_PATTERN` or `-CfaPattern` only after a dataset-specific CFA diagnostic proves WBPP auto-detection is wrong or suspect.
+- Set `PI_SOLVE_RA`, `PI_SOLVE_DEC`, and scale-related solve settings for each non-M31 target before running Phase 2 fresh.
+- Set SPCC filter names when the camera response is known, for example `Canon EOS 60D R/G/B`.
 - Small compressed JPEG comparison images may be checked in under `projects/<slug>/docs/images/`.
 - Keep public docs scrubbed of unnecessary local paths and personal machine details.
 - Update `readme.md` when adding new documentation pages so all docs remain reachable from the top level.
 - Update `projects/<slug>/docs/status.md` with every processing step that actually ran.
+- Update `projects/<slug>/docs/processing-journey.md` when an investigation changes direction or a failed branch teaches something important.
 - Prefer adding target-specific notes to project docs over embedding assumptions in shared scripts.
 
 ## PixInsight Notes

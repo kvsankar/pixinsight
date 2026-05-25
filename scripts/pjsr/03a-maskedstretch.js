@@ -38,6 +38,15 @@ function getArg( name )
    return null;
 }
 
+function numberArg( name, def )
+{
+   let v = getArg( name );
+   if ( v == null || v.length == 0 )
+      return def;
+   let n = parseFloat( v );
+   return isNaN( n ) ? def : n;
+}
+
 try
 {
    logMsg( "=== Phase 3a: MaskedStretch starting ===" );
@@ -75,7 +84,7 @@ try
       logMsg( "Background ROI = " + x0 + "," + y0 + " - " + x1 + "," + y1 );
 
       let P = new MaskedStretch;
-      P.targetBackground = 0.105;
+      P.targetBackground = numberArg( "targetBackground", 0.105 );
       P.numberOfIterations = 100;
       P.clippingFraction = 0.0005;
       P.backgroundLow = 0.0;
@@ -87,6 +96,7 @@ try
       P.roiX1 = x1;
       P.roiY1 = y1;
       P.maskType = 0;
+      logMsg( "MaskedStretch targetBackground = " + P.targetBackground );
 
       let ok = P.executeOn( view );
       logMsg( "MaskedStretch returned: " + ok );

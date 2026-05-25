@@ -7,7 +7,9 @@ projects/
   target-name-date/
     docs/
       status.md
+      processing-journey.md
       pipeline.md
+      original-processing.md
       research/
     work/
       wbpp-out/
@@ -16,7 +18,7 @@ projects/
       logs/
 ```
 
-Shared automation belongs in `scripts/`. Target-specific documentation, decisions, and generated outputs belong in the relevant `projects/<slug>/` folder.
+Shared automation belongs in `scripts/`. Target-specific documentation, decisions, and generated outputs belong in the relevant `projects/<slug>/` folder. For substantial processing investigations, keep a chronological `processing-journey.md` so the final state can be understood without reconstructing every experiment from logs.
 
 For a new raw-image set, create a new lowercase slug such as `projects/orion-2026-01`, then copy `.env.example` to `.env` and set your local raw frame paths. `.env` is ignored by git.
 

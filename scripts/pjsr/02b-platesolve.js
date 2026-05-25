@@ -2,8 +2,8 @@
 // Adds WCS astrometric metadata to the image (needed for SPCC).
 // Usage: -r=02b-platesolve.js,input=<path>,output=<path>
 //
-// Tuned for the solved M31 / Canon 60D / ED80 setup. Earlier notes assumed a
-// 50 mm lens, but the solved field is 3.3 x 2.2 degrees, equivalent to ~386 mm.
+// Tuned for Canon 60D / ED80-era DSLR data. Defaults are M31 coordinates, but
+// target-specific runs should pass ra=<deg>,dec=<deg>,focal=<mm>.
 
 #engine v8
 #define USE_SOLVER_LIBRARY true
@@ -120,9 +120,9 @@ try
       let mainWin = windows[ 0 ];
       logMsg( "Image: " + mainWin.mainView.image.width + "x" + mainWin.mainView.image.height );
 
-      // M31 target parameters
-      const RA_M31  = 10.6843;   // 00h 42m 44.3s in degrees
-      const DEC_M31 = 41.2691;   // +41° 16' 09"
+      // Default to M31 for backward compatibility. Override for new targets.
+      const RA_SEED  = numberArg( "ra", 10.6843 );  // M31: 00h 42m 44.3s
+      const DEC_SEED = numberArg( "dec", 41.2691 ); // M31: +41° 16' 09"
       const FOCAL_MM = numberArg( "focal", 386 );
       const PIXSZ_UM = numberArg( "pixel", 4.31 );     // Canon EOS 60D
 
@@ -135,9 +135,9 @@ try
       logMsg( "Initializing solver..." );
       solver.initialize( mainWin, false /*prioritizeSettings*/ );
 
-      // Now force the known M31 / Canon 60D / ED80 seed.
-      solver.metadata.ra              = RA_M31;
-      solver.metadata.dec             = DEC_M31;
+      // Now force the target / Canon 60D / ED80 seed.
+      solver.metadata.ra              = RA_SEED;
+      solver.metadata.dec             = DEC_SEED;
       solver.metadata.focal           = FOCAL_MM;
       solver.metadata.xpixsz          = PIXSZ_UM;
       solver.metadata.referenceSystem = "ICRS";

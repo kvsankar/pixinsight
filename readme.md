@@ -10,7 +10,7 @@ This repository is organized for repeatable PixInsight processing across multipl
 - `projects/` - one folder per imaging target/session.
 - `docs/` - repository-level notes that are not tied to a single target.
 
-The current processed target is `projects/m31-andromeda-2013`.
+The current processed targets are `projects/m31-andromeda-2013` and `projects/rosette-2014-03-02`.
 
 ## Documentation
 
@@ -32,6 +32,13 @@ Research notes created during the experiment:
 - [M31-specific processing research](projects/m31-andromeda-2013/docs/research/02-m31-specific.md)
 - [DSLR no-flats workflow research](projects/m31-andromeda-2013/docs/research/03-dslr-no-flats.md)
 - [Plate-solving notes from the failed 50mm assumption](projects/m31-andromeda-2013/docs/research/04-platesolve-wide-field.md)
+
+Rosette Nebula 2014 processing notes:
+
+- [Current status](projects/rosette-2014-03-02/docs/status.md) - source inventory, completed runs, current outputs, and next processing steps.
+- [Processing journey](projects/rosette-2014-03-02/docs/processing-journey.md) - chronological record of what was tried, including the v2g presentation candidate and starless-tool decision.
+- [Processing pipeline](projects/rosette-2014-03-02/docs/pipeline.md) - Rosette-specific PixInsight plan, current color/background findings, and resume plan.
+- [Original 2014 processing evidence](projects/rosette-2014-03-02/docs/original-2014-processing.md) - what was found in the old DSS/Photoshop folders.
 
 ## Current M31 rerun commands
 
