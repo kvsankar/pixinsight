@@ -3,6 +3,10 @@
 // nebula separately, attenuates stars, recombines, then exports.
 // Usage:
 //   -r=03r-rosette-starless-v3.js,starless=<xisf>,stars=<xisf>,output=<xisf>,tiff=<tif>,jpg=<jpg>
+// Optional old-reference/depth controls:
+//   skyDarken, depthContrast, warmDepth, blueDrop, blueTarget
+// Optional subtle/sparse star controls:
+//   depthBeforeStars, starThreshold, starSoftness
 
 #engine v8
 
@@ -64,6 +68,14 @@ try
    let bgNeutral = numArg( "bgNeutral", 0.35 );
    let starScale = numArg( "starScale", 0.72 );
    let starDesat = numArg( "starDesat", 0.35 );
+   let skyDarken = numArg( "skyDarken", 0.0 );
+   let depthContrast = numArg( "depthContrast", 0.0 );
+   let warmDepth = numArg( "warmDepth", 0.0 );
+   let blueDrop = numArg( "blueDrop", 0.0 );
+   let blueTarget = numArg( "blueTarget", 0.58 );
+   let depthBeforeStars = arg( "depthBeforeStars", "false" ) == "true";
+   let starThreshold = numArg( "starThreshold", 0.0 );
+   let starSoftness = numArg( "starSoftness", 0.035 );
    let crop = arg( "crop", "false" ) == "true";
 
    logMsg( "starless=" + starlessPath );
@@ -74,7 +86,12 @@ try
    logMsg( "nebulaContrast=" + nebulaContrast + " redLift=" + redLift +
            " greenDrop=" + greenDrop + " satAmount=" + satAmount +
            " bgNeutral=" + bgNeutral + " starScale=" + starScale +
-           " starDesat=" + starDesat + " crop=" + crop );
+           " starDesat=" + starDesat + " skyDarken=" + skyDarken +
+           " depthContrast=" + depthContrast + " warmDepth=" + warmDepth +
+           " blueDrop=" + blueDrop + " blueTarget=" + blueTarget +
+           " depthBeforeStars=" + depthBeforeStars +
+           " starThreshold=" + starThreshold +
+           " starSoftness=" + starSoftness + " crop=" + crop );
 
    let starlessWin = openOne( starlessPath, "starless" );
    let starsWin = openOne( starsPath, "stars" );
@@ -134,19 +151,62 @@ try
    outWin.mainView.image.assign( view.image );
    outWin.mainView.endProcess();
 
+   function applyDepthHue( targetView )
+   {
+      let outL = "(0.2126*$T[0]+0.7152*$T[1]+0.0722*$T[2])";
+      let outSky = "(1-max(min((" + outL + "-0.16)/0.34,1),0))";
+      let outMid = "(max(min((" + outL + "-0.18)/0.42,1),0)*(1-max(min((" + outL + "-0.80)/0.16,1),0)))";
+      let outNeb = "(max(min((" + outL + "-0.22)/0.46,1),0)*(1-max(min((" + outL + "-0.82)/0.15,1),0)))";
+      let redExcess = "max(min(($T[0]-$T[1])*5,1),0)";
+
+      let D = new PixelMath;
+      D.useSingleExpression = false;
+      D.expression0 = "max(min($T[0]*(1-" + outSky + "*" + jsNum( skyDarken ) +
+                      ") + " + outMid + "*" + jsNum( depthContrast ) +
+                      "*($T[0]-0.44) + " + outNeb + "*" + jsNum( warmDepth ) +
+                      "*(1-$T[0]),1),0)";
+      D.expression1 = "max(min($T[1]*(1-" + outSky + "*" + jsNum( skyDarken*0.95 ) +
+                      ") + " + outMid + "*" + jsNum( depthContrast ) +
+                      "*($T[1]-0.44) - " + outNeb + "*" + jsNum( warmDepth*0.35 ) +
+                      "*$T[1],1),0)";
+      D.expression2 = "max(min($T[2]*(1-" + outSky + "*" + jsNum( skyDarken*0.90 ) +
+                      ") + " + outMid + "*" + jsNum( depthContrast ) +
+                      "*($T[2]-0.44) - " + outNeb + "*" + redExcess + "*" + jsNum( blueDrop ) +
+                      "*max($T[2]-" + jsNum( blueTarget ) + "*$T[0],0),1),0)";
+      D.truncate = true;
+      D.truncateLower = 0;
+      D.truncateUpper = 1;
+      D.rescale = false;
+      D.createNewImage = false;
+      D.showNewImage = false;
+      D.generateOutput = true;
+      if ( !D.executeOn( targetView ) )
+         throw new Error( "Final depth/hue PixelMath failed" );
+   }
+
+   if ( depthBeforeStars && (skyDarken > 0 || depthContrast > 0 || warmDepth > 0 || blueDrop > 0) )
+   {
+      logMsg( "Applying optional final depth/hue pass before star recombination..." );
+      applyDepthHue( outWin.mainView );
+   }
+
    let starId = starsView.id;
    logMsg( "Recombining stars from view " + starId + "..." );
    P = new PixelMath;
    P.useSingleExpression = false;
-   P.expression0 = "max(min($T[0] + " + jsNum( starScale ) + "*" +
+   let starLum = "((" + starId + "[0]+" + starId + "[1]+" + starId + "[2])/3)";
+   let starGate = starThreshold > 0 ?
+                  "max(min((" + starLum + "-" + jsNum( starThreshold ) + ")/" + jsNum( starSoftness ) + ",1),0)" :
+                  "1";
+   P.expression0 = "max(min($T[0] + " + jsNum( starScale ) + "*" + starGate + "*" +
                    "((" + starId + "[0]*(1-" + jsNum( starDesat ) + "))+" +
                    "((( " + starId + "[0]+" + starId + "[1]+" + starId + "[2])/3)*" +
                    jsNum( starDesat ) + ")),1),0)";
-   P.expression1 = "max(min($T[1] + " + jsNum( starScale ) + "*" +
+   P.expression1 = "max(min($T[1] + " + jsNum( starScale ) + "*" + starGate + "*" +
                    "((" + starId + "[1]*(1-" + jsNum( starDesat ) + "))+" +
                    "((( " + starId + "[0]+" + starId + "[1]+" + starId + "[2])/3)*" +
                    jsNum( starDesat ) + ")),1),0)";
-   P.expression2 = "max(min($T[2] + " + jsNum( starScale ) + "*" +
+   P.expression2 = "max(min($T[2] + " + jsNum( starScale ) + "*" + starGate + "*" +
                    "((" + starId + "[2]*(1-" + jsNum( starDesat ) + "))+" +
                    "((( " + starId + "[0]+" + starId + "[1]+" + starId + "[2])/3)*" +
                    jsNum( starDesat ) + ")),1),0)";
@@ -159,6 +219,12 @@ try
    P.generateOutput = true;
    if ( !P.executeOn( outWin.mainView ) )
       throw new Error( "Star recombination PixelMath failed" );
+
+   if ( !depthBeforeStars && (skyDarken > 0 || depthContrast > 0 || warmDepth > 0 || blueDrop > 0) )
+   {
+      logMsg( "Applying optional final depth/hue pass..." );
+      applyDepthHue( outWin.mainView );
+   }
 
    if ( crop )
    {

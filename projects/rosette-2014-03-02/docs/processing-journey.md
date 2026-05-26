@@ -522,9 +522,9 @@ Decision: `v3b` is now the preferred Rosette presentation candidate. It improves
 
 ## Pause State
 
-Rosette is no longer paused at the local starless experiment. The current presentation resume point is the StarXTerminator v3b branch; return to the linear/manual-DBE branches only if the goal is to improve calibration rather than presentation.
+Rosette is no longer paused at the local starless experiment. The clean presentation resume point is the StarXTerminator v3b branch; the old-reference depth resume point is the v3g branch. Return to the linear/manual-DBE branches only if the goal is to improve calibration rather than presentation.
 
-Best current presentation image:
+Clean presentation image:
 
 ```text
 work/03-nonlinear/rosette-starxterminator-v3b.jpg
@@ -554,6 +554,65 @@ Recommended resume plan:
 2. If the star field feels too reduced, make a gentler `v3c` by increasing `starScale` in `03r-rosette-starless-v3.js`.
 3. Longer term, revisit flats/gradient correction before judging SPCC's raw color result again.
 
+## 2026-05-26 — Old-Reference Depth Branch
+
+After comparing v3b with the checked-in 2014 finished-work image, the old result had a darker sky floor, stronger midtone depth, and a more crimson/red Rosette hue, despite more noise.
+
+Extended `scripts/pjsr/03r-rosette-starless-v3.js` with optional depth controls:
+
+```text
+skyDarken
+depthContrast
+warmDepth
+blueDrop
+blueTarget
+```
+
+The defaults preserve the prior v3/v3b behavior.
+
+Tested branches:
+
+| Branch | Read |
+| --- | --- |
+| v3c | Warmer than v3b, but still too flat/gray in the background. |
+| v3d | Better depth and darker sky, but still too pink compared with the old crimson/red hue. |
+| v3e | Much closer on depth; stronger dark sky and local contrast. |
+| v3f | Shifted toward old red, but warmed too many stars and gave the field a yellow cast. |
+| v3g | Kept the v3e depth, applied blue reduction mainly where red excess was present, and avoided the v3f star-color cast. |
+| v3h | Same old-red/depth treatment with `starScale=0`; created after v3g's recombined stars still read too warm/red. |
+| v3i | Applied red/depth before stars and added subtle desaturated stars with a low threshold. Better star color, but still fairly populated. |
+| v3j | Raised the star threshold to keep fewer anchor stars. Best subtle/sparse-star candidate so far. |
+
+Accepted old-reference depth candidate:
+
+```text
+work/03-nonlinear/03s-rosette-starxterminator-v3g-old-red-protected.xisf
+work/03-nonlinear/rosette-starxterminator-v3g-old-red-protected.tif
+work/03-nonlinear/rosette-starxterminator-v3g-old-red-protected.jpg
+docs/images/rosette-starxterminator-v3g-old-red-depth.jpg
+```
+
+Starless old-reference layer:
+
+```text
+work/03-nonlinear/03s-rosette-starxterminator-v3h-old-red-starless.xisf
+work/03-nonlinear/rosette-starxterminator-v3h-old-red-starless.tif
+work/03-nonlinear/rosette-starxterminator-v3h-old-red-starless.jpg
+docs/images/rosette-starxterminator-v3h-old-red-starless.jpg
+```
+
+Restrained star recombination candidates:
+
+```text
+work/03-nonlinear/03s-rosette-starxterminator-v3i-subtle-sparse-stars.xisf
+work/03-nonlinear/rosette-starxterminator-v3i-subtle-sparse-stars.jpg
+docs/images/rosette-starxterminator-v3i-subtle-sparse-stars.jpg
+
+work/03-nonlinear/03s-rosette-starxterminator-v3j-sparse-anchor-stars.xisf
+work/03-nonlinear/rosette-starxterminator-v3j-sparse-anchor-stars.jpg
+docs/images/rosette-starxterminator-v3j-sparse-anchor-stars.jpg
+```
+
 ## Current Best Understanding
 
 The project is no longer blocked on plate solving, Gaia catalog access, or scripted SPCC execution. It is blocked on robust color/background treatment for an old DSLR emission-nebula dataset with no flats.
@@ -574,6 +633,7 @@ Current evidence supports this interpretation:
 - The v2g presentation branch had the best balance before StarXTerminator was installed.
 - Local scripted starless approximations are not adequate for this field.
 - StarXTerminator v3b is now the preferred presentation branch because it gives a cleaner nebula/stars separation and much lower bright-star dominance.
+- The old finished-work comparison shows why v3b can still feel too flat; v3g adds depth but warms the star field, v3h is the preferred starless old-red layer, and v3j is the best subtle/sparse-star recombination so far.
 
 ## Current Outputs
 
@@ -581,6 +641,12 @@ Current evidence supports this interpretation:
 |---|---|
 | `work/03-nonlinear/rosette-starxterminator-v3b.jpg` | Current preferred presentation candidate; StarXTerminator starless/stars recombination |
 | `docs/images/rosette-starxterminator-v3b.jpg` | Small checked-in preview of the current preferred presentation candidate |
+| `work/03-nonlinear/rosette-starxterminator-v3g-old-red-protected.jpg` | Old-reference depth candidate; darker sky and warmer red hue tuned against the 2014 finished-work result |
+| `docs/images/rosette-starxterminator-v3g-old-red-depth.jpg` | Small checked-in preview of the old-reference depth candidate |
+| `work/03-nonlinear/rosette-starxterminator-v3h-old-red-starless.jpg` | Starless old-reference red/depth layer; same treatment as v3g with no star recombination |
+| `docs/images/rosette-starxterminator-v3h-old-red-starless.jpg` | Small checked-in preview of the v3h starless layer |
+| `work/03-nonlinear/rosette-starxterminator-v3j-sparse-anchor-stars.jpg` | Subtle/sparse-star recombination over the old-red nebula layer |
+| `docs/images/rosette-starxterminator-v3j-sparse-anchor-stars.jpg` | Small checked-in preview of the v3j subtle/sparse-star candidate |
 | `docs/images/original-2014-photoshop.jpg` | Small checked-in preview of the historical finished-work Rosette result |
 | `work/03-nonlinear/rosette-redmix-experimental.jpg` | Best visual red/pink checkpoint; not calibrated |
 | `work/03-nonlinear/rosette-dbe-manual-spcc-visual-v2g-nebula-stars.jpg` | Previous SPCC-based visual candidate; v2 sky cleanup, stronger nebula contrast/vibrance, and retuned star reduction |
@@ -608,7 +674,7 @@ The next useful work should focus on gradient/flat correction, not plate solving
 
 Priority options:
 
-1. Compare `rosette-starxterminator-v3b.jpg`, `rosette-dbe-manual-spcc-visual-v2g-nebula-stars.jpg`, and `rosette-dss-bgcal-experimental.jpg` against the historical Photoshop output.
+1. Compare the clean v3b and old-reference v3g branches against the historical Photoshop output on a calibrated display.
 2. Search for real matching flats or twilight flats from the same setup.
 3. Refine the manual DBE process or try a second DBE pass with different sample placement.
 4. Try a dedicated external gradient/background tool if available.

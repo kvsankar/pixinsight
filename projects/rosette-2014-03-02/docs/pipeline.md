@@ -3,7 +3,7 @@
 This is the current working plan for the 2014 Rosette Nebula data. It began by borrowing the proven M31 automation structure, but the target is different: Rosette is a faint emission nebula with embedded cluster stars, not a broadband galaxy.
 
 For the chronological record of experiments and decisions, see [Processing journey](processing-journey.md).
-For the current v3b presentation candidate, subs summary, and human-in-the-loop notes, see [Rosette v3b presentation candidate](final-v3b.md).
+For the current v3b presentation candidate, subs summary, and human-in-the-loop notes, see [Rosette v3b presentation candidate](final-v3b.md). For the later old-reference depth branch, see [Rosette v3g old-red depth candidate](v3g-old-red-depth.md). For the same red/depth treatment without stars, see [Rosette v3h old-red starless layer](v3h-old-red-starless.md). For restrained star recombinations, see [Rosette v3i/v3j subtle stars](v3i-v3j-subtle-stars.md).
 
 ## Phase 1 — Calibration + Integration
 
@@ -333,6 +333,43 @@ docs/images/rosette-starxterminator-v3b.jpg
 ```
 
 `v3b` uses `scripts/pjsr/03r-rosette-starless-v3.js` with reduced/desaturated stars and modest starless-only nebula enhancement. It is now the preferred presentation branch, but it remains a visual finish rather than a solution to the underlying SPCC color/background problem.
+
+### V3G old-reference depth branch
+
+After comparing v3b against the checked-in 2014 finished-work image, a later branch used the same StarXTerminator starless/stars layers but added optional final depth controls to `scripts/pjsr/03r-rosette-starless-v3.js`.
+
+Final v3g outputs:
+
+```text
+work/03-nonlinear/03s-rosette-starxterminator-v3g-old-red-protected.xisf
+work/03-nonlinear/rosette-starxterminator-v3g-old-red-protected.tif
+work/03-nonlinear/rosette-starxterminator-v3g-old-red-protected.jpg
+docs/images/rosette-starxterminator-v3g-old-red-depth.jpg
+```
+
+The accepted v3g settings use `skyDarken=0.65`, `depthContrast=0.35`, `warmDepth=0.085`, `blueDrop=0.85`, and `blueTarget=0.38`. The blue reduction is guarded by red excess so the nebula shifts toward the older crimson/red hue without warming the whole star field.
+
+The recombined v3g star field still reads too warm/red, so a starless v3h variant was exported with the same settings and `starScale=0`:
+
+```text
+work/03-nonlinear/03s-rosette-starxterminator-v3h-old-red-starless.xisf
+work/03-nonlinear/rosette-starxterminator-v3h-old-red-starless.tif
+work/03-nonlinear/rosette-starxterminator-v3h-old-red-starless.jpg
+docs/images/rosette-starxterminator-v3h-old-red-starless.jpg
+```
+
+To add stars back without tinting the whole star field, the script now supports `depthBeforeStars=true`, `starThreshold`, and `starSoftness`. This applies the red/depth pass to the nebula before stars are recombined, then adds only threshold-gated, desaturated stars.
+
+The current best subtle/sparse-star candidate is v3j:
+
+```text
+work/03-nonlinear/03s-rosette-starxterminator-v3j-sparse-anchor-stars.xisf
+work/03-nonlinear/rosette-starxterminator-v3j-sparse-anchor-stars.tif
+work/03-nonlinear/rosette-starxterminator-v3j-sparse-anchor-stars.jpg
+docs/images/rosette-starxterminator-v3j-sparse-anchor-stars.jpg
+```
+
+V3J uses `starScale=0.26`, `starDesat=0.88`, `starThreshold=0.085`, and `starSoftness=0.045`.
 
 ## Open Questions
 

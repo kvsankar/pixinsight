@@ -33,17 +33,23 @@ Primary feedback signals:
 
 ## Rosette Nebula 2014
 
-Current result: StarXTerminator v3b presentation candidate; not considered scientifically final.
+Current result: StarXTerminator v3b clean presentation candidate, v3h old-red starless layer, and v3j subtle/sparse-star presentation candidate; none is considered scientifically final.
 
 Detailed notes:
 
 - [V3B presentation candidate](../projects/rosette-2014-03-02/docs/final-v3b.md)
+- [V3G old-red depth candidate](../projects/rosette-2014-03-02/docs/v3g-old-red-depth.md)
+- [V3H old-red starless layer](../projects/rosette-2014-03-02/docs/v3h-old-red-starless.md)
+- [V3I/V3J subtle stars](../projects/rosette-2014-03-02/docs/v3i-v3j-subtle-stars.md)
 - [Status](../projects/rosette-2014-03-02/docs/status.md)
 - [Processing journey](../projects/rosette-2014-03-02/docs/processing-journey.md)
 - [Pipeline](../projects/rosette-2014-03-02/docs/pipeline.md)
 - [Original 2014 processing evidence](../projects/rosette-2014-03-02/docs/original-2014-processing.md)
 - [2014 finished-work result](../projects/rosette-2014-03-02/docs/images/original-2014-photoshop.jpg)
 - [2026 StarXTerminator v3b result](../projects/rosette-2014-03-02/docs/images/rosette-starxterminator-v3b.jpg)
+- [2026 StarXTerminator v3g old-red depth result](../projects/rosette-2014-03-02/docs/images/rosette-starxterminator-v3g-old-red-depth.jpg)
+- [2026 StarXTerminator v3h old-red starless result](../projects/rosette-2014-03-02/docs/images/rosette-starxterminator-v3h-old-red-starless.jpg)
+- [2026 StarXTerminator v3j subtle stars result](../projects/rosette-2014-03-02/docs/images/rosette-starxterminator-v3j-sparse-anchor-stars.jpg)
 
 Summary process:
 
@@ -68,6 +74,9 @@ Summary process:
 9. After StarXTerminator was installed, generated clean starless and stars-only layers from the pre-morphological v2e polish.
 10. Enhanced the starless nebula separately, recombined a reduced/desaturated star layer, and accepted `rosette-starxterminator-v3b` as the current presentation candidate while documenting that the color/background problem is not fully solved.
 11. Added compressed, metadata-stripped comparison previews for the historical finished-work result and the current v3b result.
+12. Compared v3b against the historical finished-work image and tuned a v3g old-reference depth branch with darker sky, stronger midtone contrast, and protected crimson/red hue shift.
+13. Exported v3h as the same old-reference red/depth treatment with no star recombination after v3g's stars read too warm/red.
+14. Exported v3i/v3j by applying red/depth before stars and adding back threshold-gated, desaturated stars; v3j is the best sparse-anchor-star version so far.
 
 Subs used for v3b:
 
@@ -93,6 +102,9 @@ Primary feedback signals:
 - Manual DBE improved background control, but SPCC still suppressed the emission color.
 - Starless attempts showed that a dedicated star-separation tool is needed before pushing the Rosette finish further.
 - StarXTerminator v3b reduced bright-star dominance substantially while keeping sampled dark-sky color close to neutral.
+- Visual comparison against the old finished-work image showed v3b was clean but too flat/gray, leading to the deeper v3g old-reference branch.
+- Visual comparison of v3g showed the red treatment also warmed the star field, so v3h keeps the nebula treatment as a starless layer.
+- Visual comparison of v3i/v3j showed that v3j gives the better small-number/subtle-star compromise.
 
 ## Horsehead / Flame 2013-2016
 

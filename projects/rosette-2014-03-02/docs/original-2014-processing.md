@@ -67,6 +67,9 @@ Two compressed JPEG derivatives are kept in this repository for quick visual com
 |---|---|---|
 | [original-2014-photoshop.jpg](images/original-2014-photoshop.jpg) | `finished-work/20140302-Rosette-Nebula.jpg` | Recompressed and metadata-stripped repo copy of the historical finished-work export. |
 | [rosette-starxterminator-v3b.jpg](images/rosette-starxterminator-v3b.jpg) | `work/03-nonlinear/rosette-starxterminator-v3b.jpg` | Downsampled/compressed repo copy of the 2026 PixInsight + StarXTerminator v3b result. |
+| [rosette-starxterminator-v3g-old-red-depth.jpg](images/rosette-starxterminator-v3g-old-red-depth.jpg) | `work/03-nonlinear/rosette-starxterminator-v3g-old-red-protected.jpg` | Downsampled/compressed repo copy of the 2026 old-reference depth branch. |
+| [rosette-starxterminator-v3h-old-red-starless.jpg](images/rosette-starxterminator-v3h-old-red-starless.jpg) | `work/03-nonlinear/rosette-starxterminator-v3h-old-red-starless.jpg` | Downsampled/compressed repo copy of the 2026 old-reference starless branch. |
+| [rosette-starxterminator-v3j-sparse-anchor-stars.jpg](images/rosette-starxterminator-v3j-sparse-anchor-stars.jpg) | `work/03-nonlinear/rosette-starxterminator-v3j-sparse-anchor-stars.jpg` | Downsampled/compressed repo copy of the 2026 old-reference subtle-stars branch. |
 
 ## Metadata Caveat
 

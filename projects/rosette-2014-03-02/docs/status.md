@@ -1,10 +1,13 @@
 # Rosette Nebula Processing — Status
 
-**As of:** 2026-05-26 IST, Rosette has a new StarXTerminator-based v3b presentation candidate.
-**Pipeline progress:** 92%, presentation branch improved — raw archive found, historical DSS/Photoshop processing inspected, project scaffold created, 33-frame WBPP integration completed, plate solve completed, multiple CFA/color-calibration branches tested, synthetic-background and manual-DBE branches tested, CR2 preview/color handling investigated, SPCC metadata failure diagnosed, SPCC diagnostics generated, SPCC-based visual exports produced, local starless approximations rejected, and a StarXTerminator starless/stars recombination completed. Color/background handling is improved but still not scientifically final.
+**As of:** 2026-05-26 IST, Rosette has a StarXTerminator-based v3b clean presentation candidate and a v3g old-reference depth candidate.
+**Pipeline progress:** 94%, presentation branch improved — raw archive found, historical DSS/Photoshop processing inspected, project scaffold created, 33-frame WBPP integration completed, plate solve completed, multiple CFA/color-calibration branches tested, synthetic-background and manual-DBE branches tested, CR2 preview/color handling investigated, SPCC metadata failure diagnosed, SPCC diagnostics generated, SPCC-based visual exports produced, local starless approximations rejected, StarXTerminator starless/stars recombination completed, and an old-reference depth branch tuned against the 2014 finished-work image. Color/background handling is improved but still not scientifically final.
 
 For the chronological record of how we got here, see [Processing journey](processing-journey.md).
 For the current presentation candidate, subs summary, and human-in-the-loop notes, see [Rosette v3b presentation candidate](final-v3b.md).
+For the old-reference depth branch, see [Rosette v3g old-red depth candidate](v3g-old-red-depth.md).
+For the starless old-red layer, see [Rosette v3h old-red starless layer](v3h-old-red-starless.md).
+For the restrained star recombination branches, see [Rosette v3i/v3j subtle stars](v3i-v3j-subtle-stars.md).
 
 ---
 
@@ -14,7 +17,7 @@ For the current presentation candidate, subs summary, and human-in-the-loop note
 PHASE 0 — Source inventory                         DONE
 PHASE 1 — Calibration + Integration                DONE, RGGB TEST ACTIVE
 PHASE 2 — Linear post-integration                  DONE, COLOR/BACKGROUND ISSUE
-PHASE 3 — Nonlinear processing/export              V3B STARXTERMINATOR CANDIDATE
+PHASE 3 — Nonlinear processing/export              V3B CLEAN + V3G OLD-REFERENCE CANDIDATES
 ```
 
 ## Dataset Summary
@@ -92,6 +95,9 @@ Calibration: 9 x 240s ISO 1600 darks, no flats, no bias.
 - StarXTerminator was run on the pre-morphological v2e polished image, producing reusable starless and stars-only XISF layers.
 - Added `scripts/pjsr/03r-rosette-starless-v3.js` for starless-only nebula enhancement, reduced/desaturated star recombination, crop, and export.
 - The `v3b` StarXTerminator recombination is now the preferred presentation candidate. It reduces the star field substantially while keeping the dark-sky samples close to neutral. It is still a visual presentation branch, not proof that the raw SPCC color-calibration issue is solved.
+- Added optional old-reference depth controls to `scripts/pjsr/03r-rosette-starless-v3.js` and generated the `v3g` branch to better match the historical image's darker sky and crimson/red hue.
+- Generated `v3h` with the same old-reference red/depth treatment but `starScale=0`, because the recombined v3g star field reads too warm/red.
+- Added `depthBeforeStars`, `starThreshold`, and `starSoftness` controls, then generated v3i/v3j restrained star recombinations over the old-red nebula layer.
 - The raw CR2 embedded preview shows faint red Rosette signal. EXIF reports Canon white-balance multipliers of about `R=1964`, `G=1024`, `B=1830`, so camera/raw-preview software boosts red and blue strongly relative to green.
 - Earlier diagnostic previews used PixInsight auto STF with `linkedRGB=false`, which stretches each channel independently and can hide true red/magenta balance. The preview script now accepts `linkedRGB=true`; linked previews show the raw and integrated data are strongly magenta before background re-anchoring.
 - A DSS-style per-channel background calibration branch now gives the best non-SPCC visual result: it keeps the sky much more neutral while preserving pink/red Rosette signal.
@@ -157,7 +163,11 @@ First PixInsight run used: **top-level good east + west**. Rejection maps still 
 | SPCC visual v2g branch | `work/03-nonlinear/rosette-dbe-manual-spcc-visual-v2g-nebula-stars.jpg` and `.tif`; previous best pre-StarXTerminator presentation candidate |
 | Starless local approximations | `work/03-nonlinear/rosette-dbe-manual-spcc-visual-v2g-starless-*.jpg`; diagnostic only, not accepted as final |
 | StarXTerminator v3b branch | `work/03-nonlinear/rosette-starxterminator-v3b.jpg` and `.tif`; current preferred presentation candidate |
-| Checked-in comparison previews | `docs/images/original-2014-photoshop.jpg` and `docs/images/rosette-starxterminator-v3b.jpg`; compressed repo copies for quick historical/current comparison |
+| StarXTerminator v3g old-reference branch | `work/03-nonlinear/rosette-starxterminator-v3g-old-red-protected.jpg` and `.tif`; deeper visual branch tuned against the 2014 finished-work image, but stars read too warm |
+| StarXTerminator v3h old-red starless branch | `work/03-nonlinear/rosette-starxterminator-v3h-old-red-starless.jpg` and `.tif`; same red/depth treatment without star recombination |
+| StarXTerminator v3i subtle sparse stars | `work/03-nonlinear/rosette-starxterminator-v3i-subtle-sparse-stars.jpg` and `.tif`; subtle threshold-gated neutral stars over the old-red nebula |
+| StarXTerminator v3j sparse anchor stars | `work/03-nonlinear/rosette-starxterminator-v3j-sparse-anchor-stars.jpg` and `.tif`; fewer anchor stars over the old-red nebula, current best subtle-stars candidate |
+| Checked-in comparison previews | `docs/images/original-2014-photoshop.jpg`, `docs/images/rosette-starxterminator-v3b.jpg`, `docs/images/rosette-starxterminator-v3g-old-red-depth.jpg`, `docs/images/rosette-starxterminator-v3h-old-red-starless.jpg`, `docs/images/rosette-starxterminator-v3i-subtle-sparse-stars.jpg`, and `docs/images/rosette-starxterminator-v3j-sparse-anchor-stars.jpg`; compressed repo copies for quick historical/current comparison |
 | Manual DBE interactive SPCC | `work/02-linear/02c-dbe-manual-spcc-interactive.xisf`; interactive SPCC completed, but the output was strongly green without background neutralization |
 | Manual DBE interactive SPCC + BN | `work/02-linear/02c-dbe-manual-spcc-interactive-bn.xisf`; background neutralization made the preview harsh/clipped-looking and still gray/green |
 | Manual DBE fallback color | `work/02-linear/02c-dbe-manual-colorcal.xisf`; BackgroundNeutralization + ColorCalibration completed |
@@ -184,6 +194,9 @@ The investigation moved through these stages:
 12. Refined that branch through v2c-v2g: low-luminance sky cleanup removed the red/pink background cast, a green-excess cleanup made the darkest sky nearly neutral, and a retuned star mask reduced stars more effectively inside the Rosette.
 13. Tried local scripted starless approximations. They confirmed that this dense field needs StarXTerminator or a similar star-separation tool for a clean starless layer.
 14. Installed StarXTerminator, separated the v2e polished image into starless and stars-only layers, enhanced the starless nebula, recombined a reduced/desaturated star layer, and exported the v3/v3b presentation candidates.
+15. Compared v3b with the checked-in 2014 finished-work image and produced v3g, an old-reference depth branch with darker sky, stronger midtone contrast, and a protected crimson/red hue shift.
+16. Created v3h as a starless old-red layer after v3g's recombined stars proved too warm/red.
+17. Created v3i/v3j by applying the old-red depth pass before stars and adding back neutral/desaturated, threshold-gated stars; v3j is the best subtle/sparse-star candidate so far.
 
 ## Active Problem: Background And Color
 
@@ -230,7 +243,7 @@ Next investigation:
 
 ## Experimental Output
 
-The best current presentation output is the StarXTerminator v3b branch:
+The clean presentation output is the StarXTerminator v3b branch:
 
 ```text
 work/03-nonlinear/rosette-starxterminator-v3b.jpg
@@ -242,6 +255,45 @@ docs/images/rosette-starxterminator-v3b.jpg
 ![Rosette StarXTerminator v3b](images/rosette-starxterminator-v3b.jpg)
 
 This branch starts from the v2e SPCC-based visual polish before the older MorphologicalTransformation star reduction. StarXTerminator generated clean starless and stars-only layers; the starless layer then received modest nebula-only contrast/color lift, and the stars-only layer was recombined at reduced strength with partial desaturation. JPEG sampling showed bright-pixel coverage dropped from about `1.17%` in v2g to about `0.24%` in v3b, while sampled dark-sky color stayed close to neutral.
+
+The old-reference depth output is the StarXTerminator v3g branch:
+
+```text
+work/03-nonlinear/rosette-starxterminator-v3g-old-red-protected.jpg
+work/03-nonlinear/rosette-starxterminator-v3g-old-red-protected.tif
+work/03-nonlinear/03s-rosette-starxterminator-v3g-old-red-protected.xisf
+docs/images/rosette-starxterminator-v3g-old-red-depth.jpg
+```
+
+![Rosette StarXTerminator v3g old-red depth](images/rosette-starxterminator-v3g-old-red-depth.jpg)
+
+This branch was tuned visually against the historical finished-work image. It intentionally darkens the sky and shifts red-excess nebulosity toward a warmer crimson/red hue while protecting the general star field from the yellow cast seen in the rejected v3f test.
+
+The same treatment was also exported as a starless layer:
+
+```text
+work/03-nonlinear/rosette-starxterminator-v3h-old-red-starless.jpg
+work/03-nonlinear/rosette-starxterminator-v3h-old-red-starless.tif
+work/03-nonlinear/03s-rosette-starxterminator-v3h-old-red-starless.xisf
+docs/images/rosette-starxterminator-v3h-old-red-starless.jpg
+```
+
+![Rosette StarXTerminator v3h old-red starless](images/rosette-starxterminator-v3h-old-red-starless.jpg)
+
+V3H sets `starScale=0`, so it keeps the old-red nebula depth but avoids the reddish star field seen in v3g. Treat it as a starless nebula layer or starless presentation study, not a complete with-stars final.
+
+The restrained star recombination output is the v3j branch:
+
+```text
+work/03-nonlinear/rosette-starxterminator-v3j-sparse-anchor-stars.jpg
+work/03-nonlinear/rosette-starxterminator-v3j-sparse-anchor-stars.tif
+work/03-nonlinear/03s-rosette-starxterminator-v3j-sparse-anchor-stars.xisf
+docs/images/rosette-starxterminator-v3j-sparse-anchor-stars.jpg
+```
+
+![Rosette StarXTerminator v3j sparse anchor stars](images/rosette-starxterminator-v3j-sparse-anchor-stars.jpg)
+
+V3J applies the old-red/depth pass before star recombination, then adds a desaturated stars-only layer with `starThreshold=0.085`. This keeps only more prominent anchor stars and avoids tinting the whole star field red.
 
 The previous best SPCC-based visual output was the v2g branch:
 
@@ -369,8 +421,8 @@ Set local `.env` values or pass paths explicitly. For this target, `PI_LIGHT_DIR
 
 ## Next Tasks
 
-1. Compare `rosette-starxterminator-v3b.jpg` against the historical 2014 Photoshop output and the v2g branch on a calibrated display.
-2. If needed, make a gentler `v3c` with slightly higher star scale or less starless color lift.
+1. Compare `rosette-starxterminator-v3b.jpg`, `rosette-starxterminator-v3h-old-red-starless.jpg`, and `rosette-starxterminator-v3j-sparse-anchor-stars.jpg` against the historical 2014 Photoshop output on a calibrated display.
+2. Decide whether the cleaner v3b or the deeper old-reference v3j should be the default with-stars presentation.
 3. Refine the DSS-style per-channel background calibration path and compare it with the historical 2014 output.
 4. Inspect WBPP rejection maps and frame quality for the 33-frame set.
 5. Decide whether to rerun with the historical 31-frame DSS-equivalent set, the 33-frame top-level good set, or all 37 good frames.

@@ -37,12 +37,15 @@ Research notes created during the experiment:
 
 Rosette Nebula 2014 processing notes:
 
+- [V3G old-red depth candidate](projects/rosette-2014-03-02/docs/v3g-old-red-depth.md) - visual branch tuned against the 2014 finished-work reference for deeper sky and redder Rosette color.
+- [V3H old-red starless layer](projects/rosette-2014-03-02/docs/v3h-old-red-starless.md) - starless version of the old-reference red/depth treatment.
+- [V3I/V3J subtle stars](projects/rosette-2014-03-02/docs/v3i-v3j-subtle-stars.md) - restrained star recombination over the old-red starless layer.
 - [V3B presentation candidate](projects/rosette-2014-03-02/docs/final-v3b.md) - current preferred result, subs summary, and human-in-the-loop notes.
 - [Current status](projects/rosette-2014-03-02/docs/status.md) - source inventory, completed runs, current outputs, and next processing steps.
 - [Processing journey](projects/rosette-2014-03-02/docs/processing-journey.md) - chronological record of what was tried, including the v2g presentation candidate and starless-tool decision.
 - [Processing pipeline](projects/rosette-2014-03-02/docs/pipeline.md) - Rosette-specific PixInsight plan, current color/background findings, and resume plan.
 - [Original 2014 processing evidence](projects/rosette-2014-03-02/docs/original-2014-processing.md) - what was found in the old DSS/Photoshop folders.
-- [2014 finished-work result](projects/rosette-2014-03-02/docs/images/original-2014-photoshop.jpg) and [2026 StarXTerminator v3b result](projects/rosette-2014-03-02/docs/images/rosette-starxterminator-v3b.jpg) - compressed comparison images.
+- [2014 finished-work result](projects/rosette-2014-03-02/docs/images/original-2014-photoshop.jpg), [2026 StarXTerminator v3b result](projects/rosette-2014-03-02/docs/images/rosette-starxterminator-v3b.jpg), [2026 v3g old-red depth result](projects/rosette-2014-03-02/docs/images/rosette-starxterminator-v3g-old-red-depth.jpg), [2026 v3h old-red starless result](projects/rosette-2014-03-02/docs/images/rosette-starxterminator-v3h-old-red-starless.jpg), and [2026 v3j subtle stars result](projects/rosette-2014-03-02/docs/images/rosette-starxterminator-v3j-sparse-anchor-stars.jpg) - compressed comparison images.
 
 Horsehead / Flame 2013-2016 processing notes:
 

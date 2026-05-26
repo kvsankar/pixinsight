@@ -10,6 +10,8 @@ Historical finished-work reference:
 
 This is a presentation candidate, not a final scientific color-calibration result. The underlying SPCC/background behavior is still documented as unresolved for this no-flats DSLR emission-nebula dataset.
 
+For the later branch tuned toward the historical red/depth reference, see [V3G old-red depth candidate](v3g-old-red-depth.md).
+
 ## Deliverables
 
 | Product | Path |
