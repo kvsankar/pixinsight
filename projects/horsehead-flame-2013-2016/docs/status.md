@@ -25,6 +25,7 @@ PHASE 3 — Nonlinear processing/export              V1 COMPLETE
 | Camera bodies | Canon EOS 60D unmodified; Canon EOS Rebel T1i modified |
 | Main goal | Combine modded and unmodded narrow-field data for better S/N without losing believable broadband color |
 | Wide-field role | Separate context/large-scale support only; not part of the fine-detail integration |
+| Checked-in historical preview | `docs/images/original-2013-finished-work.jpg`, sourced from `finished-work/20131231-Flame-Horsehead-Nebulae.jpg` |
 | Current blocker | None for v1; remaining work is optional refinement/comparison |
 
 ## Candidate Light Sets
@@ -123,3 +124,4 @@ Skip for now: `bad`, `bad-tree-shadow`, `tree-obscured`, `aborted`, `trial-shots
 | `docs/images/horsehead-04c-v1-polish.jpg` | Accepted v1 JPEG preview |
 | `work/03-nonlinear/03i-04c-v1-polish-star-reduced.xisf` | Optional very mild star-reduction comparison |
 | `docs/images/horsehead-04c-v1-polish-star-reduced.jpg` | Optional star-reduced preview |
+| `docs/images/original-2013-finished-work.jpg` | Compressed historical finished-work preview for comparison |

@@ -4,6 +4,10 @@ Accepted result for this pass: `04c` with the plain v1 polish.
 
 ![Horsehead / Flame final v1](images/horsehead-04c-v1-polish.jpg)
 
+Historical finished-work reference:
+
+![2013 Horsehead / Flame finished-work reference](images/original-2013-finished-work.jpg)
+
 ## Deliverables
 
 | Product | Path |
@@ -11,6 +15,7 @@ Accepted result for this pass: `04c` with the plain v1 polish.
 | PixInsight working image | `work/03-nonlinear/03h-04c-v1-polish.xisf` |
 | TIFF export | `work/03-nonlinear/horsehead-04c-v1-polish.tif` |
 | JPEG documentation preview | `docs/images/horsehead-04c-v1-polish.jpg` |
+| Historical finished-work comparison preview | `docs/images/original-2013-finished-work.jpg` |
 
 Optional comparison retained, but not selected as the default presentation:
 

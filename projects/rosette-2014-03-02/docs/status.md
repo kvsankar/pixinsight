@@ -33,6 +33,7 @@ PHASE 3 — Nonlinear processing/export              V3B STARXTERMINATOR CANDIDA
 | Flats | None in DSS report |
 | Bias / offset | None in DSS report |
 | Historical processing | DeepSkyStacker 3.3.3 beta 51, then Adobe Photoshop CS6 |
+| Checked-in historical preview | `docs/images/original-2014-photoshop.jpg`, sourced from `finished-work/20140302-Rosette-Nebula.jpg` |
 | EXIF focal metadata caveat | CR2 files report `FocalLength=50.0 mm`, `FNumber=0`, no lens model. Treat optical scale as unverified until plate solving. |
 
 ## Current V3B Subs
@@ -156,6 +157,7 @@ First PixInsight run used: **top-level good east + west**. Rejection maps still 
 | SPCC visual v2g branch | `work/03-nonlinear/rosette-dbe-manual-spcc-visual-v2g-nebula-stars.jpg` and `.tif`; previous best pre-StarXTerminator presentation candidate |
 | Starless local approximations | `work/03-nonlinear/rosette-dbe-manual-spcc-visual-v2g-starless-*.jpg`; diagnostic only, not accepted as final |
 | StarXTerminator v3b branch | `work/03-nonlinear/rosette-starxterminator-v3b.jpg` and `.tif`; current preferred presentation candidate |
+| Checked-in comparison previews | `docs/images/original-2014-photoshop.jpg` and `docs/images/rosette-starxterminator-v3b.jpg`; compressed repo copies for quick historical/current comparison |
 | Manual DBE interactive SPCC | `work/02-linear/02c-dbe-manual-spcc-interactive.xisf`; interactive SPCC completed, but the output was strongly green without background neutralization |
 | Manual DBE interactive SPCC + BN | `work/02-linear/02c-dbe-manual-spcc-interactive-bn.xisf`; background neutralization made the preview harsh/clipped-looking and still gray/green |
 | Manual DBE fallback color | `work/02-linear/02c-dbe-manual-colorcal.xisf`; BackgroundNeutralization + ColorCalibration completed |

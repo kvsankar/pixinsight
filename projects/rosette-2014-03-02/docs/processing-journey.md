@@ -550,7 +550,7 @@ work/02-linear/02c-dbe-manual-spccmeta-spcc.xisf
 
 Recommended resume plan:
 
-1. Compare `rosette-starxterminator-v3b.jpg` against the historical 2014 Photoshop output and the v2g branch.
+1. Compare the checked-in `docs/images/rosette-starxterminator-v3b.jpg` preview against `docs/images/original-2014-photoshop.jpg` and the v2g branch.
 2. If the star field feels too reduced, make a gentler `v3c` by increasing `starScale` in `03r-rosette-starless-v3.js`.
 3. Longer term, revisit flats/gradient correction before judging SPCC's raw color result again.
 
@@ -581,6 +581,7 @@ Current evidence supports this interpretation:
 |---|---|
 | `work/03-nonlinear/rosette-starxterminator-v3b.jpg` | Current preferred presentation candidate; StarXTerminator starless/stars recombination |
 | `docs/images/rosette-starxterminator-v3b.jpg` | Small checked-in preview of the current preferred presentation candidate |
+| `docs/images/original-2014-photoshop.jpg` | Small checked-in preview of the historical finished-work Rosette result |
 | `work/03-nonlinear/rosette-redmix-experimental.jpg` | Best visual red/pink checkpoint; not calibrated |
 | `work/03-nonlinear/rosette-dbe-manual-spcc-visual-v2g-nebula-stars.jpg` | Previous SPCC-based visual candidate; v2 sky cleanup, stronger nebula contrast/vibrance, and retuned star reduction |
 | `work/03-nonlinear/rosette-dbe-manual-spcc-visual-v2e.jpg` | Balanced v2 background/nebula polish before the retuned v2g star mask |

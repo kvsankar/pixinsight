@@ -371,6 +371,7 @@ Outputs:
 work/03-nonlinear/03h-04c-v1-polish.xisf
 work/03-nonlinear/horsehead-04c-v1-polish.tif
 docs/images/horsehead-04c-v1-polish.jpg
+docs/images/original-2013-finished-work.jpg
 ```
 
 v1 read:
@@ -390,3 +391,5 @@ docs/images/horsehead-04c-v1-polish-star-reduced.jpg
 ```
 
 Decision: keep the non-star-reduced v1 polish as the current presentation candidate. The star-reduced version is subtle and useful for comparison, but not enough of an improvement to make it the default.
+
+Historical comparison note: a compressed, metadata-stripped copy of `finished-work/20131231-Flame-Horsehead-Nebulae.jpg` is checked in as `docs/images/original-2013-finished-work.jpg` so the old finished-work result can be compared directly with the 2026 v1 PixInsight result.

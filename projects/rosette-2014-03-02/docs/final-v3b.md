@@ -4,6 +4,10 @@ Current preferred presentation result: `rosette-starxterminator-v3b`.
 
 ![Rosette StarXTerminator v3b](images/rosette-starxterminator-v3b.jpg)
 
+Historical finished-work reference:
+
+![2014 Rosette finished-work reference](images/original-2014-photoshop.jpg)
+
 This is a presentation candidate, not a final scientific color-calibration result. The underlying SPCC/background behavior is still documented as unresolved for this no-flats DSLR emission-nebula dataset.
 
 ## Deliverables
@@ -14,6 +18,7 @@ This is a presentation candidate, not a final scientific color-calibration resul
 | TIFF export | `work/03-nonlinear/rosette-starxterminator-v3b.tif` |
 | JPEG export | `work/03-nonlinear/rosette-starxterminator-v3b.jpg` |
 | Documentation preview | `docs/images/rosette-starxterminator-v3b.jpg` |
+| Historical finished-work comparison preview | `docs/images/original-2014-photoshop.jpg` |
 
 Reusable StarXTerminator layers:
 

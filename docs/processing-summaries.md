@@ -42,6 +42,8 @@ Detailed notes:
 - [Processing journey](../projects/rosette-2014-03-02/docs/processing-journey.md)
 - [Pipeline](../projects/rosette-2014-03-02/docs/pipeline.md)
 - [Original 2014 processing evidence](../projects/rosette-2014-03-02/docs/original-2014-processing.md)
+- [2014 finished-work result](../projects/rosette-2014-03-02/docs/images/original-2014-photoshop.jpg)
+- [2026 StarXTerminator v3b result](../projects/rosette-2014-03-02/docs/images/rosette-starxterminator-v3b.jpg)
 
 Summary process:
 
@@ -65,6 +67,7 @@ Summary process:
 8. Tested local starless approximations after the v2g visual result, but did not accept them as final because they left artifacts or removed nebular texture.
 9. After StarXTerminator was installed, generated clean starless and stars-only layers from the pre-morphological v2e polish.
 10. Enhanced the starless nebula separately, recombined a reduced/desaturated star layer, and accepted `rosette-starxterminator-v3b` as the current presentation candidate while documenting that the color/background problem is not fully solved.
+11. Added compressed, metadata-stripped comparison previews for the historical finished-work result and the current v3b result.
 
 Subs used for v3b:
 
@@ -102,6 +105,8 @@ Detailed notes:
 - [Processing journey](../projects/horsehead-flame-2013-2016/docs/processing-journey.md)
 - [Pipeline](../projects/horsehead-flame-2013-2016/docs/pipeline.md)
 - [Repo-level processing plan](horsehead-processing-plan.md)
+- [2013 finished-work result](../projects/horsehead-flame-2013-2016/docs/images/original-2013-finished-work.jpg)
+- [2026 PixInsight v1 result](../projects/horsehead-flame-2013-2016/docs/images/horsehead-04c-v1-polish.jpg)
 
 Summary process:
 
@@ -127,6 +132,7 @@ Summary process:
 9. Selected `04c` because it kept most of the useful IC 434/Horsehead lift from the washed branch while reducing the Alnitak penalty compared with full washed support.
 10. Cropped `04c`, ran a conservative MaskedStretch, applied target-specific nonlinear polish, and exported the v1 XISF/TIFF/JPEG products.
 11. Tested a very mild star-reduction branch, but kept the plain v1 polish as the accepted presentation result.
+12. Added compressed, metadata-stripped comparison previews for the historical finished-work result and the current v1 result.
 
 Primary feedback signals:
 

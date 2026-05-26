@@ -42,7 +42,7 @@ Rosette Nebula 2014 processing notes:
 - [Processing journey](projects/rosette-2014-03-02/docs/processing-journey.md) - chronological record of what was tried, including the v2g presentation candidate and starless-tool decision.
 - [Processing pipeline](projects/rosette-2014-03-02/docs/pipeline.md) - Rosette-specific PixInsight plan, current color/background findings, and resume plan.
 - [Original 2014 processing evidence](projects/rosette-2014-03-02/docs/original-2014-processing.md) - what was found in the old DSS/Photoshop folders.
-- [StarXTerminator v3b preview](projects/rosette-2014-03-02/docs/images/rosette-starxterminator-v3b.jpg) - current preferred Rosette presentation candidate.
+- [2014 finished-work result](projects/rosette-2014-03-02/docs/images/original-2014-photoshop.jpg) and [2026 StarXTerminator v3b result](projects/rosette-2014-03-02/docs/images/rosette-starxterminator-v3b.jpg) - compressed comparison images.
 
 Horsehead / Flame 2013-2016 processing notes:
 
@@ -50,6 +50,7 @@ Horsehead / Flame 2013-2016 processing notes:
 - [Current status](projects/horsehead-flame-2013-2016/docs/status.md) - source inventory, calibration findings, and candidate WBPP runs.
 - [Processing journey](projects/horsehead-flame-2013-2016/docs/processing-journey.md) - chronological record of decisions and experiments.
 - [Processing pipeline](projects/horsehead-flame-2013-2016/docs/pipeline.md) - staged plan for modded, unmodded, and wide-field data.
+- [2013 finished-work result](projects/horsehead-flame-2013-2016/docs/images/original-2013-finished-work.jpg) and [2026 PixInsight v1 result](projects/horsehead-flame-2013-2016/docs/images/horsehead-04c-v1-polish.jpg) - compressed comparison images.
 
 ## Current M31 rerun commands
 

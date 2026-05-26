@@ -59,6 +59,15 @@ Metadata found on processed files:
 - Photoshop files report Adobe Photoshop CS6 and, for one early TIFF, Adobe Photoshop Camera Raw 7.0.
 - Cropped Photoshop outputs are 2776×2776; full-frame stack/PSD outputs are 5202×3465.
 
+## Checked-in Comparison Images
+
+Two compressed JPEG derivatives are kept in this repository for quick visual comparison:
+
+| Image | Source | Notes |
+|---|---|---|
+| [original-2014-photoshop.jpg](images/original-2014-photoshop.jpg) | `finished-work/20140302-Rosette-Nebula.jpg` | Recompressed and metadata-stripped repo copy of the historical finished-work export. |
+| [rosette-starxterminator-v3b.jpg](images/rosette-starxterminator-v3b.jpg) | `work/03-nonlinear/rosette-starxterminator-v3b.jpg` | Downsampled/compressed repo copy of the 2026 PixInsight + StarXTerminator v3b result. |
+
 ## Metadata Caveat
 
 ExifTool reports `FocalLength = 50.0 mm`, `FNumber = 0`, and no lens model on the CR2 files. As with the M31 project, this is not normal electronic lens metadata. Plate solving the integrated PixInsight master should be considered authoritative for actual image scale.
