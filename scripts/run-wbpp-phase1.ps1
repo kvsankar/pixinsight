@@ -10,9 +10,16 @@ param(
     [string]$LightDir = '',
     [string[]]$LightDirs = @(),
     [string]$DarkDir = '',
+    [string[]]$DarkDirs = @(),
+    [string]$FlatDir = '',
+    [string[]]$FlatDirs = @(),
+    [string]$BiasDir = '',
+    [string[]]$BiasDirs = @(),
+    [string]$OutputSubdir = '',
     [string]$PixInsightExe = '',
     [string]$WbppScript = '',
     [string]$CfaPattern = '',
+    [switch]$AllowNoDarks,
     [switch]$Fresh
 )
 
@@ -25,20 +32,91 @@ Import-ProjectEnv (Join-Path $repoRoot.Path '.env')
 $ProjectDir = Get-ConfigValue $ProjectDir 'PI_PROJECT_DIR' (Join-Path $repoRoot.Path 'projects\m31-andromeda-2013')
 $LightDir = Get-ConfigValue $LightDir 'PI_LIGHT_DIR'
 $envLightDirs = [Environment]::GetEnvironmentVariable('PI_LIGHT_DIRS', 'Process')
-$DarkDir = Get-ConfigValue $DarkDir 'PI_DARK_DIR'
+$envAllowNoDarks = [Environment]::GetEnvironmentVariable('PI_ALLOW_NO_DARKS', 'Process')
+if (-not $AllowNoDarks -and $envAllowNoDarks) {
+    $AllowNoDarks = @('1', 'true', 'yes', 'on') -contains $envAllowNoDarks.Trim().ToLowerInvariant()
+}
+$DarkDir = if ($PSBoundParameters.ContainsKey('DarkDir')) { $DarkDir } elseif ($AllowNoDarks) { '' } else { Get-ConfigValue $DarkDir 'PI_DARK_DIR' }
+$envDarkDirs = [Environment]::GetEnvironmentVariable('PI_DARK_DIRS', 'Process')
+$FlatDir = Get-ConfigValue $FlatDir 'PI_FLAT_DIR'
+$envFlatDirs = [Environment]::GetEnvironmentVariable('PI_FLAT_DIRS', 'Process')
+$BiasDir = Get-ConfigValue $BiasDir 'PI_BIAS_DIR'
+$envBiasDirs = [Environment]::GetEnvironmentVariable('PI_BIAS_DIRS', 'Process')
+$OutputSubdir = Get-ConfigValue $OutputSubdir 'PI_WBPP_OUTPUT_SUBDIR' 'wbpp-out'
 $piExe = Get-ConfigValue $PixInsightExe 'PIXINSIGHT_EXE' 'C:\Program Files\PixInsight\bin\PixInsight.exe'
 $wbpp = Get-ConfigValue $WbppScript 'PI_WBPP_SCRIPT' 'C:\Program Files\PixInsight\src\scripts\BatchPreprocessing\WBPP.js'
 $CfaPattern = Get-ConfigValue $CfaPattern 'PI_CFA_PATTERN'
 
+function Split-PathList {
+    param(
+        [string]$Value
+    )
+
+    if (-not $Value) {
+        return @()
+    }
+
+    return @($Value -split ';' | Where-Object { $_.Trim() } | ForEach-Object { $_.Trim() })
+}
+
+function Resolve-Cr2Frames {
+    param(
+        [string[]]$Dirs,
+        [string]$Kind
+    )
+
+    $files = @()
+    $counts = @()
+
+    foreach ($dir in $Dirs) {
+        if (-not (Test-Path -LiteralPath $dir)) {
+            throw "$Kind directory not found: $dir"
+        }
+
+        $dirFiles = @(Get-ChildItem -LiteralPath $dir -Filter *.CR2 -File)
+        $counts += [pscustomobject]@{
+            Kind = $Kind
+            Directory = $dir
+            Count = $dirFiles.Count
+        }
+        $files += $dirFiles
+    }
+
+    return [pscustomobject]@{
+        Files = @($files | Sort-Object FullName -Unique)
+        Counts = @($counts)
+    }
+}
+
 if ($LightDirs.Count -eq 0 -and $envLightDirs) {
-    $LightDirs = $envLightDirs -split ';' | Where-Object { $_.Trim() } | ForEach-Object { $_.Trim() }
+    $LightDirs = Split-PathList $envLightDirs
 }
 if ($LightDirs.Count -eq 0 -and $LightDir) {
     $LightDirs = @($LightDir)
 }
-
+if ($DarkDirs.Count -eq 0 -and $envDarkDirs -and (-not $AllowNoDarks -or $PSBoundParameters.ContainsKey('DarkDirs'))) {
+    $DarkDirs = Split-PathList $envDarkDirs
+}
+if ($DarkDirs.Count -eq 0 -and $DarkDir) {
+    $DarkDirs = @($DarkDir)
+}
+if ($FlatDirs.Count -eq 0 -and $envFlatDirs) {
+    $FlatDirs = Split-PathList $envFlatDirs
+}
+if ($FlatDirs.Count -eq 0 -and $FlatDir) {
+    $FlatDirs = @($FlatDir)
+}
+if ($BiasDirs.Count -eq 0 -and $envBiasDirs) {
+    $BiasDirs = Split-PathList $envBiasDirs
+}
+if ($BiasDirs.Count -eq 0 -and $BiasDir) {
+    $BiasDirs = @($BiasDir)
+}
 if ($LightDirs.Count -lt 1) { throw "Light directory not set. Pass -LightDir/-LightDirs or define PI_LIGHT_DIR/PI_LIGHT_DIRS in .env." }
-if (-not $DarkDir) { throw "Dark directory not set. Pass -DarkDir or define PI_DARK_DIR in .env." }
+if ($DarkDirs.Count -lt 1 -and -not $AllowNoDarks) { throw "Dark directory not set. Pass -DarkDir/-DarkDirs, define PI_DARK_DIR/PI_DARK_DIRS, or use -AllowNoDarks." }
+if (-not $OutputSubdir) { throw "Output subdirectory cannot be empty." }
+if ([System.IO.Path]::IsPathRooted($OutputSubdir)) { throw "OutputSubdir must be relative to the project work directory: $OutputSubdir" }
+if (@($OutputSubdir -split '[\\/]' | Where-Object { $_ -eq '..' }).Count -gt 0) { throw "OutputSubdir cannot contain '..': $OutputSubdir" }
 if ($CfaPattern) {
     $CfaPattern = $CfaPattern.ToUpperInvariant()
     $validCfaPatterns = @('AUTO', 'RGGB', 'BGGR', 'GBRG', 'GRBG')
@@ -47,8 +125,10 @@ if ($CfaPattern) {
     }
 }
 
-$outDir   = Join-Path $ProjectDir 'work\wbpp-out'
-$logFile  = Join-Path $ProjectDir 'work\logs\wbpp-phase1.log'
+$outDir   = Join-Path (Join-Path $ProjectDir 'work') $OutputSubdir
+$logName = ($OutputSubdir -replace '[\\/:*?"<>|]', '-').Trim('-')
+if (-not $logName) { $logName = 'wbpp-out' }
+$logFile  = Join-Path $ProjectDir "work\logs\wbpp-phase1-$logName.log"
 
 # Create output (preserve existing unless -Fresh)
 if ($Fresh -and (Test-Path $outDir)) {
@@ -58,31 +138,47 @@ if ($Fresh -and (Test-Path $outDir)) {
 New-Item -Force -ItemType Directory $outDir | Out-Null
 New-Item -Force -ItemType Directory (Split-Path $logFile) | Out-Null
 
-# Enumerate frames (top-level CR2 only — skip subfolders / TIFs / sidecars)
-$lights = foreach ($dir in $LightDirs) {
-    if (-not (Test-Path -LiteralPath $dir)) {
-        throw "Light directory not found: $dir"
-    }
-    Get-ChildItem -LiteralPath $dir -Filter *.CR2 -File
-}
-$lights = $lights | Sort-Object FullName -Unique
+# Enumerate top-level CR2 only — skip subfolders / TIFs / sidecars.
+$lightResult = Resolve-Cr2Frames -Dirs $LightDirs -Kind 'Light'
+$darkResult = Resolve-Cr2Frames -Dirs $DarkDirs -Kind 'Dark'
+$flatResult = Resolve-Cr2Frames -Dirs $FlatDirs -Kind 'Flat'
+$biasResult = Resolve-Cr2Frames -Dirs $BiasDirs -Kind 'Bias'
 
-if (-not (Test-Path -LiteralPath $DarkDir)) {
-    throw "Dark directory not found: $DarkDir"
-}
-$darks  = Get-ChildItem -LiteralPath $DarkDir -Filter *.CR2 -File
+$lights = @($lightResult.Files)
+$darks = @($darkResult.Files)
+$flats = @($flatResult.Files)
+$biases = @($biasResult.Files)
+$frameCounts = @($lightResult.Counts) + @($darkResult.Counts) + @($flatResult.Counts) + @($biasResult.Counts)
 
 Write-Host "Project: $ProjectDir"
+Write-Host "Output : $outDir"
 Write-Host "Light directories:"
 foreach ($dir in $LightDirs) { Write-Host "  $dir" }
-Write-Host "Lights: $($lights.Count) files"
-Write-Host "Darks : $($darks.Count) files in $DarkDir"
+if ($DarkDirs.Count -gt 0) {
+    Write-Host "Dark directories:"
+    foreach ($dir in $DarkDirs) { Write-Host "  $dir" }
+} else {
+    Write-Host "Dark directories: none (-AllowNoDarks)"
+}
+if ($FlatDirs.Count -gt 0) {
+    Write-Host "Flat directories:"
+    foreach ($dir in $FlatDirs) { Write-Host "  $dir" }
+}
+if ($BiasDirs.Count -gt 0) {
+    Write-Host "Bias directories:"
+    foreach ($dir in $BiasDirs) { Write-Host "  $dir" }
+}
+Write-Host "Frame counts:"
+foreach ($entry in $frameCounts) {
+    Write-Host ("  {0,-5} {1,4}  {2}" -f $entry.Kind, $entry.Count, $entry.Directory)
+}
+Write-Host "Totals: lights=$($lights.Count), darks=$($darks.Count), flats=$($flats.Count), bias=$($biases.Count)"
 if ($CfaPattern) {
     Write-Host "Forced CFA pattern: $CfaPattern"
 }
 
 if ($lights.Count -lt 1) { throw "No lights found in configured light directories" }
-if ($darks.Count  -lt 1) { throw "No darks found in $DarkDir" }
+if ($darks.Count  -lt 1 -and -not $AllowNoDarks) { throw "No darks found in configured dark directories" }
 
 # WBPP pipeline parameters — only deviations from defaults.
 # Index 2=Dark, 4=Light (per WBPP help). Rejection 1=WinsorizedSigma.
@@ -137,6 +233,8 @@ if ($CfaPattern -and $CfaPattern -ne 'AUTO') {
 
 foreach ($f in $lights) { $params += "file=$($f.FullName -replace '\\','/')" }
 foreach ($f in $darks)  { $params += "file=$($f.FullName -replace '\\','/')" }
+foreach ($f in $flats)  { $params += "file=$($f.FullName -replace '\\','/')" }
+foreach ($f in $biases) { $params += "file=$($f.FullName -replace '\\','/')" }
 
 # Build -r argument: "scriptPath,param1,param2,..."
 $rPayload = (@($wbpp) + $params) -join ','

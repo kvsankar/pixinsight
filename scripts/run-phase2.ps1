@@ -26,6 +26,7 @@ param(
     [string]$SpccRedFilter = '',
     [string]$SpccGreenFilter = '',
     [string]$SpccBlueFilter = '',
+    [string]$OutputSubdir = '',
     [string]$FromStage = '',
     [string]$OnlyStage = '',
     [switch]$Fresh
@@ -49,9 +50,15 @@ $SolveMagnitude = Get-ConfigValue $SolveMagnitude 'PI_SOLVE_MAGNITUDE' ''
 $SpccRedFilter = Get-ConfigValue $SpccRedFilter 'PI_SPCC_RED_FILTER' ''
 $SpccGreenFilter = Get-ConfigValue $SpccGreenFilter 'PI_SPCC_GREEN_FILTER' ''
 $SpccBlueFilter = Get-ConfigValue $SpccBlueFilter 'PI_SPCC_BLUE_FILTER' ''
+$OutputSubdir = Get-ConfigValue $OutputSubdir 'PI_PHASE2_OUTPUT_SUBDIR' '02-linear'
+if (-not $OutputSubdir) { throw "Output subdirectory cannot be empty." }
+if ([System.IO.Path]::IsPathRooted($OutputSubdir)) { throw "OutputSubdir must be relative to the project work directory: $OutputSubdir" }
+if (@($OutputSubdir -split '[\\/]' | Where-Object { $_ -eq '..' }).Count -gt 0) { throw "OutputSubdir cannot contain '..': $OutputSubdir" }
 $scriptsDir = Join-Path $repoRoot.Path 'scripts\pjsr'
-$outDir = Join-Path $ProjectDir 'work\02-linear'
+$outDir = Join-Path (Join-Path $ProjectDir 'work') $OutputSubdir
 $logDir = Join-Path $ProjectDir 'work\logs'
+$logName = ($OutputSubdir -replace '[\\/:*?"<>|]', '-').Trim('-')
+if (-not $logName) { $logName = '02-linear' }
 
 # Input from Phase 1
 if (-not $Phase1Master) {
@@ -133,11 +140,11 @@ foreach ($s in $stages) {
         Write-Host "[CACHED] $($s.Output) exists, skipping."
         continue
     }
-    $logFile = "$logDir\phase2$($s.Letter).log"
+    $logFile = "$logDir\phase2-$logName-$($s.Letter).log"
     $inFwd  = $s.Input -replace '\\','/'
     $outFwd = $s.Output -replace '\\','/'
     $scriptFwd = $s.Script -replace '\\','/'
-    $stageLogFwd = (Join-Path $logDir "phase2$($s.Letter)-pjsr.log") -replace '\\','/'
+    $stageLogFwd = (Join-Path $logDir "phase2-$logName-$($s.Letter)-pjsr.log") -replace '\\','/'
     $rArg = "$scriptFwd,input=$inFwd,output=$outFwd,log=$stageLogFwd"
     if ($s.Letter -eq 'b') {
         if ($SolveRa) { $rArg += ",ra=$SolveRa" }
