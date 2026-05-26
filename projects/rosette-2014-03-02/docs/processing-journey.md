@@ -19,6 +19,17 @@ The historical DSS report became the first anchor:
 
 The current archive layout did not map one-to-one to the historical DSS report. The working PixInsight baseline therefore used the simplest repeatable modern selection: 33 top-level good lights from `good/east` and `good/west`, excluding the separated satellite-trail folders.
 
+## Human-In-The-Loop Contributions
+
+Rosette was not a fully blind automation run. Human input changed the direction of the work several times:
+
+| Human input | Where it affected the workflow |
+|---|---|
+| Manual DBE sample placement in PixInsight | The automatic background branches were too blunt for a no-flats, nebula-rich field. Human-placed samples around the outer field avoided the central Rosette and produced the cleanest background model. |
+| Visual observation that the raw/embedded CR2 preview showed red Rosette signal | This kept the investigation from accepting the gray-green SPCC result too quickly and led to checking Canon white-balance multipliers, linked previews, and DSS-style per-channel background calibration. |
+| Installing StarXTerminator | This enabled the v3/v3b starless-plus-stars workflow after local scripted starless approximations proved inadequate. |
+| Interactive SPCC test | This helped separate "SPCC cannot process the image" from "scripted SPCC is missing metadata." The notes do not explicitly identify who operated this interactive step. |
+
 ## Project Scaffold
 
 A new project was created at:
@@ -190,6 +201,8 @@ work/diagnostics/dbe-manual-sample-guide.jpg
 
 The guide marked suggested sample areas around the outer field and an avoid region over the central Rosette. The DBE samples were then placed by hand in PixInsight. The intent was to model the large-scale vignetting/gradient while avoiding real nebular signal.
 
+This was a human-in-the-loop step: the user placed the DBE samples manually rather than relying on an automated sample generator.
+
 Saved manual DBE files:
 
 ```text
@@ -288,7 +301,7 @@ Conclusion: manual DBE improved the background model and produced the cleanest c
 
 ## Raw Preview And DSS-Style Background Calibration
 
-The next clue came from inspecting the CR2 files directly: the embedded camera preview shows faint red Rosette nebulosity. EXIF metadata for a representative CR2 frame reports Canon white-balance multipliers around:
+The next clue came from human visual feedback on the CR2 files: the embedded camera preview shows faint red Rosette nebulosity. EXIF metadata for a representative CR2 frame reports Canon white-balance multipliers around:
 
 ```text
 R = 1964
@@ -413,7 +426,7 @@ work/03-nonlinear/masks/rosette-spcc-visual-v2g-star-mask.jpg
 
 Quick JPEG sampling showed why v2g replaced the earlier restrained star-reduced output. The older restrained branch had low-sky medians around `R-G=+2..+3` and `B-G=+3..+4`, matching the user's reddish/pink background concern. The v2g branch measured around `R-G=-1` and `B-G=0..+1` in the same kind of dark-sky sample. Bright-pixel counts also dropped relative to v2e/v2f, confirming the star reduction is stronger.
 
-Conclusion: v2g is now the preferred presentation candidate. It does not solve the underlying scientific color-calibration problem, but it is the best current visual finish from the SPCC-calibrated manual-DBE baseline.
+Conclusion at this point: v2g became the preferred pre-StarXTerminator presentation candidate. It does not solve the underlying scientific color-calibration problem, but it was the best visual finish from the SPCC-calibrated manual-DBE baseline before the later StarXTerminator branch.
 
 ## Starless Experiment And Tool Decision
 
@@ -436,13 +449,90 @@ work/03-nonlinear/rosette-dbe-manual-spcc-visual-v2g-starless-matte.jpg
 
 None of these should be treated as final. The tighter mask/inpaint versions leave visible star scars and residual bright stars. The smoother/morphological versions remove more stars, but they lose too much texture or leave square-looking artifacts. The useful conclusion is that this dense Rosette field needs a real star-separation tool.
 
-StarXTerminator is the recommended next tool for this project. The machine used for this run has PixInsight 1.9.4 on Windows 11 with a modern Intel CPU and NVIDIA GPU, so the Windows/PixInsight combination should be suitable. The next Rosette session should install StarXTerminator, generate a clean starless layer and a stars-only layer from the v2g branch, then finish the nebula and stars separately.
+At this point, StarXTerminator became the recommended next tool for this project. The later 2026-05-26 session installed StarXTerminator, generated a clean starless layer and a stars-only layer, then finished the nebula and stars separately.
+
+## 2026-05-26 — StarXTerminator V3 Presentation Branch
+
+StarXTerminator was installed by the user and detected in PixInsight as a PJSR process with these usable properties:
+
+```text
+stars
+unscreen
+overlap
+ai_file
+```
+
+Added a reusable separator:
+
+```text
+scripts/pjsr/starxterminator-separate.js
+```
+
+The separator was run on the pre-morphological v2e polish, rather than the already star-reduced v2g image, so StarXTerminator would see cleaner original star profiles:
+
+```text
+work/03-nonlinear/03r-dbe-manual-spcc-visual-v2e-polished.xisf
+```
+
+Outputs:
+
+```text
+work/03-nonlinear/03s-v2e-starxterminator-starless.xisf
+work/03-nonlinear/03s-v2e-starxterminator-stars.xisf
+work/03-nonlinear/rosette-starxterminator-v2e-starless.jpg
+work/03-nonlinear/rosette-starxterminator-v2e-stars.jpg
+```
+
+The StarXTerminator starless layer is much cleaner than the earlier local inpaint/matte attempts. It exposes the remaining green/yellow background residue more clearly, so the recombination step has to stay conservative.
+
+Added the Rosette-specific recombination/polish script:
+
+```text
+scripts/pjsr/03r-rosette-starless-v3.js
+```
+
+First recombination output:
+
+```text
+work/03-nonlinear/03s-rosette-starxterminator-v3.xisf
+work/03-nonlinear/rosette-starxterminator-v3.tif
+work/03-nonlinear/rosette-starxterminator-v3.jpg
+```
+
+This was clean, but still too star-dense relative to what StarXTerminator made possible.
+
+Second recombination output:
+
+```text
+work/03-nonlinear/03s-rosette-starxterminator-v3b.xisf
+work/03-nonlinear/rosette-starxterminator-v3b.tif
+work/03-nonlinear/rosette-starxterminator-v3b.jpg
+docs/images/rosette-starxterminator-v3b.jpg
+```
+
+`v3b` used lower star recombination strength and more star desaturation than the first v3 attempt. Quick JPEG sampling showed:
+
+| Branch | Bright pixels >= 220 | Average sampled dark-sky R-G | Average sampled dark-sky B-G |
+| --- | ---: | ---: | ---: |
+| v2g | 1.166% | +0.71 | +0.94 |
+| v3 | 0.906% | -0.18 | +0.64 |
+| v3b | 0.240% | -0.49 | +0.61 |
+
+Decision: `v3b` is now the preferred Rosette presentation candidate. It improves the star/nebula balance substantially and keeps sampled dark sky close to neutral. It is still a visual presentation branch, not proof that the pure SPCC color calibration is solved.
 
 ## Pause State
 
-Rosette is intentionally paused here so another target can be processed next. Resume from the v2g branch rather than rerunning the whole investigation unless the goal is to improve the linear calibration.
+Rosette is no longer paused at the local starless experiment. The current presentation resume point is the StarXTerminator v3b branch; return to the linear/manual-DBE branches only if the goal is to improve calibration rather than presentation.
 
 Best current presentation image:
+
+```text
+work/03-nonlinear/rosette-starxterminator-v3b.jpg
+work/03-nonlinear/rosette-starxterminator-v3b.tif
+work/03-nonlinear/03s-rosette-starxterminator-v3b.xisf
+```
+
+Previous presentation candidate:
 
 ```text
 work/03-nonlinear/rosette-dbe-manual-spcc-visual-v2g-nebula-stars.jpg
@@ -460,12 +550,9 @@ work/02-linear/02c-dbe-manual-spccmeta-spcc.xisf
 
 Recommended resume plan:
 
-1. Install StarXTerminator in PixInsight.
-2. Run it on `03r-dbe-manual-spcc-visual-v2g-final.xisf` or the highest-fidelity v2g TIFF/XISF available.
-3. Enhance contrast and vibrance on the starless nebula only.
-4. Reduce/desaturate the stars-only layer separately.
-5. Recombine stars gently and export a new v3 presentation image.
-6. Longer term, revisit flats/gradient correction before judging SPCC's raw color result again.
+1. Compare `rosette-starxterminator-v3b.jpg` against the historical 2014 Photoshop output and the v2g branch.
+2. If the star field feels too reduced, make a gentler `v3c` by increasing `starScale` in `03r-rosette-starless-v3.js`.
+3. Longer term, revisit flats/gradient correction before judging SPCC's raw color result again.
 
 ## Current Best Understanding
 
@@ -484,15 +571,18 @@ Current evidence supports this interpretation:
 - Manual DBE improves large-scale background control, but still leaves the calibrated-style result mostly gray/green.
 - SPCC diagnostics show that PixInsight is fitting many stars successfully, but the star-fit correction strongly reduces red and blue relative to green on this branch.
 - SPCC-based visual enhancement can produce a credible pink Rosette without globally turning the sky red, but this is a presentation branch, not a pure SPCC color result.
-- The v2g presentation branch has the best current balance of neutral sky, stronger nebula color/contrast, and reduced stars.
-- Local scripted starless approximations are not adequate for this field; StarXTerminator or a comparable neural star-separation tool is the next practical step.
+- The v2g presentation branch had the best balance before StarXTerminator was installed.
+- Local scripted starless approximations are not adequate for this field.
+- StarXTerminator v3b is now the preferred presentation branch because it gives a cleaner nebula/stars separation and much lower bright-star dominance.
 
 ## Current Outputs
 
 | Output | Role |
 |---|---|
+| `work/03-nonlinear/rosette-starxterminator-v3b.jpg` | Current preferred presentation candidate; StarXTerminator starless/stars recombination |
+| `docs/images/rosette-starxterminator-v3b.jpg` | Small checked-in preview of the current preferred presentation candidate |
 | `work/03-nonlinear/rosette-redmix-experimental.jpg` | Best visual red/pink checkpoint; not calibrated |
-| `work/03-nonlinear/rosette-dbe-manual-spcc-visual-v2g-nebula-stars.jpg` | Best current SPCC-based visual candidate; v2 sky cleanup, stronger nebula contrast/vibrance, and retuned star reduction |
+| `work/03-nonlinear/rosette-dbe-manual-spcc-visual-v2g-nebula-stars.jpg` | Previous SPCC-based visual candidate; v2 sky cleanup, stronger nebula contrast/vibrance, and retuned star reduction |
 | `work/03-nonlinear/rosette-dbe-manual-spcc-visual-v2e.jpg` | Balanced v2 background/nebula polish before the retuned v2g star mask |
 | `work/03-nonlinear/rosette-dbe-manual-spcc-visual-v2f-strong-stars.jpg` | Aggressive star-reduction comparison from the v2e polish |
 | `work/03-nonlinear/rosette-dbe-manual-spcc-visual-v2g-starless-two-pass.jpg` | Best local scripted starless approximation; diagnostic only, not accepted |
@@ -517,7 +607,7 @@ The next useful work should focus on gradient/flat correction, not plate solving
 
 Priority options:
 
-1. Compare `rosette-dbe-manual-spcc-visual-v2g-nebula-stars.jpg` and `rosette-dss-bgcal-experimental.jpg` against the historical Photoshop output.
+1. Compare `rosette-starxterminator-v3b.jpg`, `rosette-dbe-manual-spcc-visual-v2g-nebula-stars.jpg`, and `rosette-dss-bgcal-experimental.jpg` against the historical Photoshop output.
 2. Search for real matching flats or twilight flats from the same setup.
 3. Refine the manual DBE process or try a second DBE pass with different sample placement.
 4. Try a dedicated external gradient/background tool if available.

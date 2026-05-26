@@ -1,9 +1,10 @@
 # Rosette Nebula Processing — Status
 
-**As of:** 2026-05-25 IST, Rosette is paused after an improved SPCC-based visual candidate and starless-tool investigation.
-**Pipeline progress:** 88%, paused — raw archive found, historical DSS/Photoshop processing inspected, project scaffold created, 33-frame WBPP integration completed, plate solve completed, multiple CFA/color-calibration branches tested, synthetic-background and manual-DBE branches tested, CR2 preview/color handling investigated, SPCC metadata failure diagnosed, SPCC diagnostics generated, SPCC-based visual exports produced, and local starless approximations tested. Color/background handling is improved but still not scientifically final.
+**As of:** 2026-05-26 IST, Rosette has a new StarXTerminator-based v3b presentation candidate.
+**Pipeline progress:** 92%, presentation branch improved — raw archive found, historical DSS/Photoshop processing inspected, project scaffold created, 33-frame WBPP integration completed, plate solve completed, multiple CFA/color-calibration branches tested, synthetic-background and manual-DBE branches tested, CR2 preview/color handling investigated, SPCC metadata failure diagnosed, SPCC diagnostics generated, SPCC-based visual exports produced, local starless approximations rejected, and a StarXTerminator starless/stars recombination completed. Color/background handling is improved but still not scientifically final.
 
 For the chronological record of how we got here, see [Processing journey](processing-journey.md).
+For the current presentation candidate, subs summary, and human-in-the-loop notes, see [Rosette v3b presentation candidate](final-v3b.md).
 
 ---
 
@@ -13,7 +14,7 @@ For the chronological record of how we got here, see [Processing journey](proces
 PHASE 0 — Source inventory                         DONE
 PHASE 1 — Calibration + Integration                DONE, RGGB TEST ACTIVE
 PHASE 2 — Linear post-integration                  DONE, COLOR/BACKGROUND ISSUE
-PHASE 3 — Nonlinear processing/export              PAUSED AT V2G PRESENTATION OUTPUT
+PHASE 3 — Nonlinear processing/export              V3B STARXTERMINATOR CANDIDATE
 ```
 
 ## Dataset Summary
@@ -33,6 +34,16 @@ PHASE 3 — Nonlinear processing/export              PAUSED AT V2G PRESENTATION 
 | Bias / offset | None in DSS report |
 | Historical processing | DeepSkyStacker 3.3.3 beta 51, then Adobe Photoshop CS6 |
 | EXIF focal metadata caveat | CR2 files report `FocalLength=50.0 mm`, `FNumber=0`, no lens model. Treat optical scale as unverified until plate solving. |
+
+## Current V3B Subs
+
+| Group | Camera | Subs | Exposure | ISO | Total |
+|---|---|---:|---:|---:|---:|
+| `good/east`, top-level | Canon EOS 60D unmodified | 3 | 240s | 1600 | 12 min |
+| `good/west`, top-level | Canon EOS 60D unmodified | 30 | 240s | 1600 | 120 min |
+| **Total used** | Canon EOS 60D unmodified | **33** | **240s** | **1600** | **132 min / 2h12m** |
+
+Calibration: 9 x 240s ISO 1600 darks, no flats, no bias.
 
 ## Original Folder Layout
 
@@ -76,10 +87,23 @@ PHASE 3 — Nonlinear processing/export              PAUSED AT V2G PRESENTATION 
 - A `Photon Flux` SPCC white-reference test was also run. It logged the requested white reference but produced the same practical result as the `Average Spiral Galaxy` run.
 - A new SPCC-based visual branch was generated from the successful manual-DBE SPCC result. It keeps SPCC as the calibration baseline, then applies selective luminance-shaped nebula color enhancement, low-luminance background-neutrality cleanup, and star reduction.
 - Local scripted starless attempts were tested after v2g. They are useful diagnostics, but not accepted as final starless images. A dedicated star-separation tool is recommended before continuing Rosette.
+- StarXTerminator was installed and scripted through `scripts/pjsr/starxterminator-separate.js`.
+- StarXTerminator was run on the pre-morphological v2e polished image, producing reusable starless and stars-only XISF layers.
+- Added `scripts/pjsr/03r-rosette-starless-v3.js` for starless-only nebula enhancement, reduced/desaturated star recombination, crop, and export.
+- The `v3b` StarXTerminator recombination is now the preferred presentation candidate. It reduces the star field substantially while keeping the dark-sky samples close to neutral. It is still a visual presentation branch, not proof that the raw SPCC color-calibration issue is solved.
 - The raw CR2 embedded preview shows faint red Rosette signal. EXIF reports Canon white-balance multipliers of about `R=1964`, `G=1024`, `B=1830`, so camera/raw-preview software boosts red and blue strongly relative to green.
 - Earlier diagnostic previews used PixInsight auto STF with `linkedRGB=false`, which stretches each channel independently and can hide true red/magenta balance. The preview script now accepts `linkedRGB=true`; linked previews show the raw and integrated data are strongly magenta before background re-anchoring.
 - A DSS-style per-channel background calibration branch now gives the best non-SPCC visual result: it keeps the sky much more neutral while preserving pink/red Rosette signal.
 - The project is no longer blocked by plate solving or Gaia catalog setup. The current blocker is robust gradient/flat handling before color calibration.
+
+## Human Involvement
+
+| Human input | Impact |
+|---|---|
+| Manual DBE sample placement in PixInsight | Produced the best large-scale background model by avoiding the central Rosette and obvious nebulosity. |
+| Visual observation that the raw/embedded CR2 preview showed red Rosette signal | Redirected the investigation toward Canon preview white balance, linked/unlinked STF behavior, and DSS-style per-channel background calibration. |
+| Installing StarXTerminator | Enabled the clean starless/stars separation used by the current v3b presentation candidate. |
+| Interactive SPCC test | Helped show the manual-DBE branch was processable by SPCC, pointing the scripted failure toward missing metadata. The notes do not explicitly identify who operated this step. |
 
 ## Candidate Light Sets
 
@@ -129,8 +153,9 @@ First PixInsight run used: **top-level good east + west**. Rejection maps still 
 | DSS-bgcal before SPCC | `work/02-linear/02c-dss-bgcal-spcc.xisf`, `work/02-linear/02c-dss-bgcal-spcc-no-bn.xisf`; SPCC succeeds but color remains gray/green or green-skewed |
 | SPCC visual color branch | `work/03-nonlinear/rosette-dbe-manual-spcc-visual-restrained.jpg` and `.tif`; SPCC baseline with selective nebula color enhancement |
 | SPCC visual star-reduced branch | `work/03-nonlinear/rosette-dbe-manual-spcc-visual-restrained-star-reduced.jpg` and `.tif`; older first star-reduced visual candidate |
-| SPCC visual v2g branch | `work/03-nonlinear/rosette-dbe-manual-spcc-visual-v2g-nebula-stars.jpg` and `.tif`; current best SPCC-based visual candidate |
+| SPCC visual v2g branch | `work/03-nonlinear/rosette-dbe-manual-spcc-visual-v2g-nebula-stars.jpg` and `.tif`; previous best pre-StarXTerminator presentation candidate |
 | Starless local approximations | `work/03-nonlinear/rosette-dbe-manual-spcc-visual-v2g-starless-*.jpg`; diagnostic only, not accepted as final |
+| StarXTerminator v3b branch | `work/03-nonlinear/rosette-starxterminator-v3b.jpg` and `.tif`; current preferred presentation candidate |
 | Manual DBE interactive SPCC | `work/02-linear/02c-dbe-manual-spcc-interactive.xisf`; interactive SPCC completed, but the output was strongly green without background neutralization |
 | Manual DBE interactive SPCC + BN | `work/02-linear/02c-dbe-manual-spcc-interactive-bn.xisf`; background neutralization made the preview harsh/clipped-looking and still gray/green |
 | Manual DBE fallback color | `work/02-linear/02c-dbe-manual-colorcal.xisf`; BackgroundNeutralization + ColorCalibration completed |
@@ -156,6 +181,7 @@ The investigation moved through these stages:
 11. Created an SPCC-based visual branch that keeps the successful SPCC calibration as the base, then selectively restores Rosette pink/red nebulosity in nonlinear processing without globally pushing the background red.
 12. Refined that branch through v2c-v2g: low-luminance sky cleanup removed the red/pink background cast, a green-excess cleanup made the darkest sky nearly neutral, and a retuned star mask reduced stars more effectively inside the Rosette.
 13. Tried local scripted starless approximations. They confirmed that this dense field needs StarXTerminator or a similar star-separation tool for a clean starless layer.
+14. Installed StarXTerminator, separated the v2e polished image into starless and stars-only layers, enhanced the starless nebula, recombined a reduced/desaturated star layer, and exported the v3/v3b presentation candidates.
 
 ## Active Problem: Background And Color
 
@@ -202,7 +228,20 @@ Next investigation:
 
 ## Experimental Output
 
-The best current SPCC-based visual output is the v2g branch:
+The best current presentation output is the StarXTerminator v3b branch:
+
+```text
+work/03-nonlinear/rosette-starxterminator-v3b.jpg
+work/03-nonlinear/rosette-starxterminator-v3b.tif
+work/03-nonlinear/03s-rosette-starxterminator-v3b.xisf
+docs/images/rosette-starxterminator-v3b.jpg
+```
+
+![Rosette StarXTerminator v3b](images/rosette-starxterminator-v3b.jpg)
+
+This branch starts from the v2e SPCC-based visual polish before the older MorphologicalTransformation star reduction. StarXTerminator generated clean starless and stars-only layers; the starless layer then received modest nebula-only contrast/color lift, and the stars-only layer was recombined at reduced strength with partial desaturation. JPEG sampling showed bright-pixel coverage dropped from about `1.17%` in v2g to about `0.24%` in v3b, while sampled dark-sky color stayed close to neutral.
+
+The previous best SPCC-based visual output was the v2g branch:
 
 ```text
 work/03-nonlinear/rosette-dbe-manual-spcc-visual-v2g-nebula-stars.jpg
@@ -210,7 +249,7 @@ work/03-nonlinear/rosette-dbe-manual-spcc-visual-v2g-nebula-stars.tif
 work/03-nonlinear/03r-dbe-manual-spcc-visual-v2g-final.xisf
 ```
 
-This output was made from the manual-DBE branch after metadata-restored SPCC with background neutralization. It uses a linked-RGB stretch, selective luminance-shaped nebula color enhancement, dark-sky red/blue/green neutrality cleanup, and a stronger StarMask/MorphologicalTransformation star-reduction pass tuned to catch more stars inside the nebula. It is the best presentation candidate so far that still starts from a successful SPCC calibration, but it is not a pure raw-SPCC color result.
+This output was made from the manual-DBE branch after metadata-restored SPCC with background neutralization. It uses a linked-RGB stretch, selective luminance-shaped nebula color enhancement, dark-sky red/blue/green neutrality cleanup, and a stronger StarMask/MorphologicalTransformation star-reduction pass tuned to catch more stars inside the nebula. It remains the main comparison for the new StarXTerminator v3b branch, but it is no longer the preferred presentation result.
 
 Useful comparison candidates from the same v2 polish branch are:
 
@@ -328,9 +367,8 @@ Set local `.env` values or pass paths explicitly. For this target, `PI_LIGHT_DIR
 
 ## Next Tasks
 
-1. Install StarXTerminator or a comparable star-separation tool in PixInsight.
-2. Generate starless and stars-only layers from the v2g XISF/TIFF.
-3. Enhance the starless Rosette separately, then recombine with a reduced/desaturated stars-only layer.
-4. Refine the DSS-style per-channel background calibration path and compare it with the historical 2014 output.
-5. Inspect WBPP rejection maps and frame quality for the 33-frame set.
-6. Decide whether to rerun with the historical 31-frame DSS-equivalent set, the 33-frame top-level good set, or all 37 good frames.
+1. Compare `rosette-starxterminator-v3b.jpg` against the historical 2014 Photoshop output and the v2g branch on a calibrated display.
+2. If needed, make a gentler `v3c` with slightly higher star scale or less starless color lift.
+3. Refine the DSS-style per-channel background calibration path and compare it with the historical 2014 output.
+4. Inspect WBPP rejection maps and frame quality for the 33-frame set.
+5. Decide whether to rerun with the historical 31-frame DSS-equivalent set, the 33-frame top-level good set, or all 37 good frames.

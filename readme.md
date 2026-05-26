@@ -17,6 +17,7 @@ The current processed targets are `projects/m31-andromeda-2013`, `projects/roset
 Start here for the repository structure:
 
 - [Project layout](docs/project-layout.md) - how the repo is organized for more targets and local-only work products.
+- [Processing summaries](docs/processing-summaries.md) - concise process summary for M31, Rosette, and Horsehead.
 - [Horsehead / Flame processing plan](docs/horsehead-processing-plan.md) - source inventory, script changes, and processing strategy for combining modded, unmodded, and wide-field data.
 - [Agent bootstrap guide](AGENTS.md) - conventions for AI agents creating or extending projects.
 
@@ -36,10 +37,12 @@ Research notes created during the experiment:
 
 Rosette Nebula 2014 processing notes:
 
+- [V3B presentation candidate](projects/rosette-2014-03-02/docs/final-v3b.md) - current preferred result, subs summary, and human-in-the-loop notes.
 - [Current status](projects/rosette-2014-03-02/docs/status.md) - source inventory, completed runs, current outputs, and next processing steps.
 - [Processing journey](projects/rosette-2014-03-02/docs/processing-journey.md) - chronological record of what was tried, including the v2g presentation candidate and starless-tool decision.
 - [Processing pipeline](projects/rosette-2014-03-02/docs/pipeline.md) - Rosette-specific PixInsight plan, current color/background findings, and resume plan.
 - [Original 2014 processing evidence](projects/rosette-2014-03-02/docs/original-2014-processing.md) - what was found in the old DSS/Photoshop folders.
+- [StarXTerminator v3b preview](projects/rosette-2014-03-02/docs/images/rosette-starxterminator-v3b.jpg) - current preferred Rosette presentation candidate.
 
 Horsehead / Flame 2013-2016 processing notes:
 
