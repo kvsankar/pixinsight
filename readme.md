@@ -11,7 +11,7 @@ This repository is organized for repeatable PixInsight processing across multipl
 - `docs/` - repository-level notes that are not tied to a single target.
 
 The current processed targets are `projects/m31-andromeda-2013`, `projects/rosette-2014-03-02`, and `projects/horsehead-flame-2013-2016`.
-The current in-progress diagnostic target is `projects/orion-nebula-m42-2013`.
+The current in-progress diagnostic targets are `projects/orion-nebula-m42-2013` and `projects/trifid-lagoon-2014`.
 
 ## Documentation
 
@@ -64,6 +64,16 @@ Orion Nebula / M42 2013 processing notes:
 - [Processing journey](projects/orion-nebula-m42-2013/docs/processing-journey.md) - chronological record of the inventory, planning decision, and Phase 1 diagnostic runs.
 - [M42 processing research](projects/orion-nebula-m42-2013/docs/research/01-m42-processing.md) - web findings about M42 HDR processing and Trapezium preservation.
 - [2026 final v1 result](projects/orion-nebula-m42-2013/docs/images/m42-2013-v8-presentation.jpg) and [2013/v7/final comparison](projects/orion-nebula-m42-2013/docs/images/m42-2013-original-v7-v8-presentation-comparison.jpg) - accepted M42/M43/Running Man nonlinear export and historical comparison.
+
+Trifid / Lagoon 2014 processing notes:
+
+- [Current status](projects/trifid-lagoon-2014/docs/status.md) - source inventory, likely reason for the `-2` folder suffix, calibration candidates, and review questions.
+- [Processing pipeline](projects/trifid-lagoon-2014/docs/pipeline.md) - review-ready WBPP, Phase 2, and nonlinear plan for the May and March ED80/reducer sessions.
+- [Processing journey](projects/trifid-lagoon-2014/docs/processing-journey.md) - chronological planning record and decision trail.
+- [Trifid / Lagoon processing research](projects/trifid-lagoon-2014/docs/research/01-trifid-lagoon-processing.md) - target-specific research and processing implications.
+- [Original 2014 processing evidence](projects/trifid-lagoon-2014/docs/original-2014-processing.md) - historical local artifacts, attempt-02 references, and finished-work reference.
+- [Review checkpoint](projects/trifid-lagoon-2014/docs/review-2026-05-27.md) - current March-vs-reference review candidates and rejected diagnostics.
+- [2014 attempt-02 reference](projects/trifid-lagoon-2014/docs/images/original-2014-attempt-02-asraw-ps-2.jpg), [2026 March polish candidate](projects/trifid-lagoon-2014/docs/images/trifid-lagoon-20140302-march-oldref-polish.jpg), and [2026 March vivid candidate](projects/trifid-lagoon-2014/docs/images/trifid-lagoon-20140302-march-oldref-vivid.jpg) - compressed comparison images.
 
 ## Current M31 rerun commands
 

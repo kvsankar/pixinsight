@@ -188,6 +188,43 @@ Primary feedback signals:
 - Visual feedback showed the v6 crop was high, v7 color/contrast was improved but too conservative on background nebulosity, and v8 gave the preferred depth/crop balance.
 - The 300s support layer improved surrounding haze at the cost of some background texture; that tradeoff was accepted for final v1.
 
+## Trifid / Lagoon 2014
+
+Current result: March old-reference review candidates are ready; no final presentation has been accepted yet.
+
+Detailed notes:
+
+- [Review checkpoint](../projects/trifid-lagoon-2014/docs/review-2026-05-27.md)
+- [Status](../projects/trifid-lagoon-2014/docs/status.md)
+- [Processing journey](../projects/trifid-lagoon-2014/docs/processing-journey.md)
+- [Pipeline](../projects/trifid-lagoon-2014/docs/pipeline.md)
+- [Trifid / Lagoon processing research](../projects/trifid-lagoon-2014/docs/research/01-trifid-lagoon-processing.md)
+- [Original 2014 processing evidence](../projects/trifid-lagoon-2014/docs/original-2014-processing.md)
+- [2014 attempt-02 reference](../projects/trifid-lagoon-2014/docs/images/original-2014-attempt-02-asraw-ps-2.jpg)
+- [2026 March old-reference polish candidate](../projects/trifid-lagoon-2014/docs/images/trifid-lagoon-20140302-march-oldref-polish.jpg)
+- [2026 March old-reference vivid candidate](../projects/trifid-lagoon-2014/docs/images/trifid-lagoon-20140302-march-oldref-vivid.jpg)
+
+Summary process:
+
+1. Scanned the archive after the `20140504-yelagiri-kairos-trifid-lagoon-2` folder raised the question of why it had a `-2` suffix.
+2. Found a second Trifid/Lagoon collection under the March 2014 by-date folder, which probably explains the suffix on the May folder.
+3. Corrected the initial EXIF-based optics assumption: the `50.0 mm` value is stale/unreliable for these frames, and both March and May solved at the ED80/reducer scale around 386.21 mm and 2.302 arcsec/px.
+4. Built a May baseline from 39 x 120s ISO1600 lights with 33/34 C darks and no flats.
+5. Ran May Phase 2 with ABE, ImageSolver, SPCC using Canon EOS 60D filters, SCNR, and conservative linear noise reduction.
+6. Created May nonlinear candidates, including old-reference variants; these were clean but too dark/conservative compared with the user's stronger 2014 attempt-02 reference.
+7. Copied the better historical attempt-02 references from the March processing folder and made `original-2014-attempt-02-asraw-ps-2.jpg` the primary visual comparison.
+8. Tested the March flat/no-dark branch and rejected it because the preview showed flat mismatch and banding.
+9. Built the accepted March baseline from 38 x 120s ISO1600 lights with no darks and no flats.
+10. Ran March Phase 2, increasing solver target stars and magnitude limit after the first solve attempt was too strict for the dense field.
+11. Rejected no-ABE and ABE-divide March diagnostics because they kept too much gradient or produced severe green/chroma artifacts.
+12. Exported two review candidates from the March subtractive-ABE branch: a cleaner `march-oldref-polish` version and a brighter, more historical `march-oldref-vivid` version.
+
+Primary feedback signals:
+
+- The user-supplied attempt-02 image showed that the March data, not the May branch, was the closer emotional and compositional match.
+- Flat and background diagnostics showed that preserving every large-scale glow was not technically valid; some of it was vignetting/gradient.
+- The best current path is to choose between the cleaner March polish and the brighter March vivid candidate before any star-reduction or master-blending work.
+
 ## Shared Workflow Pattern
 
 Across the processed targets, the repeatable pattern is:
