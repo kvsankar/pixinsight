@@ -190,10 +190,11 @@ Primary feedback signals:
 
 ## Trifid / Lagoon 2014
 
-Current result: March old-reference review candidates are ready; no final presentation has been accepted yet.
+Current result: accepted final v1 from the March 2014 no-dark/no-flats branch.
 
 Detailed notes:
 
+- [Final v1](../projects/trifid-lagoon-2014/docs/final-v1.md)
 - [Review checkpoint](../projects/trifid-lagoon-2014/docs/review-2026-05-27.md)
 - [Status](../projects/trifid-lagoon-2014/docs/status.md)
 - [Processing journey](../projects/trifid-lagoon-2014/docs/processing-journey.md)
@@ -203,6 +204,8 @@ Detailed notes:
 - [2014 attempt-02 reference](../projects/trifid-lagoon-2014/docs/images/original-2014-attempt-02-asraw-ps-2.jpg)
 - [2026 March old-reference polish candidate](../projects/trifid-lagoon-2014/docs/images/trifid-lagoon-20140302-march-oldref-polish.jpg)
 - [2026 March old-reference vivid candidate](../projects/trifid-lagoon-2014/docs/images/trifid-lagoon-20140302-march-oldref-vivid.jpg)
+- [2026 final v1 result](../projects/trifid-lagoon-2014/docs/images/trifid-lagoon-20140302-final-v1.jpg)
+- [2014 / review / final v1 comparison](../projects/trifid-lagoon-2014/docs/images/trifid-lagoon-2014-final-v1-comparison.jpg)
 
 Summary process:
 
@@ -218,12 +221,14 @@ Summary process:
 10. Ran March Phase 2, increasing solver target stars and magnitude limit after the first solve attempt was too strict for the dense field.
 11. Rejected no-ABE and ABE-divide March diagnostics because they kept too much gradient or produced severe green/chroma artifacts.
 12. Exported two review candidates from the March subtractive-ABE branch: a cleaner `march-oldref-polish` version and a brighter, more historical `march-oldref-vivid` version.
+13. Tested final passes from the vivid candidate, but rejected them because they pushed the Lagoon core and red star field too hard.
+14. Accepted final v1 from the cleaner March polish branch with a restrained finalizer that calms low-sky color and protects the nebulae without star reduction.
 
 Primary feedback signals:
 
 - The user-supplied attempt-02 image showed that the March data, not the May branch, was the closer emotional and compositional match.
 - Flat and background diagnostics showed that preserving every large-scale glow was not technically valid; some of it was vignetting/gradient.
-- The best current path is to choose between the cleaner March polish and the brighter March vivid candidate before any star-reduction or master-blending work.
+- The final path favored the cleaner March polish base over the brighter vivid base; the vivid branch remains useful as evidence but was too aggressive for final v1.
 
 ## Shared Workflow Pattern
 

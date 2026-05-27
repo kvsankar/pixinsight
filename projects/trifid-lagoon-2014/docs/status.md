@@ -1,10 +1,11 @@
 # Trifid / Lagoon 2014 Processing - Status
 
-**As of:** 2026-05-27 IST, the May and March 2014 branches have both been calibrated, integrated, solved, SPCC-calibrated, and exported as review JPEGs. The March no-dark/no-flats branch is the closest match to the stronger 2014 attempt-02 reference.
-**Pipeline progress:** 85%, review candidates ready - next decision is which presentation direction to keep for final tuning.
+**As of:** 2026-05-27 IST, final v1 has been exported from the March 2014 no-dark/no-flats branch.
+**Pipeline progress:** 100%, final v1 complete. Future work would be a separate v2 experiment, not required to finish this target.
 
+For the accepted result, see [Final v1](final-v1.md).
 For the proposed workflow, see [Processing pipeline](pipeline.md).
-For the current candidate review, see [Review checkpoint](review-2026-05-27.md).
+For the review branch comparison, see [Review checkpoint](review-2026-05-27.md).
 For the chronological reasoning log, see [Processing journey](processing-journey.md).
 For target-specific research, see [Trifid / Lagoon processing research](research/01-trifid-lagoon-processing.md).
 For historical local artifacts, see [Original 2014 processing evidence](original-2014-processing.md).
@@ -15,7 +16,7 @@ For historical local artifacts, see [Original 2014 processing evidence](original
 PHASE 0 - Source inventory and project setup       COMPLETE
 PHASE 1 - Calibration + integration                COMPLETE FOR MAY AND MARCH BASELINES
 PHASE 2 - Linear post-integration                  COMPLETE FOR MAY AND MARCH BASELINES
-PHASE 3 - Nonlinear processing/export              REVIEW CANDIDATES COMPLETE
+PHASE 3 - Nonlinear processing/export              FINAL V1 COMPLETE
 ```
 
 ## Dataset Summary
@@ -29,7 +30,8 @@ PHASE 3 - Nonlinear processing/export              REVIEW CANDIDATES COMPLETE
 | Main exposure pattern | 120s, ISO 1600 |
 | Main goal | Produce a believable wide-field Sagittarius result with M8, M20, dark lanes, and Milky Way context |
 | Historical reference | `docs/images/original-2014-attempt-02-asraw-ps-2.jpg`, copied from the 2014 attempt-02 processing folder |
-| Current blocker | None; review the March polish/vivid candidates against the old 2014 attempt-02 reference |
+| Current result | `docs/images/trifid-lagoon-20140302-final-v1.jpg` |
+| Current blocker | None |
 
 ## Why The May Folder Is Suffixed `-2`
 
@@ -46,12 +48,12 @@ No non-suffixed `20140504-yelagiri-kairos-trifid-lagoon` sibling was found. The 
 
 | Candidate | Frames | Exposure | Temp | Decision |
 | --- | ---: | ---: | --- | --- |
-| `20140504-yelagiri-kairos-trifid-lagoon-2/good` | 39 CR2 | 120s ISO 1600 | +31 to +34 C | Primary May baseline |
+| `20140504-yelagiri-kairos-trifid-lagoon-2/good` | 39 CR2 | 120s ISO 1600 | +31 to +34 C | May comparison baseline |
 | `20140504-yelagiri-kairos-trifid-lagoon-2/bad/smudged` | 6 CR2 | 120s ISO 1600 | around +33 C | Reject initially |
 | `20140504-yelagiri-kairos-trifid-lagoon-2/bad/trailing` | 2 CR2 | 120s ISO 1600 | around +33 C | Reject initially |
 | `20140504-yelagiri-kairos-trifid-lagoon-2/bad/washed-out` | 2 CR2 | 120s ISO 1600 | around +34 C | Reject initially |
 | `20140504-yelagiri-kairos-trifid-lagoon-2/trial-shots` | 41 CR2 | mostly 10s ISO 6400 | mixed | Reject from main integration |
-| `20140302-coorg-keemale-trifid-lagoon/good` | 38 CR2 | 120s ISO 1600 | +24 to +30 C | Separate March comparison/support branch |
+| `20140302-coorg-keemale-trifid-lagoon/good` | 38 CR2 | 120s ISO 1600 | +24 to +30 C | Final v1 source branch |
 | `20140302-coorg-keemale-trifid-lagoon/twilight/better` | 4 CR2 | 120s ISO 1600 | not reviewed | Skip unless needed for context |
 | `20140302-coorg-keemale-trifid-lagoon/twilight/worse` | 2 CR2 | 120s ISO 1600 | not reviewed | Reject initially |
 | `20140302-coorg-keemale-trifid-lagoon/washed-out` | 4 CR2 | 120s ISO 1600 | not reviewed | Reject initially |
@@ -84,7 +86,7 @@ Current calibration recommendation:
 1. Run May primary with 33 C and 34 C darks, no flats.
 2. Run a May no-dark/no-flat control only if the dark-calibrated master shows overcorrection.
 3. Reject the tested 2014-03-02 flat branch for this target run; it introduced obvious flat mismatch/banding.
-4. Keep March lights as a separate branch rather than raw-combining with May. The March no-dark/no-flats branch is currently the preferred review direction.
+4. Keep March lights as a separate branch rather than raw-combining with May. The final v1 result uses the March no-dark/no-flats branch.
 
 ## Decisions So Far
 
@@ -110,13 +112,17 @@ Current calibration recommendation:
 - Plate solving confirmed the ED80/reducer interpretation for March as well: 386.21 mm focal distance, 2.302 arcsec/px, 3d 19' 27.5" x 2d 12' 39.9" field of view.
 - Ran no-ABE and ABE-divide diagnostics on the March master. No-ABE retained unacceptable vignetting/field gradient, and ABE-divide produced severe green/chroma artifacts. The subtractive ABE Phase 2 branch remains the best technical baseline.
 - Exported two March review candidates: a balanced `march-oldref-polish` version and a brighter/more saturated `march-oldref-vivid` version.
+- Tried final passes from the vivid candidate, but they pushed the Lagoon core and red star field too hard for a final.
+- Promoted the cleaner March polish branch into final v1 with `scripts/pjsr/03t-trifid-lagoon-final-v1.js`, using restrained sky/star color calming and no extra star reduction.
+- Exported final v1 JPEG/TIFF/XISF and a four-panel comparison image.
 
-## Review Questions
+## Residual Questions
 
-1. Do you prefer the cleaner March `march-oldref-polish` candidate or the brighter `march-oldref-vivid` candidate as the final tuning base?
-2. Should the final stay close to the 2014 attempt-02 color/depth, or should we keep the cleaner PixInsight look and only borrow the old image's warmth?
-3. Should May remain a secondary comparison only, or should we later try a registered master blend after the March finish is accepted?
-4. Do you want star reduction/starless processing in the next tuning pass, or should the dense Sagittarius star field stay natural?
+These are optional v2 directions, not blockers for final v1:
+
+1. Would a manual DBE/MGC branch preserve more real Sagittarius background without keeping vignetting?
+2. Would a very subtle starless workflow let the nebulae lift without making the dense star field too busy?
+3. Is a registered March/May master blend worth testing after the single-session result is complete?
 
 ## Outputs
 
@@ -152,3 +158,7 @@ Current calibration recommendation:
 | `work/03-nonlinear-20140302-march-oldref/03t-march-oldref-vivid.xisf` | March brighter old-reference vivid XISF |
 | `work/03-nonlinear-20140302-march-oldref/trifid-lagoon-20140302-march-oldref-vivid.tif` | March brighter old-reference vivid TIFF |
 | `docs/images/trifid-lagoon-20140302-march-oldref-vivid.jpg` | March brighter old-reference vivid JPEG |
+| `work/03-nonlinear-20140302-final-v1/03t-trifid-lagoon-20140302-final-v1.xisf` | Final v1 XISF |
+| `work/03-nonlinear-20140302-final-v1/trifid-lagoon-20140302-final-v1.tif` | Final v1 TIFF export |
+| `docs/images/trifid-lagoon-20140302-final-v1.jpg` | Final v1 JPEG |
+| `docs/images/trifid-lagoon-2014-final-v1-comparison.jpg` | Four-panel reference/review/final comparison |

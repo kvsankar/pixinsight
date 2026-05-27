@@ -259,3 +259,35 @@ Visual read:
 - `march-oldref-vivid` is the brighter, warmer, more old-reference-like candidate.
 - Both are closer to the user-supplied 2014 attempt-02 reference than the May candidates.
 - Neither should be pushed further blindly; the next step is human review of taste: old-reference energy versus modern PixInsight cleanliness.
+
+## 2026-05-27 - Final V1
+
+The next decision was to finish the target rather than start a new one.
+
+Created a finalizer script:
+
+```text
+scripts/pjsr/03t-trifid-lagoon-final-v1.js
+```
+
+The script applies a restrained nonlinear finishing pass: low-sky chroma calming, mild star-field red cleanup, small nebula-protected color support, and optional TIFF/JPEG export.
+
+First tried promoting the brighter `march-oldref-vivid` branch. Two variants were exported during testing, but visually they pushed the Lagoon core and the red/orange star field too hard. Those draft JPEGs were not kept as documentation outputs.
+
+The accepted final v1 instead starts from the cleaner `march-oldref-polish` XISF and applies only a minimal final balance. This keeps the image less theatrical than the 2014 attempt-02 reference, but more controlled and believable from the raw data.
+
+Final outputs:
+
+```text
+work/03-nonlinear-20140302-final-v1/03t-trifid-lagoon-20140302-final-v1.xisf
+work/03-nonlinear-20140302-final-v1/trifid-lagoon-20140302-final-v1.tif
+docs/images/trifid-lagoon-20140302-final-v1.jpg
+docs/images/trifid-lagoon-2014-final-v1-comparison.jpg
+```
+
+Visual read:
+
+- Final v1 preserves M20's blue/red split and dust lanes better than the pushed vivid tests.
+- M8 remains red/pink with a bright core, but avoids the most washed-out vivid-branch look.
+- The Sagittarius star field remains dense; no star-reduction pass was accepted for v1.
+- The old 2014 reference remains brighter and more magenta/warm, but some of that character appears tied to gradient/vignetting and older color handling.

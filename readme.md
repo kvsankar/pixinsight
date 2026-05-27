@@ -67,13 +67,14 @@ Orion Nebula / M42 2013 processing notes:
 
 Trifid / Lagoon 2014 processing notes:
 
-- [Current status](projects/trifid-lagoon-2014/docs/status.md) - source inventory, likely reason for the `-2` folder suffix, calibration candidates, and review questions.
-- [Processing pipeline](projects/trifid-lagoon-2014/docs/pipeline.md) - review-ready WBPP, Phase 2, and nonlinear plan for the May and March ED80/reducer sessions.
+- [Final v1 result](projects/trifid-lagoon-2014/docs/final-v1.md) - accepted March 2014 Trifid/Lagoon result, data mix, caveats, and deliverables.
+- [Current status](projects/trifid-lagoon-2014/docs/status.md) - source inventory, likely reason for the `-2` folder suffix, calibration candidates, and final-v1 outputs.
+- [Processing pipeline](projects/trifid-lagoon-2014/docs/pipeline.md) - WBPP, Phase 2, and nonlinear plan for the May and March ED80/reducer sessions.
 - [Processing journey](projects/trifid-lagoon-2014/docs/processing-journey.md) - chronological planning record and decision trail.
 - [Trifid / Lagoon processing research](projects/trifid-lagoon-2014/docs/research/01-trifid-lagoon-processing.md) - target-specific research and processing implications.
 - [Original 2014 processing evidence](projects/trifid-lagoon-2014/docs/original-2014-processing.md) - historical local artifacts, attempt-02 references, and finished-work reference.
-- [Review checkpoint](projects/trifid-lagoon-2014/docs/review-2026-05-27.md) - current March-vs-reference review candidates and rejected diagnostics.
-- [2014 attempt-02 reference](projects/trifid-lagoon-2014/docs/images/original-2014-attempt-02-asraw-ps-2.jpg), [2026 March polish candidate](projects/trifid-lagoon-2014/docs/images/trifid-lagoon-20140302-march-oldref-polish.jpg), and [2026 March vivid candidate](projects/trifid-lagoon-2014/docs/images/trifid-lagoon-20140302-march-oldref-vivid.jpg) - compressed comparison images.
+- [Review checkpoint](projects/trifid-lagoon-2014/docs/review-2026-05-27.md) - March-vs-reference review candidates and rejected diagnostics.
+- [2014 attempt-02 reference](projects/trifid-lagoon-2014/docs/images/original-2014-attempt-02-asraw-ps-2.jpg), [2026 final v1 result](projects/trifid-lagoon-2014/docs/images/trifid-lagoon-20140302-final-v1.jpg), and [final v1 comparison](projects/trifid-lagoon-2014/docs/images/trifid-lagoon-2014-final-v1-comparison.jpg) - compressed comparison images.
 
 ## Current M31 rerun commands
 

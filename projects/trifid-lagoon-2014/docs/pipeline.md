@@ -2,7 +2,7 @@
 
 This is the review-ready plan for the 2014 Trifid/Lagoon data. It is tailored to Canon EOS 60D, likely ES ED80 with reducer, 120s ISO1600 frames, with one clean May session and one earlier March session.
 
-For current source inventory and review questions, see [Status](status.md). For the current visual checkpoint, see [Review checkpoint](review-2026-05-27.md). For research notes, see [Trifid / Lagoon processing research](research/01-trifid-lagoon-processing.md). For historical artifacts, see [Original 2014 processing evidence](original-2014-processing.md).
+For the accepted result, see [Final v1](final-v1.md). For current source inventory, see [Status](status.md). For the branch comparison, see [Review checkpoint](review-2026-05-27.md). For research notes, see [Trifid / Lagoon processing research](research/01-trifid-lagoon-processing.md). For historical artifacts, see [Original 2014 processing evidence](original-2014-processing.md).
 
 ## Processing Goals
 
@@ -219,7 +219,7 @@ Status:
 - Complete: `work/03-nonlinear-20140504-may-v1/03t-v1-polish.xisf`
 - Complete: May old-reference variants `trifid-lagoon-20140504-v2-oldref-polish.jpg` and `trifid-lagoon-20140504-v3-oldref-lift.jpg`
 - Complete: March old-reference variants `trifid-lagoon-20140302-march-oldref-polish.jpg` and `trifid-lagoon-20140302-march-oldref-vivid.jpg`
-- Preferred review direction: March old-reference variants
+- Complete: final v1 `trifid-lagoon-20140302-final-v1.jpg`
 
 Target-specific nonlinear priorities:
 
@@ -230,20 +230,18 @@ Target-specific nonlinear priorities:
 - Use star reduction or star separation only after a clean baseline exists; the field is star-rich, but over-reducing stars can make the Milky Way look unnatural.
 - If StarXTerminator is used, keep starless and stars layers as documented intermediates under `work/`, then export only small comparison JPEGs to docs.
 
-Candidate outputs after review and processing:
+Accepted outputs:
 
 ```text
-docs/images/trifid-lagoon-2014-may-baseline.jpg
-docs/images/trifid-lagoon-2014-march-comparison.jpg
-docs/images/trifid-lagoon-2014-final-candidate.jpg
+docs/images/trifid-lagoon-20140302-final-v1.jpg
+docs/images/trifid-lagoon-2014-final-v1-comparison.jpg
 ```
 
-## Current Resume Plan
+## Final Status And Optional V2 Work
 
-1. Review `docs/images/trifid-lagoon-20140302-march-oldref-polish.jpg` and `docs/images/trifid-lagoon-20140302-march-oldref-vivid.jpg` against `docs/images/original-2014-attempt-02-asraw-ps-2.jpg`.
-2. Pick the final tuning direction:
-   - balanced PixInsight finish: start from `march-oldref-polish`,
-   - brighter 2014-reference finish: start from `march-oldref-vivid`,
-   - cleaner but darker comparison: revisit May v3.
-3. Keep the rejected diagnostic previews in docs as evidence: March flats, no-ABE, and ABE-divide should not be reused as defaults.
-4. Decide whether the next pass should add star reduction/starless control, or keep the dense Sagittarius star field natural.
+Final v1 is complete. Resume only for optional v2 experiments:
+
+1. Try a manual DBE/MGC branch from the March master if more real Sagittarius background can be preserved without vignetting.
+2. Test a subtle starless/star-recombine workflow only if the final v1 star field feels too busy.
+3. Register March and May masters only if a single-session final is not enough.
+4. Keep the rejected diagnostic previews in docs as evidence: March flats, no-ABE, and ABE-divide should not be reused as defaults.
