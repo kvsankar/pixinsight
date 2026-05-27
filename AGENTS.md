@@ -8,6 +8,10 @@ This repo is an experiment in using generative AI to build repeatable astrophoto
 
 Keep work reproducible, public-repo friendly, and organized by target/session.
 
+For a full repeatable new-target workflow, follow [docs/new-project-playbook.md](docs/new-project-playbook.md). That playbook captures the typical archive search, target research, planning, processing, review, and finalization procedure.
+
+Local archive roots and other private path details belong in ignored local files such as `.env` or `.env.local`, not in committed docs. Use placeholders and archive-relative paths in public notes.
+
 ## Repository Layout
 
 ```text
@@ -23,6 +27,10 @@ Use lowercase hyphenated project slugs, for example `m31-andromeda-2013` or `ori
 
 ## Bootstrap a New Project
 
+Before running heavy PixInsight processing, use the new-project playbook to inventory the archive, research target-specific processing concerns, customize the plan for the actual data, and write the initial project docs.
+
+For a new target, explicitly search the local `by-date` image archive for all folders that could contain the target, even when the user provides one seed folder. Read `PI_ARCHIVE_ROOT` / `PI_BY_DATE_DIR` from ignored local config when available, or use the user-provided local path only during the session.
+
 1. Create the scaffold:
 
    ```powershell
@@ -33,6 +41,11 @@ Use lowercase hyphenated project slugs, for example `m31-andromeda-2013` or `ori
 
    ```text
    PI_PROJECT_DIR=<repo>\projects\target-name-date
+   PI_ARCHIVE_ROOT=<optional local astronomy image archive root>
+   PI_BY_DATE_DIR=<optional local by-date image folder>
+   PI_FINISHED_WORK_DIR=<optional local finished-work folder>
+   PI_DARK_LIBRARY_DIR=<optional local dark library folder>
+   PI_FLAT_LIBRARY_DIR=<optional local flat library folder>
    PI_LIGHT_DIR=<local raw light folder>
    PI_LIGHT_DIRS=<optional semicolon-separated raw light folders>
    PI_DARK_DIR=<local raw dark folder>
@@ -44,8 +57,8 @@ Use lowercase hyphenated project slugs, for example `m31-andromeda-2013` or `ori
    PI_SPCC_RED_FILTER=<optional SPCC red filter name>
    PI_SPCC_GREEN_FILTER=<optional SPCC green filter name>
    PI_SPCC_BLUE_FILTER=<optional SPCC blue filter name>
-   PIXINSIGHT_EXE=C:\Program Files\PixInsight\bin\PixInsight.exe
-   PI_WBPP_SCRIPT=C:\Program Files\PixInsight\src\scripts\BatchPreprocessing\WBPP.js
+   PIXINSIGHT_EXE=<PixInsight install>\bin\PixInsight.exe
+   PI_WBPP_SCRIPT=<PixInsight install>\src\scripts\BatchPreprocessing\WBPP.js
    PI_GAIA_DR3SP_DIR=<optional local Gaia DR3/SP catalog path>
    ```
 
@@ -58,7 +71,17 @@ Use lowercase hyphenated project slugs, for example `m31-andromeda-2013` or `ori
 
    For longer investigations, also maintain `projects/<slug>/docs/processing-journey.md` as a chronological record of what was tried and what was learned.
 
-4. Run the pipeline in phases:
+4. Write the target-specific research and plan before Phase 1:
+
+   ```text
+   projects/<slug>/docs/research/01-<target>-processing.md
+   projects/<slug>/docs/pipeline.md
+   projects/<slug>/docs/original-<year>-processing.md
+   ```
+
+   The plan should name the primary branch, diagnostic branches, rejected buckets, calibration assumptions, plate-solve seed, SPCC settings, preview outputs, and review questions.
+
+5. Run the pipeline in phases:
 
    ```powershell
    & .\scripts\run-wbpp-phase1.ps1 -ProjectDir .\projects\target-name-date
@@ -80,6 +103,11 @@ Use lowercase hyphenated project slugs, for example `m31-andromeda-2013` or `ori
 - Update `projects/<slug>/docs/status.md` with every processing step that actually ran.
 - Update `projects/<slug>/docs/processing-journey.md` when an investigation changes direction or a failed branch teaches something important.
 - Prefer adding target-specific notes to project docs over embedding assumptions in shared scripts.
+- For new targets, search for related sessions and historical processing artifacts before assuming the user-provided folder is complete.
+- Search the local `by-date` archive for target-name aliases, catalog identifiers, date/site variants, and suffixes like `-2`; document only archive-relative paths.
+- Treat old finished-work images as visual/historical references, not as ground truth.
+- Do not raw-combine sessions until each session has been integrated and inspected separately.
+- If PixInsight unexpectedly opens an interactive process window during automation, tell the user no interaction is expected, stop/review the run, and inspect logs/scripts.
 
 ## PixInsight Notes
 
@@ -101,7 +129,7 @@ git diff --stat
 For public commits, also check for accidental local paths or sensitive data:
 
 ```powershell
-rg -n "C:\\|D:\\|M:\\|Users\\|\\.env|PixInsightData" .
+rg -n "([A-Z]:\\|User[s]\\|[.]env|PixInsight[D]ata)" .
 ```
 
 Commit only intentional source, docs, scripts, and small public comparison assets.

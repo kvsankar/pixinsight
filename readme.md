@@ -10,15 +10,15 @@ This repository is organized for repeatable PixInsight processing across multipl
 - `projects/` - one folder per imaging target/session.
 - `docs/` - repository-level notes that are not tied to a single target.
 
-The current processed targets are `projects/m31-andromeda-2013`, `projects/rosette-2014-03-02`, and `projects/horsehead-flame-2013-2016`.
-The current in-progress diagnostic targets are `projects/orion-nebula-m42-2013` and `projects/trifid-lagoon-2014`.
+The current processed targets are `projects/m31-andromeda-2013`, `projects/rosette-2014-03-02`, `projects/horsehead-flame-2013-2016`, `projects/orion-nebula-m42-2013`, and `projects/trifid-lagoon-2014`.
 
 ## Documentation
 
 Start here for the repository structure:
 
 - [Project layout](docs/project-layout.md) - how the repo is organized for more targets and local-only work products.
-- [Processing summaries](docs/processing-summaries.md) - concise process summary for M31, Rosette, and Horsehead.
+- [New project playbook](docs/new-project-playbook.md) - repeatable archive inventory, target research, planning, processing, review, and finalization procedure for new targets.
+- [Processing summaries](docs/processing-summaries.md) - concise process summaries for completed and review-stage targets.
 - [Horsehead / Flame processing plan](docs/horsehead-processing-plan.md) - source inventory, script changes, and processing strategy for combining modded, unmodded, and wide-field data.
 - [Agent bootstrap guide](AGENTS.md) - conventions for AI agents creating or extending projects.
 
