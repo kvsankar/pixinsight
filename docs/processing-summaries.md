@@ -153,9 +153,44 @@ Primary feedback signals:
 - ROI statistics confirmed the half-weight washed branch was the better compromise.
 - Visual comparison showed the optional star-reduced version was too subtle to replace the plain v1 polish.
 
+## Orion Nebula / M42 2013
+
+Current result: accepted final v1 from the v8 300s faint-support branch.
+
+Detailed notes:
+
+- [Final v1](../projects/orion-nebula-m42-2013/docs/final-v1.md)
+- [Status](../projects/orion-nebula-m42-2013/docs/status.md)
+- [Processing journey](../projects/orion-nebula-m42-2013/docs/processing-journey.md)
+- [Pipeline](../projects/orion-nebula-m42-2013/docs/pipeline.md)
+- [M42 processing research](../projects/orion-nebula-m42-2013/docs/research/01-m42-processing.md)
+- [2013 finished-work result](../projects/orion-nebula-m42-2013/docs/images/original-2013-finished-work.jpg)
+- [2026 final v1 result](../projects/orion-nebula-m42-2013/docs/images/m42-2013-v8-presentation.jpg)
+- [2013 / v7 / final v1 comparison](../projects/orion-nebula-m42-2013/docs/images/m42-2013-original-v7-v8-presentation-comparison.jpg)
+
+Summary process:
+
+1. Scanned the archive and reconciled local source folders with the public acquisition notes on sankara.net.
+2. Confirmed the February M42 image was shot with a Canon EOS 60D and Canon EF 70-200 mm lens at the published 200 mm f/3.5 setting; plate solving later measured about 193 mm effective focal length and 4.60 arcsec/px.
+3. Kept the January 2013 EXIF-50mm Orion data as a separate possible wide-field branch because the true field scale was not proven.
+4. Ran separate WBPP branches for 180s, 300s, and 60s diagnostic groups instead of mixing exposure lengths at the raw-frame stage.
+5. Compared 180s flat-calibrated and no-flats branches through identical Phase 2 processing, then selected the 180s no-flats branch because it retained more outer M42/M43 structure.
+6. Ran Phase 2 on the 300s branch and registered it to the 180s no-flats grid for possible faint-nebulosity support.
+7. Audited the core/HDR situation and documented that the sparse 60s material was not a clean Trapezium replacement.
+8. Built M42-specific nonlinear scripts for masked stretch, core compression, color/contrast polish, and core blending.
+9. Iterated through v3-v7 based on visual feedback about the bright core, crop placement, color, contrast, and missing background nebulosity.
+10. Accepted final v1 from v8: an adjusted-crop 180s base with quiet-core blend, conservative registered-300s faint support, and a lighter final presentation polish.
+
+Primary feedback signals:
+
+- Public acquisition notes corrected uncertainty about the February M42 optics while plate solving supplied the processing scale.
+- Raw/core saturation checks kept the result honest about Trapezium limits.
+- Visual feedback showed the v6 crop was high, v7 color/contrast was improved but too conservative on background nebulosity, and v8 gave the preferred depth/crop balance.
+- The 300s support layer improved surrounding haze at the cost of some background texture; that tradeoff was accepted for final v1.
+
 ## Shared Workflow Pattern
 
-Across the three targets, the repeatable pattern is:
+Across the processed targets, the repeatable pattern is:
 
 1. Inventory the raw archive and historical processing evidence.
 2. Split incompatible acquisition groups before integration.

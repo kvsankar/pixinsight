@@ -11,6 +11,7 @@ This repository is organized for repeatable PixInsight processing across multipl
 - `docs/` - repository-level notes that are not tied to a single target.
 
 The current processed targets are `projects/m31-andromeda-2013`, `projects/rosette-2014-03-02`, and `projects/horsehead-flame-2013-2016`.
+The current in-progress diagnostic target is `projects/orion-nebula-m42-2013`.
 
 ## Documentation
 
@@ -54,6 +55,15 @@ Horsehead / Flame 2013-2016 processing notes:
 - [Processing journey](projects/horsehead-flame-2013-2016/docs/processing-journey.md) - chronological record of decisions and experiments.
 - [Processing pipeline](projects/horsehead-flame-2013-2016/docs/pipeline.md) - staged plan for modded, unmodded, and wide-field data.
 - [2013 finished-work result](projects/horsehead-flame-2013-2016/docs/images/original-2013-finished-work.jpg) and [2026 PixInsight v1 result](projects/horsehead-flame-2013-2016/docs/images/horsehead-04c-v1-polish.jpg) - compressed comparison images.
+
+Orion Nebula / M42 2013 processing notes:
+
+- [Final v1 result](projects/orion-nebula-m42-2013/docs/final-v1.md) - accepted February 2013 M42/M43/Running Man result, data mix, caveats, and deliverables.
+- [Current status](projects/orion-nebula-m42-2013/docs/status.md) - source inventory, completed WBPP diagnostics, calibration findings, exclusions, and review questions.
+- [Processing pipeline](projects/orion-nebula-m42-2013/docs/pipeline.md) - M42-specific plan with HDR/core-preservation decision gates.
+- [Processing journey](projects/orion-nebula-m42-2013/docs/processing-journey.md) - chronological record of the inventory, planning decision, and Phase 1 diagnostic runs.
+- [M42 processing research](projects/orion-nebula-m42-2013/docs/research/01-m42-processing.md) - web findings about M42 HDR processing and Trapezium preservation.
+- [2026 final v1 result](projects/orion-nebula-m42-2013/docs/images/m42-2013-v8-presentation.jpg) and [2013/v7/final comparison](projects/orion-nebula-m42-2013/docs/images/m42-2013-original-v7-v8-presentation-comparison.jpg) - accepted M42/M43/Running Man nonlinear export and historical comparison.
 
 ## Current M31 rerun commands
 
