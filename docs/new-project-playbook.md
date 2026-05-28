@@ -1,6 +1,6 @@
 # New Project Playbook
 
-Use this playbook when starting a new astrophotography target/session in this PixInsight automation repo. It captures the workflow that has worked across M31, Rosette, Horsehead/Flame, M42, and Trifid/Lagoon.
+Use this playbook when starting a new astrophotography target/session in this PixInsight automation repo. It captures the workflow that has worked across M31, Rosette, Horsehead/Flame, M42, and Trifid/Lagoon, now updated for the licensed RC Astro plugin workflow in [RC Astro plugin workflow](rc-astro-workflow.md).
 
 ## Operator Prompt Template
 
@@ -100,6 +100,7 @@ Research should cover:
 - Approximate plate-solve coordinates for the target or combined field.
 - Expected framing and scale for the likely optic/camera.
 - PixInsight process choices relevant to the target: WBPP, ABE/DBE/MGC, ImageSolver, SPCC/PCC, SCNR, HDR, GHS/MaskedStretch, starless workflows.
+- Whether BlurXTerminator/NoiseXTerminator should be used as the primary linear branch, and whether a stock-only diagnostic branch is worth keeping for comparison.
 - Existing repo lessons from similar targets.
 
 Use primary or high-quality sources where possible, and link them in the research note. For PixInsight behavior, prefer installed scripts/logs and official PixInsight documentation. For target facts, NASA/ESA/catalog pages are usually better than random image-processing blogs.
@@ -167,15 +168,19 @@ Phase 2: linear post-integration.
 
 - Render a linked-STF preview before modifying the master.
 - Use conservative background correction. If the target is embedded in Milky Way dust/nebulosity, avoid treating real signal as background.
-- Plate-solve the integrated master with target-specific RA/Dec/focal/pixel values.
+- If using BlurXTerminator Correct Only, run it on linear data before solving/color calibration, then plate-solve the corrected image.
+- Plate-solve the integrated or BXT-corrected master with target-specific RA/Dec/focal/pixel values.
 - Run SPCC only after WCS exists and Gaia DR3/SP is configured.
+- Run BlurXTerminator detail/deconvolution on linear color data after SPCC unless a target-specific plan says otherwise.
+- Run NoiseXTerminator after BlurXTerminator and before stretching.
 - Preserve no-background-neutralization, no-ABE, or alternate background diagnostics when the target is background-sensitive.
-- Apply only mild linear noise reduction unless the data clearly supports more.
+- If NoiseXTerminator is not used, apply only mild stock linear noise reduction unless the data clearly supports more.
 
 Phase 3: nonlinear presentation.
 
 - Start with a conservative stretch.
 - Make target-specific polish scripts rather than overfitting shared scripts from unrelated targets.
+- Use StarXTerminator only when starless/star recombination helps the target; do not remove stars before BlurXTerminator in the normal workflow.
 - Keep comparison JPEGs small and checked in under `docs/images/`.
 - Keep XISF/TIFF/FITS and full processing outputs under ignored `work/`.
 - Do not accept a pushed branch just because it resembles the old reference; compare whether it is technically plausible from the raw data.
@@ -248,7 +253,15 @@ Canon EOS 60D B
 
 - Headless runs should not require user interaction. If PixInsight opens a process window such as "Basic CCD Parameters", assume something is wrong or waiting in the GUI; tell the user no action is expected, stop/review the run, and inspect logs/scripts.
 - PJSR process properties are version-sensitive. Inspect existing scripts and logs before changing process parameter names.
+- Third-party process modules are also version-sensitive. Verify BlurXTerminator/NoiseXTerminator/StarXTerminator parameter names from installed docs, instance source, or logs before adding shared scripts.
 - Do not leave PixInsight running at the end of a task.
+
+### RC Astro Plugins
+
+- Licensed BlurXTerminator, NoiseXTerminator, and StarXTerminator are available on this machine.
+- The default plugin order is BXT on linear data, NXT after BXT and before stretch, and SXT only after stretch when starless processing is useful.
+- See [RC Astro plugin workflow](rc-astro-workflow.md) for branch naming, guardrails, and reprocessing notes.
+- Keep older stock-only branches available until the plugin branch is reviewed and accepted.
 
 ### Final Choice
 
@@ -272,6 +285,7 @@ Canon EOS 60D B
 [ ] Run Phase 1 primary branch only after plan is accepted or user says proceed.
 [ ] Render linked-STF previews after every integration/linear checkpoint.
 [ ] Run Phase 2 with target-specific solve and SPCC settings.
+[ ] Run BXT/NXT linear branch when appropriate, preserving stock diagnostics.
 [ ] Preserve and document diagnostics.
 [ ] Build nonlinear candidates, then review.
 [ ] Export final v1 and comparison panel.

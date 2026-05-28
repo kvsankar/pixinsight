@@ -12,12 +12,15 @@ This repository is organized for repeatable PixInsight processing across multipl
 
 The current processed targets are `projects/m31-andromeda-2013`, `projects/rosette-2014-03-02`, `projects/horsehead-flame-2013-2016`, `projects/orion-nebula-m42-2013`, and `projects/trifid-lagoon-2014`.
 
+The current review-stage targets are `projects/m45-pleiades-2013-12-30` and `projects/m81-m82-2014-03-03`.
+
 ## Documentation
 
 Start here for the repository structure:
 
 - [Project layout](docs/project-layout.md) - how the repo is organized for more targets and local-only work products.
 - [New project playbook](docs/new-project-playbook.md) - repeatable archive inventory, target research, planning, processing, review, and finalization procedure for new targets.
+- [RC Astro plugin workflow](docs/rc-astro-workflow.md) - shared BXT/NXT/SXT phase order, guardrails, branch naming, and older-target reprocessing notes.
 - [Processing summaries](docs/processing-summaries.md) - concise process summaries for completed and review-stage targets.
 - [Horsehead / Flame processing plan](docs/horsehead-processing-plan.md) - source inventory, script changes, and processing strategy for combining modded, unmodded, and wide-field data.
 - [Agent bootstrap guide](AGENTS.md) - conventions for AI agents creating or extending projects.
@@ -35,6 +38,26 @@ Research notes created during the experiment:
 - [M31-specific processing research](projects/m31-andromeda-2013/docs/research/02-m31-specific.md)
 - [DSLR no-flats workflow research](projects/m31-andromeda-2013/docs/research/03-dslr-no-flats.md)
 - [Plate-solving notes from the failed 50mm assumption](projects/m31-andromeda-2013/docs/research/04-platesolve-wide-field.md)
+
+M45 / Pleiades 2013-12-30 review notes:
+
+- [Current status](projects/m45-pleiades-2013-12-30/docs/status.md) - source inventory, completed primary/no-dark WBPP runs, Phase 2 solve, v2 crop output, and review questions.
+- [Processing pipeline](projects/m45-pleiades-2013-12-30/docs/pipeline.md) - WBPP, Phase 2, and nonlinear plan/current processing record for the Pleiades data.
+- [Review checkpoint](projects/m45-pleiades-2013-12-30/docs/review-2026-05-27.md) - current v2 crop candidate, accepted branch, rejected no-dark control, and open taste questions.
+- [Processing journey](projects/m45-pleiades-2013-12-30/docs/processing-journey.md) - chronological planning record and decision trail.
+- [M45 / Pleiades processing research](projects/m45-pleiades-2013-12-30/docs/research/01-m45-pleiades-processing.md) - target-specific research and processing implications for blue reflection nebulosity.
+- [Original 2013 processing evidence](projects/m45-pleiades-2013-12-30/docs/original-2013-processing.md) - historical local artifacts and finished-work reference.
+- [2013 finished-work reference](projects/m45-pleiades-2013-12-30/docs/images/original-2013-finished-work.jpg), [2026 v1 full-frame candidate](projects/m45-pleiades-2013-12-30/docs/images/m45-20131230-v1-polish.jpg), and [2026 v2 portrait crop](projects/m45-pleiades-2013-12-30/docs/images/m45-20131230-v2-portrait-crop.jpg) - compressed comparison images.
+
+M81 / M82 2014-03-03 review notes:
+
+- [Current status](projects/m81-m82-2014-03-03/docs/status.md) - source inventory, completed dark/no-dark WBPP diagnostics, Phase 2 solves, legacy v3/v4 crop outputs, rejected plugin diagnostics, and review questions.
+- [Processing pipeline](projects/m81-m82-2014-03-03/docs/pipeline.md) - WBPP, Phase 2, RC Astro BXT/NXT branch, and nonlinear workflow/current processing record for the galaxy pair.
+- [Review checkpoint](projects/m81-m82-2014-03-03/docs/review-2026-05-28.md) - least-bad v4 reference crop, rejected BXT/NXT v1, NXT-only diagnostic, accepted no-dark branch, rejected dark branch, and upstream calibration questions.
+- [Processing journey](projects/m81-m82-2014-03-03/docs/processing-journey.md) - chronological planning record and decision trail.
+- [M81 / M82 processing research](projects/m81-m82-2014-03-03/docs/research/01-m81-m82-processing.md) - target-specific facts and processing implications for M81, M82, and SN 2014J.
+- [Original 2014 processing evidence](projects/m81-m82-2014-03-03/docs/original-2014-processing.md) - historical DSS/Photoshop artifacts and finished-work reference.
+- [2014 finished-work reference](projects/m81-m82-2014-03-03/docs/images/original-2014-finished-work.jpg), [2026 v4 tight crop](projects/m81-m82-2014-03-03/docs/images/m81-m82-20140303-v4-detail-tight-crop.jpg), [rejected BXT/NXT v1 tight crop](projects/m81-m82-2014-03-03/docs/images/m81-m82-20140303-bxt-nxt-v1-tight-crop.jpg), and [NXT-only v2 diagnostic](projects/m81-m82-2014-03-03/docs/images/m81-m82-20140303-nxt-calm-v2-dark-tight-crop.jpg) - compressed comparison images.
 
 Rosette Nebula 2014 processing notes:
 

@@ -10,6 +10,8 @@ Keep work reproducible, public-repo friendly, and organized by target/session.
 
 For a full repeatable new-target workflow, follow [docs/new-project-playbook.md](docs/new-project-playbook.md). That playbook captures the typical archive search, target research, planning, processing, review, and finalization procedure.
 
+For current licensed third-party processing, follow [docs/rc-astro-workflow.md](docs/rc-astro-workflow.md). BlurXTerminator, NoiseXTerminator, and StarXTerminator are available and should be used as documented there unless a target-specific plan calls for a stock-only diagnostic.
+
 Local archive roots and other private path details belong in ignored local files such as `.env` or `.env.local`, not in committed docs. Use placeholders and archive-relative paths in public notes.
 
 ## Repository Layout
@@ -59,8 +61,9 @@ For a new target, explicitly search the local `by-date` image archive for all fo
    PI_SPCC_BLUE_FILTER=<optional SPCC blue filter name>
    PIXINSIGHT_EXE=<PixInsight install>\bin\PixInsight.exe
    PI_WBPP_SCRIPT=<PixInsight install>\src\scripts\BatchPreprocessing\WBPP.js
-   PI_GAIA_DR3SP_DIR=<optional local Gaia DR3/SP catalog path>
-   ```
+  PI_GAIA_DR3SP_DIR=<optional local Gaia DR3/SP catalog path>
+  PI_ENABLE_RC_ASTRO=<optional: true/false, default target-specific>
+  ```
 
 3. Record acquisition facts in `projects/<slug>/docs/status.md` before tuning scripts:
 
@@ -97,6 +100,8 @@ For a new target, explicitly search the local `by-date` image archive for all fo
 - Use `PI_CFA_PATTERN` or `-CfaPattern` only after a dataset-specific CFA diagnostic proves WBPP auto-detection is wrong or suspect.
 - Set `PI_SOLVE_RA`, `PI_SOLVE_DEC`, and scale-related solve settings for each non-M31 target before running Phase 2 fresh.
 - Set SPCC filter names when the camera response is known, for example `Canon EOS 60D R/G/B`.
+- For the RC Astro workflow, apply BlurXTerminator on linear data before NoiseXTerminator, and use StarXTerminator only after stretch for starless/star recombination branches.
+- Keep stock-only or old accepted branches available until a BXT/NXT/SXT branch has been reviewed and accepted.
 - Small compressed JPEG comparison images may be checked in under `projects/<slug>/docs/images/`.
 - Keep public docs scrubbed of unnecessary local paths and personal machine details.
 - Update `readme.md` when adding new documentation pages so all docs remain reachable from the top level.
@@ -115,6 +120,9 @@ For a new target, explicitly search the local `by-date` image archive for all fo
 - WBPP plate solving should stay disabled for headless automation; plate-solve once on the integrated master in Phase 2.
 - Plate solving is target-specific. Check `scripts/pjsr/02b-platesolve.js` for seed coordinates, pixel size, focal length, projection, and catalog settings before reusing it.
 - SPCC needs a successful WCS solution and a configured Gaia DR3/SP catalog.
+- BlurXTerminator AI4 needs linear input. Do not run it on already stretched nonlinear products.
+- NoiseXTerminator should run after deconvolution, usually still linear and before stretch.
+- StarXTerminator is for nonlinear starless/stars workflows; do not remove stars before BlurXTerminator in the normal branch.
 - PJSR process properties can be version-sensitive. When unsure, inspect existing scripts and logs before changing process parameters.
 
 ## Before Committing

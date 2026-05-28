@@ -2,6 +2,96 @@
 
 This page gives a compact view of the processing path for each target processed in this repository. It intentionally does not replace the detailed per-target status, pipeline, research, or journey notes.
 
+## M81 / M82 2014-03-03
+
+Current result: legacy v4 tight crop is the least-bad reference from the no-dark/no-flats branch, but no branch is accepted as final. BXT/NXT and NXT-only plugin branches are rejected/deferred diagnostics for this target.
+
+Detailed notes:
+
+- [Review checkpoint](../projects/m81-m82-2014-03-03/docs/review-2026-05-28.md)
+- [Status](../projects/m81-m82-2014-03-03/docs/status.md)
+- [Processing journey](../projects/m81-m82-2014-03-03/docs/processing-journey.md)
+- [Pipeline](../projects/m81-m82-2014-03-03/docs/pipeline.md)
+- [M81 / M82 processing research](../projects/m81-m82-2014-03-03/docs/research/01-m81-m82-processing.md)
+- [Original 2014 processing evidence](../projects/m81-m82-2014-03-03/docs/original-2014-processing.md)
+- [2014 finished-work result](../projects/m81-m82-2014-03-03/docs/images/original-2014-finished-work.jpg)
+- [2026 v2 calm-sky crop](../projects/m81-m82-2014-03-03/docs/images/m81-m82-20140303-v2-calm-sky-crop.jpg)
+- [2026 v3 recentered detail crop](../projects/m81-m82-2014-03-03/docs/images/m81-m82-20140303-v3-detail-recentered-crop.jpg)
+- [2026 v4 tight crop](../projects/m81-m82-2014-03-03/docs/images/m81-m82-20140303-v4-detail-tight-crop.jpg)
+- [Rejected BXT/NXT v1 tight crop](../projects/m81-m82-2014-03-03/docs/images/m81-m82-20140303-bxt-nxt-v1-tight-crop.jpg)
+- [NXT-only v2 diagnostic](../projects/m81-m82-2014-03-03/docs/images/m81-m82-20140303-nxt-calm-v2-dark-tight-crop.jpg)
+
+Summary process:
+
+1. Searched the local archive for M81/M82 aliases and found one by-date session, old stacking/processing artifacts, and a finished-work JPEG.
+2. Selected the curated 2014-03-03 `good` set as the primary source: 45 x 180s ISO1600 Canon EOS 60D lights, +24 to +49 C, for 135 minutes total integration.
+3. Found that the old DSS stack used 40 of the current 45 good frames, 49 darks, no flats, and 2h total exposure.
+4. Chose all 45 good frames for the first modern baseline because the five DSS-omitted frames are late +30 C low-stdev frames, not obvious rejects.
+5. Identified `dark/canon-eos-60d/library-02/180s-1600iso/*c` as the primary same-duration dark family: 49 CR2 darks from +31 to +45 C.
+6. Identified the same-trip flat candidate `flat/20140302-rosette-m81-m82-markarian/1by3200s/set-2`, but kept it as a diagnostic because there are no bias/dark-flat frames and this flat family has been risky on other targets.
+7. Ran WBPP with the library-02 darks and no flats. It completed, but every light needed automatic pedestal and one low-weight +30 C frame was warned as rejected.
+8. Ran a no-dark/no-flats WBPP control because the broad-temperature dark library looked risky. This branch completed with a calmer linked-STF preview and became the current baseline.
+9. Ran Phase 2 on both branches with ABE, ImageSolver, SPCC using Canon EOS 60D filters, SCNR, and MLT noise reduction.
+10. Both branches solved at the ED80/reducer scale: 386.19 mm and 2.302 arcsec/px. The dark branch was rejected after Phase 2 because of severe red/blue vertical chroma streaking.
+11. Promoted the no-dark Phase 2 checkpoint, ran MaskedStretch at target background 0.085, and added `scripts/pjsr/03u-m81-m82-v1-polish.js` for target-specific nonlinear finishing.
+12. Exported v1 full-frame/crop candidates, then tuned a calmer v2 crop that keeps M81, M82, and the upper-left companion while avoiding the old green/brown background.
+13. Responded to review feedback by exporting a v3 detail/recentered crop: the crop is centered on the pair's visual midpoint, sky cleanup is reduced near galaxy luminance, and M82 receives stronger local contrast to avoid the smudged look.
+14. Exported a v4 tight crop from the same v3 detail image, preserving the corrected center while trimming more sky around the pair.
+15. After BlurXTerminator and NoiseXTerminator were licensed, added reusable Phase 2 plugin scripts and built a BXT/NXT branch from the accepted no-dark SPCC checkpoint, before old stock MLT denoise.
+16. Exported `m81-m82-20140303-bxt-nxt-v1-tight-crop.jpg` with the same tight centered crop as v4 for direct comparison, then rejected it after visual crop review showed worse colored scratch/streak noise in the background.
+17. Tested NXT-only calm variants from the SCNR linear checkpoint. The darker v2 diagnostic reduced chroma but still had worse luminance/high-pass sky texture than v4.
+18. Close-crop review of M81 showed v4 is also not final-quality; it is only the least-bad reference until upstream calibration/integration improves the vertical pattern noise.
+
+Primary feedback signals to watch:
+
+- The wide temperature range may make the primary dark calibration too aggressive for cooler frames.
+- The dark-calibrated branch confirmed that risk through pedestal warnings and vertical chroma streaking.
+- The accepted no-dark branch still has residual vertical patterning, so legacy v4 is only a least-bad reference rather than a polished final.
+- BXT/NXT v1 showed why visual crop review matters: aggregate metrics looked better, but the background artifacts became more objectionable.
+- NXT-only v2 lowered chroma noise but did not solve the underlying no-dark pattern/luminance texture.
+- Further plugin tuning should wait for a cleaner integrated master.
+- The old green/brown finished-work background is useful historical context but not color truth.
+- M81's faint arms and M82's dust/starburst structure should stay visible without making the sky noisy.
+- SN 2014J can be checked or annotated separately, while the main review image stays unmarked.
+
+## M45 / Pleiades 2013-12-30
+
+Current result: v2 portrait-crop review candidate from the dark-calibrated no-flats branch.
+
+Detailed notes:
+
+- [Review checkpoint](../projects/m45-pleiades-2013-12-30/docs/review-2026-05-27.md)
+- [Status](../projects/m45-pleiades-2013-12-30/docs/status.md)
+- [Processing journey](../projects/m45-pleiades-2013-12-30/docs/processing-journey.md)
+- [Pipeline](../projects/m45-pleiades-2013-12-30/docs/pipeline.md)
+- [M45 / Pleiades processing research](../projects/m45-pleiades-2013-12-30/docs/research/01-m45-pleiades-processing.md)
+- [Original 2013 processing evidence](../projects/m45-pleiades-2013-12-30/docs/original-2013-processing.md)
+- [2013 finished-work result](../projects/m45-pleiades-2013-12-30/docs/images/original-2013-finished-work.jpg)
+- [2026 v1 full-frame candidate](../projects/m45-pleiades-2013-12-30/docs/images/m45-20131230-v1-polish.jpg)
+- [2026 v2 portrait crop](../projects/m45-pleiades-2013-12-30/docs/images/m45-20131230-v2-portrait-crop.jpg)
+
+Summary process:
+
+1. Searched the local archive for Pleiades aliases and found the main 2013-12-30 M45 folder, a January 2013 Jupiter/Pleiades wide-field folder, old stacking/processing artifacts, and a finished-work JPEG.
+2. Selected the curated 2013-12-30 `good` set as the primary source: 12 x 240s ISO1600 Canon EOS 60D lights, +27 to +31 C, for 48 minutes total integration.
+3. Used the Canon EOS 60D 240s ISO1600 dark library as the primary calibration support, with no flats or bias.
+4. Ran WBPP for the primary dark-calibrated/no-flats branch. All 12 lights registered; automatic output pedestals were applied after calibration warnings.
+5. Rendered linked and unlinked STF previews. The raw integrated dust signal was strong but very green before color calibration.
+6. Ran Phase 2 with ABE, ImageSolver, SPCC using Canon EOS 60D filters, SCNR, and MLT noise reduction.
+7. Plate solving confirmed the ED80/reducer-scale interpretation: 386.02 mm focal length, 2.303 arcsec/px, and a 3d17m x 2d13m field.
+8. Built a conservative MaskedStretch checkpoint and a target-specific nonlinear polish script, `scripts/pjsr/03p-m45-v1-polish.js`, to shape blue reflection dust, calm low-sky chroma, and restrain bright star halos.
+9. Exported `m45-20131230-v1-polish.jpg` as the first modern review candidate.
+10. Ran a no-dark/no-flats WBPP control because of the primary branch's pedestal warnings. It completed but showed stronger broad-field gradient and no color advantage, so it was rejected as the baseline.
+11. Cropped the v1 polish into `m45-20131230-v2-portrait-crop.jpg`, a portrait review candidate that keeps the cluster and main reflection dust while dropping less useful side margin.
+
+Primary feedback signals:
+
+- The historical finished-work JPEG proved the data contains real blue reflection nebulosity.
+- Linked-STF previews showed that raw color was not trustworthy before SPCC.
+- Plate solving corrected the stale EXIF `50.0 mm` assumption.
+- The no-dark control showed that dropping dark calibration did not improve the baseline.
+- The current open review question is presentation taste: v2 portrait crop versus the wider v1 landscape view, plus whether the final pass should be brighter.
+
 ## M31 / Andromeda 2013
 
 Current result: v3 ED80-aware PixInsight export.
@@ -239,7 +329,8 @@ Across the processed targets, the repeatable pattern is:
 3. Run WBPP as Phase 1 with calibration choices documented.
 4. Plate-solve once on integrated masters, not inside headless WBPP.
 5. Run target-appropriate linear cleanup and color calibration.
-6. Export small previews for comparison.
-7. Tune scripts only after inspecting outputs or diagnostic measurements.
-8. Keep generated XISF/TIFF/FITS products under ignored `work/` directories.
-9. Check in only source scripts, notes, and small documentation previews.
+6. Use BlurXTerminator/NoiseXTerminator as the current default linear plugin branch when appropriate, while preserving stock diagnostics.
+7. Export small previews for comparison.
+8. Tune scripts only after inspecting outputs or diagnostic measurements.
+9. Keep generated XISF/TIFF/FITS products under ignored `work/` directories.
+10. Check in only source scripts, notes, and small documentation previews.
