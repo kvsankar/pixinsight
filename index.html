@@ -1,0 +1,520 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PixInsight Final Images</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #101311;
+      --ink: #f4f0e8;
+      --muted: #c8c0b3;
+      --line: rgba(255, 255, 255, 0.17);
+      --panel: rgba(22, 25, 23, 0.78);
+      --accent: #d1a45f;
+      --accent-2: #70aaa7;
+      --shadow: 0 24px 70px rgba(0, 0, 0, 0.42);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--ink);
+      letter-spacing: 0;
+    }
+
+    button {
+      font: inherit;
+      letter-spacing: 0;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .page {
+      min-height: 100vh;
+      padding: 24px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 18px;
+      max-width: 1480px;
+      margin: 0 auto 20px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2rem, 4vw, 4.6rem);
+      line-height: 0.95;
+      font-weight: 780;
+    }
+
+    .subtitle {
+      margin: 8px 0 0;
+      color: var(--muted);
+      max-width: 760px;
+      line-height: 1.5;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 9px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 9px 13px;
+      background: rgba(255, 255, 255, 0.07);
+      color: var(--ink);
+      white-space: nowrap;
+    }
+
+    .nav-links a:hover,
+    .nav-links a:focus-visible {
+      background: rgba(255, 255, 255, 0.13);
+      outline: none;
+    }
+
+    .final-grid {
+      max-width: 1480px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+    }
+
+    .image-card {
+      position: relative;
+      min-height: clamp(320px, 42vw, 620px);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow: hidden;
+      padding: 0;
+      cursor: zoom-in;
+      text-align: left;
+      color: var(--ink);
+      background: #090a09;
+      box-shadow: var(--shadow);
+    }
+
+    .image-card img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transform: scale(1.002);
+      transition: transform 220ms ease, filter 220ms ease;
+    }
+
+    .image-card:hover img,
+    .image-card:focus-visible img {
+      transform: scale(1.025);
+      filter: brightness(1.08);
+    }
+
+    .image-card:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+    }
+
+    .card-shade {
+      position: absolute;
+      inset: auto 0 0;
+      min-height: 42%;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.82), rgba(0, 0, 0, 0.38), transparent);
+      pointer-events: none;
+    }
+
+    .card-copy {
+      position: absolute;
+      inset: auto 0 0;
+      padding: 22px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .card-copy h2 {
+      margin: 0;
+      font-size: clamp(1.35rem, 2.4vw, 2.15rem);
+      line-height: 1.05;
+      font-weight: 760;
+    }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    .meta span {
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 999px;
+      padding: 5px 8px;
+      background: rgba(0, 0, 0, 0.34);
+      color: #e4ddd2;
+      font-size: 0.78rem;
+      line-height: 1;
+      font-weight: 680;
+    }
+
+    .card-copy p {
+      margin: 0;
+      color: #ddd6ca;
+      line-height: 1.42;
+      max-width: 54ch;
+    }
+
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(5, 6, 5, 0.94);
+      display: none;
+      z-index: 100;
+      color: white;
+      overflow: hidden;
+    }
+
+    .lightbox.open {
+      display: grid;
+      height: 100dvh;
+      grid-template-rows: auto minmax(0, 1fr) auto;
+    }
+
+    .lightbox-top,
+    .lightbox-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px 18px;
+      background: rgba(0, 0, 0, 0.32);
+    }
+
+    .lightbox-title {
+      min-width: 0;
+    }
+
+    .lightbox-title strong,
+    .lightbox-title span {
+      display: block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .lightbox-title span {
+      color: #cfc7bb;
+      margin-top: 2px;
+      font-size: 0.92rem;
+    }
+
+    .lightbox-stage {
+      position: relative;
+      min-width: 0;
+      min-height: 0;
+      display: grid;
+      place-items: center;
+      padding: 10px 76px;
+      overflow: hidden;
+    }
+
+    .lightbox-stage img {
+      width: 100%;
+      height: 100%;
+      min-width: 0;
+      min-height: 0;
+      object-fit: contain;
+      display: block;
+      background: #050505;
+      box-shadow: 0 20px 80px rgba(0, 0, 0, 0.56);
+    }
+
+    .icon-button {
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(12, 15, 14, 0.58);
+      color: white;
+      width: 44px;
+      height: 44px;
+      border-radius: 999px;
+      display: inline-grid;
+      place-items: center;
+      padding: 0;
+      cursor: pointer;
+      box-shadow: 0 12px 34px rgba(0, 0, 0, 0.36);
+      backdrop-filter: blur(12px);
+      transition: transform 150ms ease, background 150ms ease, border-color 150ms ease;
+    }
+
+    .icon-button svg {
+      width: 22px;
+      height: 22px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2.35;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .icon-button:hover,
+    .icon-button:focus-visible {
+      background: rgba(255, 255, 255, 0.16);
+      border-color: rgba(255, 255, 255, 0.42);
+      transform: translateY(-1px);
+      outline: none;
+    }
+
+    .nav-button {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 48px;
+      height: 64px;
+      background: rgba(12, 15, 14, 0.48);
+    }
+
+    .nav-button:hover,
+    .nav-button:focus-visible {
+      transform: translateY(calc(-50% - 1px));
+    }
+
+    .nav-button svg {
+      width: 30px;
+      height: 30px;
+      stroke-width: 2.15;
+    }
+
+    .nav-button.prev { left: 18px; }
+    .nav-button.next { right: 18px; }
+
+    .lightbox-bottom {
+      color: #ddd6ca;
+      line-height: 1.4;
+      font-size: 0.92rem;
+    }
+
+    @media (max-width: 760px) {
+      .page {
+        padding: 16px;
+      }
+
+      .topbar {
+        display: grid;
+      }
+
+      .nav-links {
+        justify-content: flex-start;
+      }
+
+      .image-card {
+        min-height: 340px;
+      }
+
+      .lightbox-stage {
+        padding: 8px 12px 72px;
+      }
+
+      .nav-button {
+        top: auto;
+        bottom: 14px;
+        transform: none;
+      }
+
+      .nav-button:hover,
+      .nav-button:focus-visible {
+        transform: translateY(-1px);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="topbar">
+      <div>
+        <h1>PixInsight Finals</h1>
+        <p class="subtitle">Approved results from the repeatable astrophotography processing projects.</p>
+      </div>
+      <nav class="nav-links" aria-label="Repository pages">
+        <a href="project-gallery.html">Process Gallery</a>
+        <a href="https://github.com/kvsankar/pixinsight#readme">Project README</a>
+      </nav>
+    </header>
+
+    <main id="finalGrid" class="final-grid" aria-label="Final images"></main>
+  </div>
+
+  <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Final image viewer">
+    <div class="lightbox-top">
+      <div class="lightbox-title">
+        <strong id="lightboxTitle"></strong>
+        <span id="lightboxSubtitle"></span>
+      </div>
+      <button id="lightboxClose" class="icon-button" type="button" aria-label="Close">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M18 6 6 18M6 6l12 12"></path>
+        </svg>
+      </button>
+    </div>
+    <div class="lightbox-stage">
+      <button id="lightboxPrev" class="icon-button nav-button prev" type="button" aria-label="Previous image">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="m15 18-6-6 6-6"></path>
+        </svg>
+      </button>
+      <img id="lightboxImage" alt="">
+      <button id="lightboxNext" class="icon-button nav-button next" type="button" aria-label="Next image">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="m9 18 6-6-6-6"></path>
+        </svg>
+      </button>
+    </div>
+    <div class="lightbox-bottom">
+      <span id="lightboxNote"></span>
+      <span id="lightboxCounter"></span>
+    </div>
+  </div>
+
+  <script>
+    const finals = [
+      {
+        title: "M31 / Andromeda",
+        subtitle: "2013 ED80-aware v3",
+        src: "projects/m31-andromeda-2013/docs/images/pixinsight-v3-ed80.jpg",
+        meta: ["27 x 240s", "Canon EOS 60D", "Accepted v3"],
+        note: "Modern PixInsight result with solved ED80 scale, SPCC color, v2 color cleanup, and v3 star/detail polish.",
+        docs: "projects/m31-andromeda-2013/docs/status.html"
+      },
+      {
+        title: "Horsehead / Flame",
+        subtitle: "2013-2016 mixed-camera v1",
+        src: "projects/horsehead-flame-2013-2016/docs/images/horsehead-04c-v1-polish.jpg",
+        meta: ["60D + modded T1i", "04c blend", "Accepted v1"],
+        note: "Accepted mixed-camera result using 60D broadband color plus clean and half-weight washed T1i red support.",
+        docs: "projects/horsehead-flame-2013-2016/docs/final-v1.html"
+      },
+      {
+        title: "Orion Nebula / M42",
+        subtitle: "2013 final v1",
+        src: "projects/orion-nebula-m42-2013/docs/images/m42-2013-v8-presentation.jpg",
+        meta: ["31 x 180s + 300s support", "200 mm lens", "Accepted v1"],
+        note: "Accepted v8 presentation with controlled core blend and conservative 300s faint-nebulosity support.",
+        docs: "projects/orion-nebula-m42-2013/docs/final-v1.html"
+      },
+      {
+        title: "Trifid / Lagoon",
+        subtitle: "March 2014 final v1",
+        src: "projects/trifid-lagoon-2014/docs/images/trifid-lagoon-20140302-final-v1.jpg",
+        meta: ["38 x 120s", "March branch", "Accepted v1"],
+        note: "Restrained final from the March no-dark/no-flats baseline after rejecting the May path and aggressive vivid branch.",
+        docs: "projects/trifid-lagoon-2014/docs/final-v1.html"
+      }
+    ];
+
+    const state = {
+      index: 0
+    };
+
+    const els = {
+      grid: document.getElementById("finalGrid"),
+      lightbox: document.getElementById("lightbox"),
+      image: document.getElementById("lightboxImage"),
+      title: document.getElementById("lightboxTitle"),
+      subtitle: document.getElementById("lightboxSubtitle"),
+      note: document.getElementById("lightboxNote"),
+      counter: document.getElementById("lightboxCounter"),
+      close: document.getElementById("lightboxClose"),
+      prev: document.getElementById("lightboxPrev"),
+      next: document.getElementById("lightboxNext")
+    };
+
+    function esc(value) {
+      return String(value == null ? "" : value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;");
+    }
+
+    function renderGrid() {
+      els.grid.innerHTML = finals.map((item, index) => `
+        <button class="image-card" type="button" data-index="${index}" aria-label="Open ${esc(item.title)}">
+          <img src="${esc(item.src)}" alt="${esc(item.title)}" loading="${index === 0 ? "eager" : "lazy"}">
+          <span class="card-shade"></span>
+          <span class="card-copy">
+            <span class="meta">${item.meta.map(label => `<span>${esc(label)}</span>`).join("")}</span>
+            <h2>${esc(item.title)}</h2>
+            <p>${esc(item.subtitle)}</p>
+          </span>
+        </button>
+      `).join("");
+    }
+
+    function openLightbox(index) {
+      state.index = index;
+      renderLightbox();
+      els.lightbox.classList.add("open");
+      document.body.style.overflow = "hidden";
+      els.close.focus();
+    }
+
+    function closeLightbox() {
+      els.lightbox.classList.remove("open");
+      document.body.style.overflow = "";
+    }
+
+    function renderLightbox() {
+      const item = finals[state.index];
+      els.image.src = item.src;
+      els.image.alt = item.title;
+      els.title.textContent = item.title;
+      els.subtitle.textContent = item.subtitle;
+      els.note.textContent = item.note;
+      els.counter.textContent = `${state.index + 1} / ${finals.length}`;
+    }
+
+    function move(delta) {
+      state.index = (state.index + delta + finals.length) % finals.length;
+      renderLightbox();
+    }
+
+    renderGrid();
+
+    els.grid.addEventListener("click", event => {
+      const button = event.target.closest("[data-index]");
+      if (!button) return;
+      openLightbox(Number(button.dataset.index));
+    });
+
+    els.close.addEventListener("click", closeLightbox);
+    els.prev.addEventListener("click", () => move(-1));
+    els.next.addEventListener("click", () => move(1));
+
+    els.lightbox.addEventListener("click", event => {
+      if (event.target === els.lightbox) closeLightbox();
+    });
+
+    document.addEventListener("keydown", event => {
+      if (!els.lightbox.classList.contains("open")) return;
+      if (event.key === "Escape") closeLightbox();
+      if (event.key === "ArrowLeft") move(-1);
+      if (event.key === "ArrowRight") move(1);
+    });
+  </script>
+</body>
+</html>
