@@ -70,6 +70,29 @@
       line-height: 1.55;
     }
 
+    .site-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .site-links a {
+      color: var(--accent);
+      text-decoration: none;
+      border: 1px solid rgba(45, 122, 120, 0.28);
+      border-radius: 999px;
+      padding: 7px 10px;
+      background: #ffffff;
+      white-space: nowrap;
+    }
+
+    .site-links a:hover,
+    .site-links a:focus-visible {
+      border-color: var(--accent);
+      outline: none;
+    }
+
     .project-pills {
       display: flex;
       flex-wrap: wrap;
@@ -532,6 +555,11 @@
       <div class="header-inner">
         <h1>PixInsight Project Gallery</h1>
         <p class="lede">A static review surface for the astrophotography projects in this repository: processing branches, decision points, comparison images, and final or candidate JPEGs.</p>
+        <nav class="site-links" aria-label="Repository pages">
+          <a href="index.html">Image Picks</a>
+          <a href="intent.html">Project Intent</a>
+          <a href="https://github.com/kvsankar/pixinsight#readme">Project README</a>
+        </nav>
         <nav id="projectPills" class="project-pills" aria-label="Projects"></nav>
       </div>
     </header>

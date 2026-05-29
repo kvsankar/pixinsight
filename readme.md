@@ -19,6 +19,8 @@ The current review-stage targets are `projects/m45-pleiades-2013-12-30` and `pro
 Start here for the repository structure:
 
 - [Project layout](docs/project-layout.md) - how the repo is organized for more targets and local-only work products.
+- [Image picks](index.html) - selected finals and presentation candidates with full-screen lightbox review.
+- [Project intent](intent.html) - short explanation of the AI-assisted processing experiment and what it does or does not claim.
 - [Project gallery](project-gallery.html) - static project/process tree viewer with thumbnail lightbox review.
 - [New project playbook](docs/new-project-playbook.md) - repeatable archive inventory, target research, planning, processing, review, and finalization procedure for new targets.
 - [RC Astro plugin workflow](docs/rc-astro-workflow.md) - shared BXT/NXT/SXT phase order, guardrails, branch naming, and older-target reprocessing notes.

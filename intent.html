@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PixInsight AI Processing Intent</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #101311;
+      --ink: #f4f0e8;
+      --muted: #c8c0b3;
+      --line: rgba(255, 255, 255, 0.18);
+      --accent: #d1a45f;
+      --accent-2: #70aaa7;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      letter-spacing: 0;
+      overflow-x: hidden;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .hero {
+      min-height: min(58vh, 560px);
+      display: grid;
+      align-content: end;
+      padding: clamp(16px, 3vw, 42px);
+      background:
+        linear-gradient(180deg, rgba(10, 12, 11, 0.38), rgba(10, 12, 11, 0.86)),
+        url("projects/m31-andromeda-2013/docs/images/pixinsight-v3-ed80.jpg") center 43% / cover;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .hero-inner,
+    main {
+      width: min(1120px, 100%);
+      margin: 0 auto;
+    }
+
+    .top-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+      margin-bottom: clamp(70px, 13vh, 150px);
+    }
+
+    .top-links a {
+      text-decoration: none;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 9px 13px;
+      background: rgba(0, 0, 0, 0.34);
+      color: var(--ink);
+      white-space: nowrap;
+    }
+
+    .top-links a:hover,
+    .top-links a:focus-visible {
+      background: rgba(255, 255, 255, 0.13);
+      outline: none;
+    }
+
+    h1 {
+      max-width: 850px;
+      margin: 0;
+      font-size: clamp(2.2rem, 6vw, 5rem);
+      line-height: 0.95;
+      font-weight: 780;
+    }
+
+    .lede {
+      max-width: 780px;
+      margin: 14px 0 0;
+      color: #e4ded5;
+      font-size: clamp(1rem, 1.5vw, 1.22rem);
+      line-height: 1.55;
+    }
+
+    main {
+      padding: clamp(28px, 4vw, 56px) clamp(16px, 3vw, 42px) 60px;
+    }
+
+    .section-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: clamp(22px, 4vw, 56px);
+      align-items: start;
+    }
+
+    section {
+      border-top: 1px solid var(--line);
+      padding-top: 18px;
+    }
+
+    h2 {
+      margin: 0 0 10px;
+      color: var(--accent);
+      font-size: clamp(1.2rem, 1.8vw, 1.65rem);
+      line-height: 1.12;
+    }
+
+    p {
+      margin: 0 0 14px;
+      color: var(--muted);
+      line-height: 1.62;
+    }
+
+    strong {
+      color: var(--ink);
+    }
+
+    .answer {
+      margin-top: clamp(26px, 4vw, 46px);
+      border-color: rgba(112, 170, 167, 0.55);
+    }
+
+    .answer h2 {
+      color: var(--accent-2);
+    }
+
+    .image-strip {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: clamp(28px, 4vw, 44px);
+    }
+
+    .image-strip img {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      object-fit: cover;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      display: block;
+    }
+
+    @media (max-width: 760px) {
+      .section-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .top-links {
+        margin-bottom: 56px;
+      }
+
+      .top-links a {
+        flex: 1 1 auto;
+        text-align: center;
+      }
+
+      .image-strip {
+        grid-template-columns: 1fr;
+      }
+
+      .image-strip img {
+        aspect-ratio: 16 / 9;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-inner">
+      <nav class="top-links" aria-label="Repository pages">
+        <a href="index.html">Image Picks</a>
+        <a href="project-gallery.html">Process Gallery</a>
+        <a href="https://github.com/kvsankar/pixinsight#readme">Project README</a>
+      </nav>
+      <h1>Why This Exists</h1>
+      <p class="lede">This project is an experiment in reducing the manual burden of astrophotography processing, getting a fresh outside perspective on old data, and testing how far AI-assisted workflows can go without hiding the decision trail.</p>
+    </div>
+  </header>
+
+  <main>
+    <div class="section-grid">
+      <section>
+        <h2>The Intent</h2>
+        <p>I am not trying to replace PixInsight with a mystery one-click filter. The goal is to make the boring and repetitive work more repeatable: archive inventory, target research, calibration planning, script generation, parameter trials, comparison exports, and documentation.</p>
+        <p>The useful AI role is a second processor at the desk: it can notice patterns, propose branches, write scripts, compare outcomes, and keep notes while I make the final taste and trust calls.</p>
+      </section>
+
+      <section>
+        <h2>What To Expect</h2>
+        <p>The image page shows selected results. The process gallery shows the more important part: the paths taken, the branches rejected, and the places where the data or the automation pushed back.</p>
+        <p>Some projects land cleanly as accepted finals. Others remain presentation candidates because the data, gradients, color calibration, or noise do not justify a stronger claim.</p>
+      </section>
+    </div>
+
+    <section class="answer">
+      <h2>Can AI Choose The Knobs?</h2>
+      <p><strong>Increasingly, yes for drafts and parameter search. Not yet, reliably, for an unattended final.</strong> A good AI-assisted routine can inspect a stack, choose target-specific settings, run alternatives, and reduce hard-coded stretch, saturation, denoise, and sharpening values. That is already more useful than a rigid script.</p>
+      <p>But the dependable workflow is still hybrid: deterministic calibration and stacking, scriptable processing branches, AI or plugin help for denoise/deblur/star separation, and human review before calling something final. M81/M82 is a useful warning: better tools did not magically fix noisy data, and some plugin branches made artifacts more obvious.</p>
+      <p>So the practical answer to the Friday-night question is: AI can get you closer to a good Saturday-morning draft with fewer hand-tuned constants. A trusted final still benefits from review, comparison, and an honest record of what failed.</p>
+    </section>
+
+    <div class="image-strip" aria-label="Example selected results">
+      <img src="projects/horsehead-flame-2013-2016/docs/images/horsehead-04c-v1-polish.jpg" alt="Horsehead and Flame Nebula selected result">
+      <img src="projects/rosette-2014-03-02/docs/images/rosette-starxterminator-v3b.jpg" alt="Rosette Nebula selected presentation candidate">
+      <img src="projects/trifid-lagoon-2014/docs/images/trifid-lagoon-20140302-final-v1.jpg" alt="Trifid and Lagoon Nebula final result">
+    </div>
+  </main>
+</body>
+</html>
