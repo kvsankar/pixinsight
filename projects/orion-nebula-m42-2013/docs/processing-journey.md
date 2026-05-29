@@ -212,3 +212,50 @@ Acceptance rationale:
 - v8 restores more background nebulosity than v7 by using the registered 300s layer conservatively.
 - The additional 300s texture/noise is accepted as the cost of the deeper faint-nebulosity presentation.
 - The core remains better controlled than the 2013 historical JPEG, while the documentation remains clear that this is not true Trapezium recovery.
+
+## 2026-05-28 - BXT/NXT V1 Diagnostic
+
+After the RC Astro licenses were installed, ran a post-final BlurXTerminator/NoiseXTerminator diagnostic on Orion. The branch starts from the accepted 180s no-flats SPCC checkpoint before the old MLT denoise:
+
+```text
+work/02-linear-2013-m42-180s-noflats/02c-spcc.xisf
+```
+
+Linear processing:
+
+```text
+work/02-linear-2013-m42-180s-noflats-bxt-nxt/02f-bxt.xisf
+work/02-linear-2013-m42-180s-noflats-bxt-nxt/02g-bxt-nxt.xisf
+work/02-linear-2013-m42-180s-noflats-bxt-nxt/02h-bxt-nxt-scnr.xisf
+docs/images/m42-2013-bxt-nxt-linear-linked-stf.jpg
+```
+
+BXT was kept conservative (`sharpenStars=0.18`, `adjustHalos=0.03`, `sharpenNonstellar=0.25`). NXT used moderate denoise (`denoise=0.60`, `denoiseColor=0.82`, `denoiseLf=0.20`, `denoiseLfColor=0.60`, `iterations=2`, `detail=0.18`). A light SCNR pass followed the plugin pair.
+
+Nonlinear processing reused the existing M42 machinery: MaskedStretch, rich/corequiet variants, core blend, and final presentation polish. Outputs:
+
+```text
+docs/images/m42-2013-bxt-nxt-v1-rich.jpg
+docs/images/m42-2013-bxt-nxt-v1-corequiet.jpg
+docs/images/m42-2013-bxt-nxt-v1-coreblend.jpg
+docs/images/m42-2013-bxt-nxt-v1-presentation.jpg
+docs/images/m42-2013-v8-vs-bxt-nxt-v1-comparison.jpg
+docs/images/m42-2013-v8-vs-bxt-nxt-v1-core-crop.jpg
+docs/images/m42-2013-v8-vs-bxt-nxt-v1-sky-crop.jpg
+```
+
+Initial assessment: this behaves much better than the M81/M82 plugin branch. It does not turn the background into colored scratch noise, and it opens the faint field while sharpening the M42 structure. The tradeoff is a brighter, more textured sky, and the branch is 180s-only rather than a fresh plugin treatment of both the 180s base and 300s support.
+
+Review feedback preferred BXT/NXT v1 over the pre-BXT/NXT cut. A v2 branch then processed the 300s support layer through BXT/NXT, registered it to the 180s BXT/NXT branch, and blended it conservatively:
+
+```text
+work/02-linear-2013-m42-300s-flat-nodark-bxt-nxt/02h-bxt-nxt-scnr.xisf
+work/registered-to-180s-bxt-nxt/300s-02h-bxt-nxt-scnr_to_180s_bxt_nxt.xisf
+work/03-nonlinear-2013-m42-bxt-nxt-v2/03m-m42-bxt-nxt-v2-presentation.xisf
+docs/images/m42-2013-bxt-nxt-v2-presentation.jpg
+docs/images/m42-2013-v8-vs-bxt-nxt-v1-v2-comparison.jpg
+docs/images/m42-2013-v8-vs-bxt-nxt-v1-v2-core-crop.jpg
+docs/images/m42-2013-v8-vs-bxt-nxt-v1-v2-sky-crop.jpg
+```
+
+The 300s support blend uses `amount=0.12`, intentionally lower than the old v8 support blend. Initial read: v2 keeps the BXT/NXT structural improvement while adding a small amount of plugin-cleaned 300s haze. It is the current replacement candidate, pending final review.

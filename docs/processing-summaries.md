@@ -245,7 +245,7 @@ Primary feedback signals:
 
 ## Orion Nebula / M42 2013
 
-Current result: accepted final v1 from the v8 300s faint-support branch.
+Current result: accepted final v1 from the v8 300s faint-support branch. Post-final BXT/NXT v1/v2 diagnostics are now preferred as the replacement direction, with v2 as the current review candidate.
 
 Detailed notes:
 
@@ -257,6 +257,12 @@ Detailed notes:
 - [2013 finished-work result](../projects/orion-nebula-m42-2013/docs/images/original-2013-finished-work.jpg)
 - [2026 final v1 result](../projects/orion-nebula-m42-2013/docs/images/m42-2013-v8-presentation.jpg)
 - [2013 / v7 / final v1 comparison](../projects/orion-nebula-m42-2013/docs/images/m42-2013-original-v7-v8-presentation-comparison.jpg)
+- [Final v1 vs BXT/NXT v1 diagnostic](../projects/orion-nebula-m42-2013/docs/images/m42-2013-v8-vs-bxt-nxt-v1-comparison.jpg)
+- [Final v1 vs BXT/NXT v1 core crop](../projects/orion-nebula-m42-2013/docs/images/m42-2013-v8-vs-bxt-nxt-v1-core-crop.jpg)
+- [Final v1 vs BXT/NXT v1 sky crop](../projects/orion-nebula-m42-2013/docs/images/m42-2013-v8-vs-bxt-nxt-v1-sky-crop.jpg)
+- [Final v1 vs BXT/NXT v1/v2 comparison](../projects/orion-nebula-m42-2013/docs/images/m42-2013-v8-vs-bxt-nxt-v1-v2-comparison.jpg)
+- [Final v1 vs BXT/NXT v1/v2 core crop](../projects/orion-nebula-m42-2013/docs/images/m42-2013-v8-vs-bxt-nxt-v1-v2-core-crop.jpg)
+- [Final v1 vs BXT/NXT v1/v2 sky crop](../projects/orion-nebula-m42-2013/docs/images/m42-2013-v8-vs-bxt-nxt-v1-v2-sky-crop.jpg)
 
 Summary process:
 
@@ -270,6 +276,8 @@ Summary process:
 8. Built M42-specific nonlinear scripts for masked stretch, core compression, color/contrast polish, and core blending.
 9. Iterated through v3-v7 based on visual feedback about the bright core, crop placement, color, contrast, and missing background nebulosity.
 10. Accepted final v1 from v8: an adjusted-crop 180s base with quiet-core blend, conservative registered-300s faint support, and a lighter final presentation polish.
+11. Ran a later BXT/NXT v1 diagnostic from the 180s no-flats SPCC checkpoint before old MLT denoise, then exported a side-by-side comparison against final v1.
+12. After review found BXT/NXT v1 better than the pre-plugin cut, ran BXT/NXT v2 with freshly processed 300s support blended conservatively.
 
 Primary feedback signals:
 
@@ -277,6 +285,8 @@ Primary feedback signals:
 - Raw/core saturation checks kept the result honest about Trapezium limits.
 - Visual feedback showed the v6 crop was high, v7 color/contrast was improved but too conservative on background nebulosity, and v8 gave the preferred depth/crop balance.
 - The 300s support layer improved surrounding haze at the cost of some background texture; that tradeoff was accepted for final v1.
+- BXT/NXT v1 opens the faint field and sharpens structure without the M81/M82 scratch-noise failure mode.
+- BXT/NXT v2 keeps the plugin look and adds only a small amount of freshly processed 300s support; it is the current replacement candidate pending final review.
 
 ## Trifid / Lagoon 2014
 

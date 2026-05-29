@@ -19,6 +19,7 @@ The current review-stage targets are `projects/m45-pleiades-2013-12-30` and `pro
 Start here for the repository structure:
 
 - [Project layout](docs/project-layout.md) - how the repo is organized for more targets and local-only work products.
+- [Project gallery](project-gallery.html) - static project/process tree viewer with thumbnail lightbox review.
 - [New project playbook](docs/new-project-playbook.md) - repeatable archive inventory, target research, planning, processing, review, and finalization procedure for new targets.
 - [RC Astro plugin workflow](docs/rc-astro-workflow.md) - shared BXT/NXT/SXT phase order, guardrails, branch naming, and older-target reprocessing notes.
 - [Processing summaries](docs/processing-summaries.md) - concise process summaries for completed and review-stage targets.
@@ -86,7 +87,7 @@ Orion Nebula / M42 2013 processing notes:
 - [Processing pipeline](projects/orion-nebula-m42-2013/docs/pipeline.md) - M42-specific plan with HDR/core-preservation decision gates.
 - [Processing journey](projects/orion-nebula-m42-2013/docs/processing-journey.md) - chronological record of the inventory, planning decision, and Phase 1 diagnostic runs.
 - [M42 processing research](projects/orion-nebula-m42-2013/docs/research/01-m42-processing.md) - web findings about M42 HDR processing and Trapezium preservation.
-- [2026 final v1 result](projects/orion-nebula-m42-2013/docs/images/m42-2013-v8-presentation.jpg) and [2013/v7/final comparison](projects/orion-nebula-m42-2013/docs/images/m42-2013-original-v7-v8-presentation-comparison.jpg) - accepted M42/M43/Running Man nonlinear export and historical comparison.
+- [2026 final v1 result](projects/orion-nebula-m42-2013/docs/images/m42-2013-v8-presentation.jpg), [2013/v7/final comparison](projects/orion-nebula-m42-2013/docs/images/m42-2013-original-v7-v8-presentation-comparison.jpg), and [final v1 vs BXT/NXT v1/v2 diagnostic](projects/orion-nebula-m42-2013/docs/images/m42-2013-v8-vs-bxt-nxt-v1-v2-comparison.jpg) - accepted M42/M43/Running Man nonlinear export and post-final plugin replacement comparison, with close core/sky crops linked from the project docs.
 
 Trifid / Lagoon 2014 processing notes:
 

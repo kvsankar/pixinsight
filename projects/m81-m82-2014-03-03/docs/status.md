@@ -33,7 +33,7 @@ PHASE 3 - Nonlinear processing/export              COMPARISONS COMPLETE; FINAL B
 | Primary usable integration | 45 x 180s = 135 min / 2h15m |
 | Historical DSS integration | 40 x 180s = 120 min / 2h, 49 darks, no flats |
 | Historical reference | `docs/images/original-2014-finished-work.jpg` |
-| Current reference | `docs/images/m81-m82-20140303-v4-detail-tight-crop.jpg` |
+| Least-bad reference, not final | `docs/images/m81-m82-20140303-v4-detail-tight-crop.jpg` |
 | Current blocker | Close-crop review shows vertical colored streaking in both BXT/NXT v1 and legacy v4; this is likely upstream pattern noise, not a nonlinear polish problem |
 
 ## Archive Search Results
@@ -157,7 +157,7 @@ Current calibration decision:
 | `docs/images/m81-m82-20140303-v3-detail-recentered-crop.jpg` | Current v3 recentered detail crop JPEG review candidate |
 | `work/03-nonlinear-20140303-nodark-v1/03u-m81-m82-v4-detail-tight-crop.xisf` | Current v4 tighter detail crop XISF |
 | `work/03-nonlinear-20140303-nodark-v1/m81-m82-20140303-v4-detail-tight-crop.tif` | Current v4 tighter detail crop TIFF export |
-| `docs/images/m81-m82-20140303-v4-detail-tight-crop.jpg` | Current v4 tighter detail crop JPEG review candidate |
+| `docs/images/m81-m82-20140303-v4-detail-tight-crop.jpg` | Least-bad v4 tighter detail crop JPEG reference; not accepted as final |
 | `work/02-linear-20140303-good-nodark-bxt-nxt/02f-bxt.xisf` | BXT linear checkpoint from accepted no-dark SPCC image, rejected diagnostic |
 | `work/02-linear-20140303-good-nodark-bxt-nxt/02g-bxt-nxt.xisf` | BXT/NXT linear checkpoint, rejected diagnostic |
 | `docs/images/m81-m82-20140303-bxt-nxt-linear-linked-stf.jpg` | Linked-STF preview of BXT/NXT linear checkpoint |

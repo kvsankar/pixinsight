@@ -2,10 +2,18 @@
 
 Final v1 is the accepted 2026 PixInsight presentation result for the February 2013 Orion Nebula / M42 data.
 
+Post-final note: later BXT/NXT v1/v2 diagnostics exist for review. BXT/NXT is now the preferred replacement direction after visual review, but this page still records the previously accepted final v1 result.
+
 ## Accepted Output
 
 - [Final v1 JPEG](images/m42-2013-v8-presentation.jpg)
 - [2013 / v7 / final v1 comparison](images/m42-2013-original-v7-v8-presentation-comparison.jpg)
+- [Final v1 vs BXT/NXT v1 diagnostic](images/m42-2013-v8-vs-bxt-nxt-v1-comparison.jpg)
+- [Final v1 vs BXT/NXT v1 core crop](images/m42-2013-v8-vs-bxt-nxt-v1-core-crop.jpg)
+- [Final v1 vs BXT/NXT v1 sky crop](images/m42-2013-v8-vs-bxt-nxt-v1-sky-crop.jpg)
+- [Final v1 vs BXT/NXT v1/v2 comparison](images/m42-2013-v8-vs-bxt-nxt-v1-v2-comparison.jpg)
+- [Final v1 vs BXT/NXT v1/v2 core crop](images/m42-2013-v8-vs-bxt-nxt-v1-v2-core-crop.jpg)
+- [Final v1 vs BXT/NXT v1/v2 sky crop](images/m42-2013-v8-vs-bxt-nxt-v1-v2-sky-crop.jpg)
 
 The final PixInsight work products are under the ignored project `work/` directory:
 

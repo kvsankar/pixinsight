@@ -1,7 +1,7 @@
 # Orion Nebula / M42 2013 Processing - Status
 
-**As of:** 2026-05-27 IST, source inventory, web research, Phase 1 diagnostics, Phase 2 comparisons, nonlinear refinement, crop/color revision, 300s faint-nebulosity support test, and final v1 documentation are complete.
-**Pipeline progress:** M42 final v1 accepted; optional January wide-field/context work remains separate.
+**As of:** 2026-05-28 IST, source inventory, web research, Phase 1 diagnostics, Phase 2 comparisons, nonlinear refinement, crop/color revision, 300s faint-nebulosity support test, final v1 documentation, and BXT/NXT v1/v2 replacement diagnostics are complete.
+**Pipeline progress:** M42 final v1 accepted historically; BXT/NXT is now the preferred replacement direction after review feedback, with v2 as the current review candidate. Optional January wide-field/context work remains separate.
 
 For the accepted result, see [Final v1](final-v1.md).
 For the target-specific processing plan, see [Pipeline](pipeline.md).
@@ -14,7 +14,7 @@ For the chronological log, see [Processing journey](processing-journey.md).
 PHASE 0 - Source inventory and project setup       COMPLETE
 PHASE 1 - Calibration + integration diagnostics    COMPLETE
 PHASE 2 - Linear post-integration comparison       COMPLETE
-PHASE 3 - HDR/nonlinear processing/export          COMPLETE FOR FINAL V1
+PHASE 3 - HDR/nonlinear processing/export          COMPLETE FOR FINAL V1; BXT/NXT V2 REPLACEMENT CANDIDATE PENDING FINAL REVIEW
 ```
 
 ## Dataset Summary
@@ -161,6 +161,44 @@ Historical comparison panels:
 - [2013 original vs v6 vs v7 presentation](images/m42-2013-original-v6-v7-presentation-comparison.jpg)
 - [2013 original vs v7 vs v8 presentation](images/m42-2013-original-v7-v8-presentation-comparison.jpg)
 
+## Post-Final BXT/NXT Diagnostics
+
+After BlurXTerminator and NoiseXTerminator were licensed, a first Orion plugin diagnostic was run from the accepted 180s no-flats SPCC checkpoint, before the old MLT denoise:
+
+```text
+work/02-linear-2013-m42-180s-noflats/02c-spcc.xisf
+```
+
+Settings were intentionally conservative:
+
+- BlurXTerminator: `sharpenStars=0.18`, `adjustHalos=0.03`, `sharpenNonstellar=0.25`, AI4.
+- NoiseXTerminator: color and frequency separation on, `denoise=0.60`, `denoiseColor=0.82`, `denoiseLf=0.20`, `denoiseLfColor=0.60`, `frequencyScale=5`, `iterations=2`, `detail=0.18`.
+- A light SCNR pass was applied after NXT, then the existing M42 MaskedStretch, rich/corequiet, core blend, and presentation scripts were reused.
+
+V1 review outputs:
+
+- [BXT/NXT linear linked-STF preview](images/m42-2013-bxt-nxt-linear-linked-stf.jpg)
+- [BXT/NXT v1 rich](images/m42-2013-bxt-nxt-v1-rich.jpg)
+- [BXT/NXT v1 corequiet](images/m42-2013-bxt-nxt-v1-corequiet.jpg)
+- [BXT/NXT v1 coreblend](images/m42-2013-bxt-nxt-v1-coreblend.jpg)
+- [BXT/NXT v1 presentation](images/m42-2013-bxt-nxt-v1-presentation.jpg)
+- [Accepted v8 vs BXT/NXT v1 comparison](images/m42-2013-v8-vs-bxt-nxt-v1-comparison.jpg)
+- [Accepted v8 vs BXT/NXT v1 core crop](images/m42-2013-v8-vs-bxt-nxt-v1-core-crop.jpg)
+- [Accepted v8 vs BXT/NXT v1 sky crop](images/m42-2013-v8-vs-bxt-nxt-v1-sky-crop.jpg)
+
+Review feedback: BXT/NXT v1 looks better than the pre-BXT/NXT cut. Unlike the M81/M82 experiment, this branch does not make the field collapse into colored scratch noise. It opens up faint nebulosity and gives the core/filaments a cleaner, sharper look. The tradeoff is a brighter, more textured sky, and v1 does not include a fresh BXT/NXT treatment of the 300s support layer.
+
+V2 then processed the 300s support through the same plugin path, registered it to the 180s BXT/NXT branch, and blended it conservatively (`amount=0.12`) before final presentation. Current BXT/NXT review outputs:
+
+- [BXT/NXT v2 300s support](images/m42-2013-bxt-nxt-v2-300s-support.jpg)
+- [BXT/NXT v2 300s support blend](images/m42-2013-bxt-nxt-v2-300s-supportblend.jpg)
+- [BXT/NXT v2 presentation](images/m42-2013-bxt-nxt-v2-presentation.jpg)
+- [Accepted v8 vs BXT/NXT v1 vs v2 comparison](images/m42-2013-v8-vs-bxt-nxt-v1-v2-comparison.jpg)
+- [Accepted v8 vs BXT/NXT v1 vs v2 core crop](images/m42-2013-v8-vs-bxt-nxt-v1-v2-core-crop.jpg)
+- [Accepted v8 vs BXT/NXT v1 vs v2 sky crop](images/m42-2013-v8-vs-bxt-nxt-v1-v2-sky-crop.jpg)
+
+Initial v2 read: v2 keeps the v1 structural/detail improvement and brings only a small, conservative amount of plugin-cleaned 300s haze back into the field. It is the current replacement candidate, pending final human review.
+
 ## Decisions So Far
 
 - Create one project for the Orion/M42 2013 material: `projects/orion-nebula-m42-2013`.
@@ -190,6 +228,8 @@ Historical comparison panels:
 | --- | --- |
 | `03-m42-300s-support-test` | Register/use 300s support only through masks if it improves faint outer nebulosity |
 | `final-v1` | Accepted M42/M43/Running Man result from the v8 300s faint-support branch |
+| `bxt-nxt-v1` | Post-final diagnostic from the 180s no-flats SPCC checkpoint; visually preferred to the pre-BXT/NXT cut |
+| `bxt-nxt-v2` | Current replacement candidate with freshly processed 300s support blended conservatively |
 | `wbpp-2013-orion-widefield-10s` | Separate provisional wide-field Orion branch; plate solve before true-scale claims |
 
 ## Outputs
@@ -212,5 +252,12 @@ Phase 2 linear outputs are in:
 Nonlinear candidate outputs are in:
 
 - `work/03-nonlinear-2013-m42-180s-noflats-v1/`
+- `work/02-linear-2013-m42-180s-noflats-bxt-nxt/`
+- `work/03-nonlinear-2013-m42-bxt-nxt-v1/`
+- `work/02-linear-2013-m42-300s-flat-nodark-bxt-nxt/`
+- `work/registered-to-180s-bxt-nxt/`
+- `work/03-nonlinear-2013-m42-bxt-nxt-v2/`
 - `docs/images/m42-2013-v8-presentation.jpg`
+- `docs/images/m42-2013-bxt-nxt-v1-presentation.jpg`
+- `docs/images/m42-2013-bxt-nxt-v2-presentation.jpg`
 - `docs/images/m42-2013-original-v7-v8-presentation-comparison.jpg`

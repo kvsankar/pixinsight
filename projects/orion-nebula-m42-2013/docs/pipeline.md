@@ -1,6 +1,6 @@
 # Orion Nebula / M42 2013 Processing Pipeline
 
-This plan has produced an accepted February 2013 M42 final v1 presentation result.
+This plan has produced an accepted February 2013 M42 final v1 presentation result, plus later BXT/NXT replacement diagnostics. After review, BXT/NXT is the preferred replacement direction; v2 is the current review candidate.
 
 For the accepted output and caveats, see [Final v1](final-v1.md). For source inventory and open questions, see [Status](status.md). For web findings behind the HDR strategy, see [M42 processing research](research/01-m42-processing.md).
 
@@ -50,8 +50,10 @@ Phase 2 diagnostic status:
 - Complete: `02-linear-2013-m42-180s-flat`
 - Complete: `02-linear-2013-m42-180s-noflats`
 - Complete: `02-linear-2013-m42-300s-flat-nodark`
+- Complete as post-final diagnostic: `02-linear-2013-m42-180s-noflats-bxt-nxt`
+- Complete as post-final diagnostic: `02-linear-2013-m42-300s-flat-nodark-bxt-nxt`
 - Complete: registration of 300s and 60s diagnostic masters to the 180s no-flats grid
-- Complete: nonlinear 180s no-flats refinement, crop/color revision, first 300s faint-support test, and accepted final v1 export `m42-2013-v8-presentation.jpg`
+- Complete: nonlinear 180s no-flats refinement, crop/color revision, first 300s faint-support test, accepted final v1 export `m42-2013-v8-presentation.jpg`, BXT/NXT v1 review export `m42-2013-bxt-nxt-v1-presentation.jpg`, and BXT/NXT v2 300s-support export `m42-2013-bxt-nxt-v2-presentation.jpg`
 
 Command examples below assume:
 
@@ -218,6 +220,83 @@ The 300s branch has also been run through Phase 2 and registered to the 180s no-
 
 Use this only as masked faint-signal support, not as the main baseline.
 
+### Run: BXT/NXT Linear Diagnostic
+
+Purpose: test the licensed RC Astro workflow on the accepted 180s no-flats baseline without carrying forward the old MLT denoise.
+
+Input:
+
+```text
+work/02-linear-2013-m42-180s-noflats/02c-spcc.xisf
+```
+
+Settings:
+
+```text
+BlurXTerminator AI4:
+  sharpenStars=0.18
+  adjustHalos=0.03
+  sharpenNonstellar=0.25
+  autoNonstellarPsf=true
+
+NoiseXTerminator AI3:
+  colorSeparation=true
+  frequencySeparation=true
+  denoise=0.60
+  denoiseColor=0.82
+  denoiseLf=0.20
+  denoiseLfColor=0.60
+  frequencyScale=5
+  iterations=2
+  detail=0.18
+```
+
+Output:
+
+```text
+work/02-linear-2013-m42-180s-noflats-bxt-nxt/02h-bxt-nxt-scnr.xisf
+docs/images/m42-2013-bxt-nxt-linear-linked-stf.jpg
+```
+
+Decision gate: compare close crops of the core, Running Man, faint outer haze, and representative dark sky before replacing final v1. The first BXT/NXT branch was preferred over the pre-BXT/NXT cut, then v2 added a fresh BXT/NXT version of the 300s faint-support layer.
+
+### Run: BXT/NXT 300s Support Diagnostic
+
+Purpose: make a fairer BXT/NXT comparison by processing the 300s support layer through the same plugin workflow before blending.
+
+Input:
+
+```text
+work/02-linear-2013-m42-300s-flat-nodark/02c-spcc.xisf
+```
+
+Settings:
+
+```text
+BlurXTerminator AI4:
+  sharpenStars=0.14
+  adjustHalos=0.02
+  sharpenNonstellar=0.18
+
+NoiseXTerminator AI3:
+  colorSeparation=true
+  frequencySeparation=true
+  denoise=0.68
+  denoiseColor=0.88
+  denoiseLf=0.28
+  denoiseLfColor=0.70
+  frequencyScale=5
+  iterations=2
+  detail=0.12
+```
+
+Output:
+
+```text
+work/02-linear-2013-m42-300s-flat-nodark-bxt-nxt/02h-bxt-nxt-scnr.xisf
+work/registered-to-180s-bxt-nxt/300s-02h-bxt-nxt-scnr_to_180s_bxt_nxt.xisf
+```
+
 ## Phase 3 - HDR And Master Combination
 
 Only proceed if at least two February M42 masters register cleanly and the support layer improves the result.
@@ -252,6 +331,18 @@ Accepted nonlinear result:
 
 The accepted result uses a conservative MaskedStretch, M42 core mask, HDRMultiscaleTransform, mild LocalHistogramEqualization, highlight desaturation/compression, and a crop around M42/M43/Running Man. Final v1 is the v8 branch: it nudges the crop slightly back from v7, blends a quieter core variant into the richer 180s field, adds a conservative brighten-only registered-300s support blend for faint/background nebulosity, then applies a lighter final presentation polish. The 300s support improves haze visibility but adds some background texture; that tradeoff is accepted for final v1.
 
+BXT/NXT diagnostics:
+
+- source: `work/02-linear-2013-m42-180s-noflats-bxt-nxt/02h-bxt-nxt-scnr.xisf`
+- v1 nonlinear branch: `work/03-nonlinear-2013-m42-bxt-nxt-v1/`
+- v2 nonlinear branch: `work/03-nonlinear-2013-m42-bxt-nxt-v2/`
+- v1 review JPEG: `docs/images/m42-2013-bxt-nxt-v1-presentation.jpg`
+- v2 review JPEG: `docs/images/m42-2013-bxt-nxt-v2-presentation.jpg`
+- comparison panels: `docs/images/m42-2013-v8-vs-bxt-nxt-v1-v2-comparison.jpg`, `docs/images/m42-2013-v8-vs-bxt-nxt-v1-v2-core-crop.jpg`, `docs/images/m42-2013-v8-vs-bxt-nxt-v1-v2-sky-crop.jpg`
+- close crops: `docs/images/m42-2013-v8-vs-bxt-nxt-v1-core-crop.jpg`, `docs/images/m42-2013-v8-vs-bxt-nxt-v1-sky-crop.jpg`
+
+The v1 plugin diagnostic reuses the v8 crop, rich/corequiet split, core blend, and final-presentation machinery, but with a gentler final lift because the BXT/NXT stretch already opens the faint field. Human review preferred it to the pre-BXT/NXT cut. V2 then adds freshly processed 300s support at a conservative blend amount. V2 is the current replacement candidate, pending final review.
+
 Candidate outputs to prepare after review:
 
 ```text
@@ -266,5 +357,6 @@ docs/images/orion-2013-widefield-solvedscale.jpg
 Final v1 is accepted. Future work is optional:
 
 1. Process the January 2013 Orion wide-field/context data as a separate solved-scale branch.
-2. If revisiting final v1, test only small changes to the 300s support amount or final faint lift.
-3. Do not claim true Trapezium recovery unless a better short-exposure source is found.
+2. Review BXT/NXT v2 against v1 and final v1 using the comparison panel and close crops.
+3. If v2 is accepted, update Final v1 docs or create a new `final-v2` page and commit the plugin review assets.
+4. Do not claim true Trapezium recovery unless a better short-exposure source is found.

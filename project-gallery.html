@@ -1,0 +1,1527 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PixInsight Project Gallery</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f4f5f2;
+      --ink: #18201c;
+      --muted: #68726c;
+      --line: #cbd3cc;
+      --panel: #ffffff;
+      --panel-2: #edf3f2;
+      --accent: #2d7a78;
+      --accent-2: #a75532;
+      --good: #26704f;
+      --warn: #9a6517;
+      --bad: #a83c33;
+      --info: #4f6288;
+      --shadow: 0 14px 36px rgba(20, 26, 23, 0.13);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      letter-spacing: 0;
+    }
+
+    button,
+    input {
+      font: inherit;
+      letter-spacing: 0;
+    }
+
+    .app-shell {
+      min-height: 100vh;
+    }
+
+    header {
+      border-bottom: 1px solid var(--line);
+      background: #ffffff;
+    }
+
+    .header-inner {
+      max-width: 1480px;
+      margin: 0 auto;
+      padding: 24px 28px 18px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(1.85rem, 2.6vw, 3rem);
+      line-height: 1.05;
+      font-weight: 760;
+    }
+
+    .lede {
+      max-width: 880px;
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 1rem;
+      line-height: 1.55;
+    }
+
+    .project-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 18px 0 2px;
+    }
+
+    .project-pill {
+      border: 1px solid var(--line);
+      background: #f8faf8;
+      color: var(--ink);
+      border-radius: 999px;
+      padding: 8px 13px;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+
+    .project-pill[aria-selected="true"] {
+      border-color: var(--accent);
+      background: var(--accent);
+      color: white;
+    }
+
+    main {
+      max-width: 1480px;
+      margin: 0 auto;
+      padding: 24px 28px 48px;
+    }
+
+    .project-header {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 20px;
+      align-items: start;
+      margin-bottom: 22px;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: clamp(1.45rem, 2vw, 2.2rem);
+      line-height: 1.1;
+    }
+
+    .project-status {
+      margin: 8px 0 0;
+      color: var(--muted);
+      max-width: 880px;
+      line-height: 1.5;
+    }
+
+    .doc-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      justify-content: flex-end;
+      max-width: 520px;
+    }
+
+    .doc-links a {
+      color: var(--accent);
+      text-decoration: none;
+      border: 1px solid rgba(45, 122, 120, 0.28);
+      border-radius: 999px;
+      padding: 7px 10px;
+      background: #ffffff;
+      white-space: nowrap;
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 330px;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .tree-wrap,
+    .side-wrap {
+      min-width: 0;
+    }
+
+    .section-title {
+      margin: 0 0 12px;
+      font-size: 0.84rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      font-weight: 730;
+    }
+
+    .tree {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .tree ul {
+      list-style: none;
+      margin: 0 0 0 22px;
+      padding: 0 0 0 22px;
+      border-left: 2px solid var(--line);
+    }
+
+    .tree-node {
+      margin: 0 0 18px;
+      position: relative;
+    }
+
+    .edge-label {
+      display: inline-block;
+      margin: 8px 0 10px -12px;
+      padding: 5px 9px;
+      background: #eef2ef;
+      color: #45524b;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      font-size: 0.78rem;
+      line-height: 1.2;
+    }
+
+    .node-card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .node-main {
+      padding: 14px 15px 12px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .node-title-row {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      flex-wrap: wrap;
+    }
+
+    .node-title {
+      margin: 0;
+      font-size: 1rem;
+      line-height: 1.25;
+      font-weight: 720;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
+      border-radius: 999px;
+      padding: 4px 8px;
+      color: white;
+      font-size: 0.72rem;
+      line-height: 1;
+      font-weight: 730;
+      text-transform: uppercase;
+    }
+
+    .badge.accepted { background: var(--good); }
+    .badge.review { background: var(--accent); }
+    .badge.diagnostic { background: var(--info); }
+    .badge.reference { background: #5e625d; }
+    .badge.rejected { background: var(--bad); }
+    .badge.paused { background: var(--warn); }
+
+    .node-note {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.45;
+      font-size: 0.94rem;
+    }
+
+    .thumb-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(148px, 1fr));
+      gap: 9px;
+      padding: 0 15px 15px;
+    }
+
+    .thumb {
+      width: 100%;
+      border: 1px solid #d9dfda;
+      background: #111;
+      color: white;
+      border-radius: 6px;
+      padding: 0;
+      overflow: hidden;
+      cursor: zoom-in;
+      text-align: left;
+      min-height: 132px;
+      display: grid;
+      grid-template-rows: 94px minmax(38px, auto);
+    }
+
+    .thumb img {
+      width: 100%;
+      height: 94px;
+      object-fit: cover;
+      display: block;
+      background: #1b1b1b;
+    }
+
+    .thumb span {
+      display: block;
+      padding: 7px 8px 8px;
+      font-size: 0.78rem;
+      line-height: 1.25;
+      background: #1c211e;
+    }
+
+    .side-wrap {
+      position: sticky;
+      top: 16px;
+    }
+
+    .side-panel {
+      border: 1px solid var(--line);
+      background: #ffffff;
+      border-radius: 8px;
+      padding: 14px;
+      box-shadow: var(--shadow);
+    }
+
+    .stats {
+      display: grid;
+      gap: 9px;
+    }
+
+    .stat {
+      display: grid;
+      grid-template-columns: 84px minmax(0, 1fr);
+      gap: 10px;
+      align-items: start;
+      font-size: 0.91rem;
+      line-height: 1.38;
+    }
+
+    .stat strong {
+      color: var(--muted);
+      font-size: 0.78rem;
+      text-transform: uppercase;
+    }
+
+    .all-images {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .mini-thumb {
+      border: 0;
+      background: #121513;
+      border-radius: 6px;
+      overflow: hidden;
+      padding: 0;
+      cursor: zoom-in;
+      aspect-ratio: 1.28 / 1;
+    }
+
+    .mini-thumb img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+    }
+
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(8, 10, 9, 0.92);
+      display: none;
+      z-index: 100;
+      color: white;
+      overflow: hidden;
+    }
+
+    .lightbox.open {
+      display: grid;
+      height: 100dvh;
+      grid-template-rows: auto minmax(0, 1fr) auto;
+    }
+
+    .lightbox-top,
+    .lightbox-bottom {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 18px;
+      background: rgba(0, 0, 0, 0.35);
+    }
+
+    .lightbox-title {
+      min-width: 0;
+    }
+
+    .lightbox-title strong,
+    .lightbox-title span {
+      display: block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .lightbox-title span {
+      color: #cbd2cc;
+      font-size: 0.9rem;
+      margin-top: 2px;
+    }
+
+    .lightbox-stage {
+      position: relative;
+      min-height: 0;
+      min-width: 0;
+      display: grid;
+      place-items: center;
+      padding: 10px 74px;
+      overflow: hidden;
+    }
+
+    .lightbox-stage img {
+      width: 100%;
+      height: 100%;
+      min-width: 0;
+      min-height: 0;
+      object-fit: contain;
+      display: block;
+      box-shadow: 0 20px 80px rgba(0, 0, 0, 0.55);
+      background: #050505;
+    }
+
+    .lightbox-button {
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      background: rgba(12, 15, 14, 0.58);
+      color: white;
+      border-radius: 999px;
+      width: 44px;
+      height: 44px;
+      cursor: pointer;
+      display: inline-grid;
+      place-items: center;
+      padding: 0;
+      box-shadow: 0 12px 34px rgba(0, 0, 0, 0.36);
+      backdrop-filter: blur(12px);
+      transition: transform 150ms ease, background 150ms ease, border-color 150ms ease;
+    }
+
+    .lightbox-button svg {
+      width: 22px;
+      height: 22px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2.35;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .lightbox-button:hover,
+    .lightbox-button:focus-visible {
+      background: rgba(255, 255, 255, 0.16);
+      border-color: rgba(255, 255, 255, 0.42);
+      transform: translateY(-1px);
+      outline: none;
+    }
+
+    .project-pill:hover,
+    .thumb:hover,
+    .mini-thumb:hover,
+    .doc-links a:hover {
+      filter: brightness(1.04);
+    }
+
+    .nav-button {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 48px;
+      height: 64px;
+      border-radius: 999px;
+      background: rgba(12, 15, 14, 0.48);
+    }
+
+    .nav-button:hover,
+    .nav-button:focus-visible {
+      transform: translateY(calc(-50% - 1px));
+    }
+
+    .nav-button svg {
+      width: 30px;
+      height: 30px;
+      stroke-width: 2.15;
+    }
+
+    .close-button {
+      flex: 0 0 auto;
+    }
+
+    .nav-button.prev { left: 18px; }
+    .nav-button.next { right: 18px; }
+
+    .lightbox-bottom {
+      color: #dce1dc;
+      font-size: 0.92rem;
+      line-height: 1.4;
+    }
+
+    @media (max-width: 980px) {
+      .project-header,
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .doc-links {
+        justify-content: flex-start;
+      }
+
+      .side-wrap {
+        position: static;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .header-inner,
+      main {
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+
+      .tree ul {
+        margin-left: 10px;
+        padding-left: 14px;
+      }
+
+      .thumb-grid {
+        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      }
+
+      .lightbox-stage {
+        padding: 8px 12px 72px;
+      }
+
+      .nav-button {
+        top: auto;
+        bottom: 14px;
+        transform: none;
+      }
+
+      .nav-button:hover,
+      .nav-button:focus-visible {
+        transform: translateY(-1px);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <header>
+      <div class="header-inner">
+        <h1>PixInsight Project Gallery</h1>
+        <p class="lede">A static review surface for the astrophotography projects in this repository: processing branches, decision points, comparison images, and final or candidate JPEGs.</p>
+        <nav id="projectPills" class="project-pills" aria-label="Projects"></nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="project-header" aria-live="polite">
+        <div>
+          <h2 id="projectTitle"></h2>
+          <p id="projectStatus" class="project-status"></p>
+        </div>
+        <div id="docLinks" class="doc-links"></div>
+      </section>
+
+      <div class="content-grid">
+        <section class="tree-wrap">
+          <h3 class="section-title">Process Tree</h3>
+          <ul id="processTree" class="tree"></ul>
+        </section>
+        <aside class="side-wrap">
+          <div class="side-panel">
+            <h3 class="section-title">Project Snapshot</h3>
+            <div id="projectStats" class="stats"></div>
+            <h3 class="section-title" style="margin-top:18px;">Images</h3>
+            <div id="allImages" class="all-images"></div>
+          </div>
+        </aside>
+      </div>
+    </main>
+  </div>
+
+  <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer">
+    <div class="lightbox-top">
+      <div class="lightbox-title">
+        <strong id="lightboxProject"></strong>
+        <span id="lightboxTitle"></span>
+      </div>
+      <button id="lightboxClose" class="lightbox-button close-button" type="button" aria-label="Close">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M18 6 6 18M6 6l12 12"></path>
+        </svg>
+      </button>
+    </div>
+    <div class="lightbox-stage">
+      <button id="lightboxPrev" class="lightbox-button nav-button prev" type="button" aria-label="Previous image">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="m15 18-6-6 6-6"></path>
+        </svg>
+      </button>
+      <img id="lightboxImage" alt="">
+      <button id="lightboxNext" class="lightbox-button nav-button next" type="button" aria-label="Next image">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="m9 18 6-6-6-6"></path>
+        </svg>
+      </button>
+    </div>
+    <div class="lightbox-bottom">
+      <span id="lightboxNote"></span>
+      <span id="lightboxCounter"></span>
+    </div>
+  </div>
+
+  <script>
+    const projects = [
+      {
+        id: "m42",
+        title: "Orion Nebula / M42 2013",
+        status: "BXT/NXT v2 is the current replacement candidate. The earlier v8 remains the historically accepted final v1.",
+        stats: {
+          target: "M42, M43, Running Man",
+          data: "31 x 180s base, 20 x 300s faint support",
+          outcome: "BXT/NXT v2 pending final review"
+        },
+        docs: [
+          ["Status", "projects/orion-nebula-m42-2013/docs/status.md"],
+          ["Pipeline", "projects/orion-nebula-m42-2013/docs/pipeline.md"],
+          ["Journey", "projects/orion-nebula-m42-2013/docs/processing-journey.md"],
+          ["Final v1", "projects/orion-nebula-m42-2013/docs/final-v1.md"]
+        ],
+        roots: ["source"],
+        nodes: [
+          {
+            id: "source",
+            title: "February 2013 M42 acquisition",
+            status: "reference",
+            note: "Published notes identify a Canon EOS 60D with the 70-200 mm lens at 200 mm f/3.5. Exposure groups were kept separate before integration.",
+            images: [
+              img("2013 finished-work reference", "projects/orion-nebula-m42-2013/docs/images/original-2013-finished-work.jpg", "Historical processing reference.")
+            ]
+          },
+          {
+            id: "m42-flat-control",
+            title: "Flat-calibrated 180s control",
+            status: "rejected",
+            note: "The historical six-flat branch completed WBPP and Phase 2, but equal-treatment previews subtracted too much outer M42/M43 structure. It stayed as evidence, not the baseline.",
+            images: []
+          },
+          {
+            id: "phase2",
+            title: "180s no-flats linear baseline",
+            status: "accepted",
+            note: "The 180s no-flats branch preserved more outer M42/M43 structure than the flat-calibrated branch after identical Phase 2 processing.",
+            images: [
+              img("180s no-flats WBPP", "projects/orion-nebula-m42-2013/docs/images/m42-180s-noflats-wbpp-linked-stf.jpg", "Integrated 180s control before nonlinear work."),
+              img("180s no-flats field", "projects/orion-nebula-m42-2013/docs/images/m42-180s-noflats-phase2-field-linked-stf.jpg", "Solved/SPCC field preview."),
+              img("180s no-flats core", "projects/orion-nebula-m42-2013/docs/images/m42-180s-noflats-phase2-core-linked-stf.jpg", "Core preview for HDR/saturation review."),
+              img("180s flat WBPP control", "projects/orion-nebula-m42-2013/docs/images/m42-180s-wbpp-linked-stf.jpg", "Flat-calibrated control integration."),
+              img("180s flat field control", "projects/orion-nebula-m42-2013/docs/images/m42-180s-flat-phase2-field-linked-stf.jpg", "Flat-calibrated solved field preview."),
+              img("180s flat core control", "projects/orion-nebula-m42-2013/docs/images/m42-180s-flat-phase2-core-linked-stf.jpg", "Flat-calibrated core preview.")
+            ]
+          },
+          {
+            id: "m42-core-hdr",
+            title: "Core/HDR reality check",
+            status: "diagnostic",
+            note: "Raw-frame checks confirmed clipped core pixels, and the sparse 60s stack was too weak for a confident Trapezium replacement. The honest path became dynamic-range compression rather than true HDR recovery.",
+            images: []
+          },
+          {
+            id: "stock-v8",
+            title: "Stock final v1: v8 with 300s support",
+            status: "accepted",
+            note: "Accepted before the RC Astro trial. Uses 180s core blend plus conservative registered 300s faint-nebulosity support.",
+            images: [
+              img("v1 180s no-flats", "projects/orion-nebula-m42-2013/docs/images/m42-2013-v1-180s-noflats.jpg", "First nonlinear 180s branch."),
+              img("v2 180s no-flats", "projects/orion-nebula-m42-2013/docs/images/m42-2013-v2-180s-noflats.jpg", "Second nonlinear iteration."),
+              img("v3 180s no-flats", "projects/orion-nebula-m42-2013/docs/images/m42-2013-v3-180s-noflats.jpg", "Third nonlinear iteration."),
+              img("v4 180s no-flats", "projects/orion-nebula-m42-2013/docs/images/m42-2013-v4-180s-noflats.jpg", "Fourth nonlinear iteration."),
+              img("v5 180s no-flats", "projects/orion-nebula-m42-2013/docs/images/m42-2013-v5-180s-noflats.jpg", "Fifth nonlinear iteration."),
+              img("v6 core blend", "projects/orion-nebula-m42-2013/docs/images/m42-2013-v6-coreblend.jpg", "Earlier core-blend attempt."),
+              img("v7 rich", "projects/orion-nebula-m42-2013/docs/images/m42-2013-v7-rich.jpg", "Pre-v8 rich branch."),
+              img("v7 quiet core", "projects/orion-nebula-m42-2013/docs/images/m42-2013-v7-corequiet.jpg", "Pre-v8 quiet core layer."),
+              img("v7 core blend", "projects/orion-nebula-m42-2013/docs/images/m42-2013-v7-coreblend.jpg", "Pre-v8 core-blend result."),
+              img("v7 presentation", "projects/orion-nebula-m42-2013/docs/images/m42-2013-v7-presentation.jpg", "Pre-v8 presentation candidate."),
+              img("v8 rich", "projects/orion-nebula-m42-2013/docs/images/m42-2013-v8-rich.jpg", "Richer 180s nonlinear branch."),
+              img("v8 quiet core", "projects/orion-nebula-m42-2013/docs/images/m42-2013-v8-corequiet.jpg", "Quiet core layer used by v8."),
+              img("v8 core blend", "projects/orion-nebula-m42-2013/docs/images/m42-2013-v8-coreblend.jpg", "Quiet core blended into the richer field."),
+              img("v8 support blend", "projects/orion-nebula-m42-2013/docs/images/m42-2013-v8-300s-supportblend.jpg", "300s support blended into the stock branch."),
+              img("v8 presentation", "projects/orion-nebula-m42-2013/docs/images/m42-2013-v8-presentation.jpg", "Accepted final v1."),
+              img("Original / v3 / v5 comparison", "projects/orion-nebula-m42-2013/docs/images/m42-2013-original-v3-v5-comparison.jpg", "Early nonlinear comparison panel."),
+              img("Original / v3 / v6 comparison", "projects/orion-nebula-m42-2013/docs/images/m42-2013-original-v3-v6-comparison.jpg", "Midstream nonlinear comparison panel."),
+              img("Original / v6 / v7 comparison", "projects/orion-nebula-m42-2013/docs/images/m42-2013-original-v6-v7-presentation-comparison.jpg", "Pre-v8 presentation comparison."),
+              img("Original / v7 / v8 comparison", "projects/orion-nebula-m42-2013/docs/images/m42-2013-original-v7-v8-presentation-comparison.jpg", "Historical comparison panel.")
+            ]
+          },
+          {
+            id: "bxt-v1",
+            title: "BXT/NXT v1: 180s plugin branch",
+            status: "review",
+            note: "Starts before old MLT denoise. Review found it better than the pre-plugin cut: clearer structure and more open faint nebulosity.",
+            images: [
+              img("BXT/NXT linear preview", "projects/orion-nebula-m42-2013/docs/images/m42-2013-bxt-nxt-linear-linked-stf.jpg", "Linear linked-STF after BXT, NXT, and light SCNR."),
+              img("BXT/NXT v1 rich", "projects/orion-nebula-m42-2013/docs/images/m42-2013-bxt-nxt-v1-rich.jpg", "Rich 180s plugin branch."),
+              img("BXT/NXT v1 quiet core", "projects/orion-nebula-m42-2013/docs/images/m42-2013-bxt-nxt-v1-corequiet.jpg", "Quiet-core plugin layer."),
+              img("BXT/NXT v1 core blend", "projects/orion-nebula-m42-2013/docs/images/m42-2013-bxt-nxt-v1-coreblend.jpg", "Plugin branch with quiet-core blend."),
+              img("BXT/NXT v1 presentation", "projects/orion-nebula-m42-2013/docs/images/m42-2013-bxt-nxt-v1-presentation.jpg", "First plugin presentation candidate."),
+              img("v8 vs BXT/NXT v1", "projects/orion-nebula-m42-2013/docs/images/m42-2013-v8-vs-bxt-nxt-v1-comparison.jpg", "Full-frame comparison."),
+              img("v8 vs BXT/NXT v1 core crop", "projects/orion-nebula-m42-2013/docs/images/m42-2013-v8-vs-bxt-nxt-v1-core-crop.jpg", "Core comparison crop."),
+              img("v8 vs BXT/NXT v1 sky crop", "projects/orion-nebula-m42-2013/docs/images/m42-2013-v8-vs-bxt-nxt-v1-sky-crop.jpg", "Sky texture comparison crop.")
+            ]
+          },
+          {
+            id: "bxt-v2",
+            title: "BXT/NXT v2: plugin 300s support",
+            status: "review",
+            note: "Processes 300s support through BXT/NXT, registers it to the 180s plugin branch, and blends it conservatively. Current replacement candidate.",
+            images: [
+              img("BXT/NXT v2 300s support", "projects/orion-nebula-m42-2013/docs/images/m42-2013-bxt-nxt-v2-300s-support.jpg", "Freshly processed 300s support crop."),
+              img("BXT/NXT v2 support blend", "projects/orion-nebula-m42-2013/docs/images/m42-2013-bxt-nxt-v2-300s-supportblend.jpg", "Conservative 300s support blend."),
+              img("BXT/NXT v2 presentation", "projects/orion-nebula-m42-2013/docs/images/m42-2013-bxt-nxt-v2-presentation.jpg", "Current replacement candidate."),
+              img("v8 / BXT v1 / BXT v2", "projects/orion-nebula-m42-2013/docs/images/m42-2013-v8-vs-bxt-nxt-v1-v2-comparison.jpg", "Three-way full-frame review."),
+              img("v8 / BXT v1 / BXT v2 core", "projects/orion-nebula-m42-2013/docs/images/m42-2013-v8-vs-bxt-nxt-v1-v2-core-crop.jpg", "Three-way core crop."),
+              img("v8 / BXT v1 / BXT v2 sky", "projects/orion-nebula-m42-2013/docs/images/m42-2013-v8-vs-bxt-nxt-v1-v2-sky-crop.jpg", "Three-way sky crop.")
+            ]
+          },
+          {
+            id: "support",
+            title: "300s and 60s support diagnostics",
+            status: "diagnostic",
+            note: "300s data helps faint haze but brings background texture. The 60s material is too sparse for a clean Trapezium replacement.",
+            images: [
+              img("300s no-dark WBPP", "projects/orion-nebula-m42-2013/docs/images/m42-300s-nodark-wbpp-linked-stf.jpg", "300s no-dark integrated control."),
+              img("300s no-dark/no-flats WBPP", "projects/orion-nebula-m42-2013/docs/images/m42-300s-nodark-noflats-wbpp-linked-stf.jpg", "300s support control without flats."),
+              img("300s flat/no-dark field linked STF", "projects/orion-nebula-m42-2013/docs/images/m42-300s-flat-nodark-phase2-field-linked-stf.jpg", "300s support field with shared STF."),
+              img("300s flat/no-dark field self STF", "projects/orion-nebula-m42-2013/docs/images/m42-300s-flat-nodark-phase2-field-selfstf.jpg", "300s support field with self STF."),
+              img("300s flat/no-dark core linked STF", "projects/orion-nebula-m42-2013/docs/images/m42-300s-flat-nodark-phase2-core-linked-stf.jpg", "300s support core with shared STF."),
+              img("300s flat/no-dark core self STF", "projects/orion-nebula-m42-2013/docs/images/m42-300s-flat-nodark-phase2-core-selfstf.jpg", "300s support core with self STF."),
+              img("300s registered core", "projects/orion-nebula-m42-2013/docs/images/m42-300s-registered-to-180s-noflats-core-refstf.jpg", "Registered 300s core preview."),
+              img("300s registered field", "projects/orion-nebula-m42-2013/docs/images/m42-300s-registered-to-180s-noflats-field-selfstf.jpg", "Registered 300s support preview."),
+              img("300s support v8", "projects/orion-nebula-m42-2013/docs/images/m42-2013-v8-300s-support.jpg", "Old v8 support layer."),
+              img("60s core no-dark WBPP", "projects/orion-nebula-m42-2013/docs/images/m42-60s-core-nodark-wbpp-linked-stf.jpg", "Sparse 60s no-dark core integration."),
+              img("60s diagnostic core", "projects/orion-nebula-m42-2013/docs/images/m42-60sdiag-registered-to-180s-noflats-core-refstf.jpg", "Sparse 60s diagnostic.")
+            ]
+          }
+        ],
+        edges: [
+          edge("source", "m42-flat-control", "Test historical flat-supported calibration"),
+          edge("m42-flat-control", "phase2", "Prefer no-flats 180s baseline after Phase 2 comparison"),
+          edge("phase2", "m42-core-hdr", "Audit core clipping and short-exposure usefulness"),
+          edge("m42-core-hdr", "stock-v8", "Stock MLT path with core blend and 300s support"),
+          edge("phase2", "bxt-v1", "Replace old MLT with BXT/NXT before stretch"),
+          edge("bxt-v1", "bxt-v2", "Add freshly processed 300s support"),
+          edge("phase2", "support", "Inspect alternate exposure groups")
+        ]
+      },
+      {
+        id: "m81-m82",
+        title: "M81 / M82 2014-03-03",
+        status: "Not concluded. No presentation image has been accepted; legacy v4 is only the least-bad noisy reference while upstream calibration/integration diagnostics remain open.",
+        stats: {
+          target: "Bode's Galaxy and Cigar Galaxy",
+          data: "45 x 180s Canon EOS 60D",
+          outcome: "Blocked by vertical pattern noise"
+        },
+        docs: [
+          ["Status", "projects/m81-m82-2014-03-03/docs/status.md"],
+          ["Review", "projects/m81-m82-2014-03-03/docs/review-2026-05-28.md"],
+          ["Pipeline", "projects/m81-m82-2014-03-03/docs/pipeline.md"],
+          ["Journey", "projects/m81-m82-2014-03-03/docs/processing-journey.md"]
+        ],
+        roots: ["m81-source"],
+        nodes: [
+          {
+            id: "m81-source",
+            title: "2014 archive and historical reference",
+            status: "reference",
+            note: "Historical DSS/Photoshop output is useful as visual context, not as modern processing truth.",
+            images: [
+              img("2014 finished-work reference", "projects/m81-m82-2014-03-03/docs/images/original-2014-finished-work.jpg", "Historical JPEG.")
+            ]
+          },
+          {
+            id: "m81-dark",
+            title: "Dark-calibrated branch",
+            status: "rejected",
+            note: "Completed, but every light needed automatic pedestal and Phase 2 showed severe red/blue vertical streaking.",
+            images: [
+              img("Dark WBPP linked STF", "projects/m81-m82-2014-03-03/docs/images/m81-m82-20140303-wbpp-dark-linked-stf.jpg", "Dark-calibrated integrated preview."),
+              img("Dark WBPP unlinked STF", "projects/m81-m82-2014-03-03/docs/images/m81-m82-20140303-wbpp-dark-unlinked-stf.jpg", "Unlinked diagnostic preview."),
+              img("Dark Phase 2 ABE", "projects/m81-m82-2014-03-03/docs/images/m81-m82-20140303-phase2-dark-abe-linked-stf.jpg", "ABE checkpoint before color calibration."),
+              img("Dark Phase 2 linked STF", "projects/m81-m82-2014-03-03/docs/images/m81-m82-20140303-phase2-dark-linear-linked-stf.jpg", "Rejected linear preview.")
+            ]
+          },
+          {
+            id: "m81-nodark",
+            title: "No-dark/no-flats branch",
+            status: "paused",
+            note: "Calmer than the dark branch, but close crops still show vertical colored pattern noise.",
+            images: [
+              img("No-dark WBPP", "projects/m81-m82-2014-03-03/docs/images/m81-m82-20140303-wbpp-nodark-linked-stf.jpg", "Accepted baseline preview."),
+              img("No-dark WBPP unlinked STF", "projects/m81-m82-2014-03-03/docs/images/m81-m82-20140303-wbpp-nodark-unlinked-stf.jpg", "Unlinked diagnostic preview."),
+              img("No-dark Phase 2 ABE", "projects/m81-m82-2014-03-03/docs/images/m81-m82-20140303-phase2-nodark-abe-linked-stf.jpg", "ABE checkpoint for accepted baseline."),
+              img("No-dark Phase 2", "projects/m81-m82-2014-03-03/docs/images/m81-m82-20140303-phase2-nodark-linear-linked-stf.jpg", "Linear checkpoint preview."),
+              img("MaskedStretch v1", "projects/m81-m82-2014-03-03/docs/images/m81-m82-20140303-maskedstretch-v1.jpg", "First nonlinear stretch.")
+            ]
+          },
+          {
+            id: "m81-v4",
+            title: "Pre-BXT nonlinear review sequence",
+            status: "paused",
+            note: "This is the branch we reviewed before trying BXT/NXT. v4 is the least-bad noisy reference only, not an accepted final.",
+            images: [
+              img("v1 full-frame polish", "projects/m81-m82-2014-03-03/docs/images/m81-m82-20140303-v1-polish.jpg", "First full-frame polish before crop feedback."),
+              img("v1 crop", "projects/m81-m82-2014-03-03/docs/images/m81-m82-20140303-v1-crop.jpg", "First cropped nonlinear candidate."),
+              img("v2 calm-sky full frame", "projects/m81-m82-2014-03-03/docs/images/m81-m82-20140303-v2-calm-sky-full.jpg", "Calmer sky full-frame pass."),
+              img("v2 calm-sky crop", "projects/m81-m82-2014-03-03/docs/images/m81-m82-20140303-v2-calm-sky-crop.jpg", "Earlier calmer crop."),
+              img("v3 detail full frame", "projects/m81-m82-2014-03-03/docs/images/m81-m82-20140303-v3-detail-full.jpg", "Detail-preserving full-frame pass after M82 smudge feedback."),
+              img("v3 recentered crop", "projects/m81-m82-2014-03-03/docs/images/m81-m82-20140303-v3-detail-recentered-crop.jpg", "Recentered pair."),
+              img("v4 tight crop", "projects/m81-m82-2014-03-03/docs/images/m81-m82-20140303-v4-detail-tight-crop.jpg", "Least-bad reference.")
+            ]
+          },
+          {
+            id: "m81-bxt",
+            title: "BXT/NXT v1",
+            status: "rejected",
+            note: "Started from the no-dark SPCC checkpoint before old MLT. Close crops made colored scratch/streak noise more objectionable.",
+            images: [
+              img("BXT/NXT linear preview", "projects/m81-m82-2014-03-03/docs/images/m81-m82-20140303-bxt-nxt-linear-linked-stf.jpg", "Linear plugin checkpoint."),
+              img("BXT/NXT MaskedStretch", "projects/m81-m82-2014-03-03/docs/images/m81-m82-20140303-bxt-nxt-maskedstretch.jpg", "Plugin branch stretch checkpoint."),
+              img("BXT/NXT v1 polish", "projects/m81-m82-2014-03-03/docs/images/m81-m82-20140303-bxt-nxt-v1-polish.jpg", "Full-frame plugin polish."),
+              img("BXT/NXT v1 tight crop", "projects/m81-m82-2014-03-03/docs/images/m81-m82-20140303-bxt-nxt-v1-tight-crop.jpg", "Rejected crop.")
+            ]
+          },
+          {
+            id: "m81-nxt",
+            title: "NXT-only calm diagnostics",
+            status: "diagnostic",
+            note: "Reduced chroma in v2 but left higher luminance texture than v4. Further plugin tuning is deferred until upstream calibration improves.",
+            images: [
+              img("NXT calm linear", "projects/m81-m82-2014-03-03/docs/images/m81-m82-20140303-nxt-calm-linear-linked-stf.jpg", "NXT-only linear preview."),
+              img("NXT calm MaskedStretch", "projects/m81-m82-2014-03-03/docs/images/m81-m82-20140303-nxt-calm-maskedstretch.jpg", "NXT-only stretch checkpoint."),
+              img("NXT v1 polish", "projects/m81-m82-2014-03-03/docs/images/m81-m82-20140303-nxt-calm-v1-polish.jpg", "First NXT-only polish."),
+              img("NXT v1 crop", "projects/m81-m82-2014-03-03/docs/images/m81-m82-20140303-nxt-calm-v1-tight-crop.jpg", "Too bright and textured."),
+              img("NXT v2 darker polish", "projects/m81-m82-2014-03-03/docs/images/m81-m82-20140303-nxt-calm-v2-dark-polish.jpg", "Darker NXT-only polish."),
+              img("NXT v2 darker crop", "projects/m81-m82-2014-03-03/docs/images/m81-m82-20140303-nxt-calm-v2-dark-tight-crop.jpg", "Darker chroma cleanup diagnostic.")
+            ]
+          },
+          {
+            id: "m81-paused",
+            title: "No accepted final",
+            status: "paused",
+            note: "All current leaves are diagnostics. The next meaningful work is upstream: same-trip flats, cooler dark library, or alternate rejection/integration settings before another BXT/NXT attempt.",
+            images: []
+          }
+        ],
+        edges: [
+          edge("m81-source", "m81-dark", "Follow historical dark-supported path"),
+          edge("m81-source", "m81-nodark", "Control branch after dark overcorrection risk"),
+          edge("m81-nodark", "m81-v4", "Nonlinear crop refinements"),
+          edge("m81-nodark", "m81-bxt", "Try RC Astro workflow before old MLT"),
+          edge("m81-nodark", "m81-nxt", "Test whether BXT caused the artifacts"),
+          edge("m81-v4", "m81-paused", "Rejected for final: vertical red/blue pattern noise remains"),
+          edge("m81-bxt", "m81-paused", "Rejected for final: artifacts sharpen into colored scratches"),
+          edge("m81-nxt", "m81-paused", "Deferred: calmer color but rougher luminance texture")
+        ]
+      },
+      {
+        id: "m45",
+        title: "M45 / Pleiades 2013-12-30",
+        status: "v2 portrait crop is the current review candidate from the dark-calibrated no-flats branch.",
+        stats: {
+          target: "Pleiades reflection nebulosity",
+          data: "12 x 240s Canon EOS 60D",
+          outcome: "Portrait crop under review"
+        },
+        docs: [
+          ["Status", "projects/m45-pleiades-2013-12-30/docs/status.md"],
+          ["Review", "projects/m45-pleiades-2013-12-30/docs/review-2026-05-27.md"],
+          ["Pipeline", "projects/m45-pleiades-2013-12-30/docs/pipeline.md"],
+          ["Journey", "projects/m45-pleiades-2013-12-30/docs/processing-journey.md"]
+        ],
+        roots: ["m45-source"],
+        nodes: [
+          {
+            id: "m45-source",
+            title: "2013 M45 archive and historical reference",
+            status: "reference",
+            note: "Historical finished-work image proved the dataset contains real blue reflection nebulosity.",
+            images: [
+              img("2013 finished-work reference", "projects/m45-pleiades-2013-12-30/docs/images/original-2013-finished-work.jpg", "Historical JPEG.")
+            ]
+          },
+          {
+            id: "m45-dark",
+            title: "Dark-calibrated WBPP baseline",
+            status: "accepted",
+            note: "Primary WBPP branch using Canon EOS 60D 240s dark support. Automatic pedestal warnings triggered the no-dark control, but this remained the better baseline.",
+            images: [
+              img("WBPP dark linked STF", "projects/m45-pleiades-2013-12-30/docs/images/m45-20131230-wbpp-dark-linked-stf.jpg", "Integrated primary branch."),
+              img("WBPP dark unlinked STF", "projects/m45-pleiades-2013-12-30/docs/images/m45-20131230-wbpp-dark-unlinked-stf.jpg", "Unlinked diagnostic preview.")
+            ]
+          },
+          {
+            id: "m45-linear",
+            title: "Solved Phase 2 color baseline",
+            status: "accepted",
+            note: "ABE, ImageSolver, SPCC with Canon EOS 60D filters, SCNR, and MLT completed. The solve confirmed the ED80/reducer-scale dataset despite stale 50 mm EXIF.",
+            images: [
+              img("Phase 2 ABE", "projects/m45-pleiades-2013-12-30/docs/images/m45-20131230-phase2-abe-linked-stf.jpg", "ABE checkpoint before the accepted linear preview."),
+              img("Phase 2 linear", "projects/m45-pleiades-2013-12-30/docs/images/m45-20131230-phase2-linear-linked-stf.jpg", "Solved/SPCC/linear NR preview.")
+            ]
+          },
+          {
+            id: "m45-stretch",
+            title: "MaskedStretch checkpoint",
+            status: "accepted",
+            note: "A restrained target-background stretch showed usable blue reflection dust and became the base for the target-specific M45 polish script.",
+            images: [
+              img("MaskedStretch v1", "projects/m45-pleiades-2013-12-30/docs/images/m45-20131230-maskedstretch-v1.jpg", "Initial nonlinear stretch.")
+            ]
+          },
+          {
+            id: "m45-polish",
+            title: "v1 full-frame dust polish",
+            status: "review",
+            note: "Custom polish shaped blue dust, calmed low-sky chroma, restrained bright star halos, and produced the first landscape review candidate.",
+            images: [
+              img("v1 full-frame polish", "projects/m45-pleiades-2013-12-30/docs/images/m45-20131230-v1-polish.jpg", "Landscape review candidate.")
+            ]
+          },
+          {
+            id: "m45-v2-crop",
+            title: "v2 portrait crop",
+            status: "review",
+            note: "The crop was made from the v1 polish without reprocessing the linear data, keeping the main dust and bright cluster stars while dropping side margin.",
+            images: [
+              img("v2 portrait crop", "projects/m45-pleiades-2013-12-30/docs/images/m45-20131230-v2-portrait-crop.jpg", "Current review candidate.")
+            ]
+          },
+          {
+            id: "m45-nodark",
+            title: "No-dark/no-flats control",
+            status: "rejected",
+            note: "Completed but had stronger broad-field gradient and no color advantage.",
+            images: [
+              img("No-dark WBPP preview", "projects/m45-pleiades-2013-12-30/docs/images/m45-20131230-wbpp-nodark-linked-stf.jpg", "Rejected control preview.")
+            ]
+          }
+        ],
+        edges: [
+          edge("m45-source", "m45-dark", "Use matched 240s dark library"),
+          edge("m45-dark", "m45-linear", "Solve, SPCC, SCNR, and linear NR"),
+          edge("m45-linear", "m45-stretch", "Conservative nonlinear stretch"),
+          edge("m45-stretch", "m45-polish", "Dust color shaping and halo restraint"),
+          edge("m45-polish", "m45-v2-crop", "Review feedback favors portrait framing"),
+          edge("m45-source", "m45-nodark", "Control branch after pedestal warnings")
+        ]
+      },
+      {
+        id: "m31",
+        title: "M31 / Andromeda 2013",
+        status: "v3 ED80-aware PixInsight export is the accepted modern result.",
+        stats: {
+          target: "Andromeda Galaxy",
+          data: "27 x 240s Canon EOS 60D",
+          outcome: "Accepted v3"
+        },
+        docs: [
+          ["Status", "projects/m31-andromeda-2013/docs/status.md"],
+          ["Pipeline", "projects/m31-andromeda-2013/docs/pipeline.md"],
+          ["Original evidence", "projects/m31-andromeda-2013/docs/original-2013-processing.md"],
+          ["Plate solve notes", "projects/m31-andromeda-2013/docs/research/04-platesolve-wide-field.md"]
+        ],
+        roots: ["m31-source"],
+        nodes: [
+          {
+            id: "m31-source",
+            title: "Historical reconstruction and source selection",
+            status: "reference",
+            note: "Original DSS/Photoshop evidence was reconstructed first. The modern run used the 27 ISO 1600 lights and dropped the single ISO 800 frame.",
+            images: [
+              img("Original 2013 Photoshop", "projects/m31-andromeda-2013/docs/images/original-2013-photoshop.jpg", "Historical processing result.")
+            ]
+          },
+          {
+            id: "m31-wbpp",
+            title: "WBPP dark-calibrated integration",
+            status: "accepted",
+            note: "Built a fresh PixInsight stack from 27 x 240s ISO1600 lights and 9 matched 240s darks. No flats or bias were available, so gradients were deferred to ABE.",
+            images: []
+          },
+          {
+            id: "m31-solve",
+            title: "Plate solve recovered true ED80 scale",
+            status: "accepted",
+            note: "Early ImageSolver attempts failed because stale EXIF implied a 50 mm lens. Re-seeding as an ED80/reducer dataset solved at 386.29 mm and 2.301 arcsec/px.",
+            images: []
+          },
+          {
+            id: "m31-linear-clean",
+            title: "SPCC and linear cleanup",
+            status: "accepted",
+            note: "The solved image enabled SPCC with Gaia DR3/SP. SCNR and conservative MLT noise reduction produced the Phase 2 linear master.",
+            images: []
+          },
+          {
+            id: "m31-v1",
+            title: "v1 nonlinear final",
+            status: "accepted",
+            note: "MaskedStretch, galaxy masks, HDRMT, LHE, curves, crop, and export produced the first finished PixInsight JPEG/TIFF set.",
+            images: []
+          },
+          {
+            id: "m31-v2",
+            title: "v2 color and chroma refinement",
+            status: "accepted",
+            note: "A subtle nonlinear SCNR pass and protected chroma smoothing reduced residual green/cyan bias while keeping the galaxy and dust lanes intact.",
+            images: []
+          },
+          {
+            id: "m31-v3",
+            title: "v3 ED80-aware finish",
+            status: "accepted",
+            note: "Adds mild star reduction and restrained detail/color polish after v2 background and color fixes.",
+            images: [
+              img("PixInsight v3 ED80", "projects/m31-andromeda-2013/docs/images/pixinsight-v3-ed80.jpg", "Accepted modern M31 result.")
+            ]
+          }
+        ],
+        edges: [
+          edge("m31-source", "m31-wbpp", "Rebuild from raw lights with matched darks"),
+          edge("m31-wbpp", "m31-solve", "Correct stale 50 mm EXIF assumption"),
+          edge("m31-solve", "m31-linear-clean", "Run SPCC and conservative linear cleanup"),
+          edge("m31-linear-clean", "m31-v1", "Stretch, enhance, crop, export"),
+          edge("m31-v1", "m31-v2", "Reduce residual green/cyan and background chroma"),
+          edge("m31-v2", "m31-v3", "Apply ED80-aware star/detail polish")
+        ]
+      },
+      {
+        id: "rosette",
+        title: "Rosette Nebula 2014",
+        status: "StarXTerminator v3b/v3g/v3h/v3j presentation branches are documented; none is treated as scientifically final.",
+        stats: {
+          target: "Rosette Nebula",
+          data: "33 x 240s Canon EOS 60D",
+          outcome: "Presentation candidates"
+        },
+        docs: [
+          ["Status", "projects/rosette-2014-03-02/docs/status.md"],
+          ["Journey", "projects/rosette-2014-03-02/docs/processing-journey.md"],
+          ["Pipeline", "projects/rosette-2014-03-02/docs/pipeline.md"],
+          ["V3B", "projects/rosette-2014-03-02/docs/final-v3b.md"],
+          ["V3G", "projects/rosette-2014-03-02/docs/v3g-old-red-depth.md"],
+          ["V3H", "projects/rosette-2014-03-02/docs/v3h-old-red-starless.md"],
+          ["V3I/V3J", "projects/rosette-2014-03-02/docs/v3i-v3j-subtle-stars.md"]
+        ],
+        roots: ["ros-source"],
+        nodes: [
+          {
+            id: "ros-source",
+            title: "Historical Rosette reference",
+            status: "reference",
+            note: "The historical Photoshop output and embedded raw previews kept the red-signal investigation alive.",
+            images: [
+              img("Original 2014 Photoshop", "projects/rosette-2014-03-02/docs/images/original-2014-photoshop.jpg", "Historical red Rosette reference.")
+            ]
+          },
+          {
+            id: "ros-color",
+            title: "Color/background investigation",
+            status: "diagnostic",
+            note: "Initial WBPP/Phase 2 solved successfully but SPCC/background neutralization drove the nebula gray-green. CFA reruns proved the problem was not solved by Bayer order alone.",
+            images: []
+          },
+          {
+            id: "ros-dbe",
+            title: "Manual DBE and metadata repair",
+            status: "diagnostic",
+            note: "User-guided DBE produced the best large-scale background model. Copying SPCC-relevant metadata back onto the DBE-derived image fixed scripted SPCC execution.",
+            images: []
+          },
+          {
+            id: "ros-spcc-diagnostic",
+            title: "SPCC color still not accepted",
+            status: "rejected",
+            note: "SPCC then ran reliably on the manual-DBE branch, but neutral stretches still rendered the Rosette mostly gray/green. The blocker became color quality, not WCS, Gaia, or process execution.",
+            images: []
+          },
+          {
+            id: "ros-v2g",
+            title: "SPCC-based visual v2 polish",
+            status: "diagnostic",
+            note: "Selective nebula color restoration, dark-sky cleanup, and stronger star reduction made the best pre-StarXTerminator presentation branch, still documented as visual rather than scientifically final.",
+            images: []
+          },
+          {
+            id: "ros-local-starless",
+            title: "Local starless attempts",
+            status: "rejected",
+            note: "Scripted local starless approximations left scars, residual bright stars, or lost fine texture. This justified using a dedicated star-separation tool.",
+            images: []
+          },
+          {
+            id: "ros-v3b",
+            title: "StarXTerminator v3b clean candidate",
+            status: "review",
+            note: "Clean starless/stars workflow that reduces bright-star dominance while keeping sampled dark sky near neutral.",
+            images: [
+              img("StarXTerminator v3b", "projects/rosette-2014-03-02/docs/images/rosette-starxterminator-v3b.jpg", "Clean presentation candidate.")
+            ]
+          },
+          {
+            id: "ros-oldred",
+            title: "Old-reference red/depth branches",
+            status: "review",
+            note: "Branches tuned against the historical red/deeper look: v3g with stars, v3h starless, v3j sparse anchor stars.",
+            images: [
+              img("v3g old-red depth", "projects/rosette-2014-03-02/docs/images/rosette-starxterminator-v3g-old-red-depth.jpg", "Darker, redder depth branch."),
+              img("v3h old-red starless", "projects/rosette-2014-03-02/docs/images/rosette-starxterminator-v3h-old-red-starless.jpg", "Starless old-red layer."),
+              img("v3i subtle sparse stars", "projects/rosette-2014-03-02/docs/images/rosette-starxterminator-v3i-subtle-sparse-stars.jpg", "Subtle sparse-star diagnostic."),
+              img("v3j sparse anchor stars", "projects/rosette-2014-03-02/docs/images/rosette-starxterminator-v3j-sparse-anchor-stars.jpg", "Best sparse-star presentation.")
+            ]
+          }
+        ],
+        edges: [
+          edge("ros-source", "ros-color", "Investigate suppressed red/pink emission"),
+          edge("ros-color", "ros-dbe", "Move from automatic background handling to manual DBE"),
+          edge("ros-dbe", "ros-spcc-diagnostic", "Restore metadata and rerun SPCC"),
+          edge("ros-spcc-diagnostic", "ros-v2g", "Use SPCC baseline as a visual-polish starting point"),
+          edge("ros-v2g", "ros-local-starless", "Try local starless approximations"),
+          edge("ros-v2g", "ros-v3b", "Use StarXTerminator for clean starless/stars workflow"),
+          edge("ros-v3b", "ros-oldred", "Tune against historical red/depth preference")
+        ]
+      },
+      {
+        id: "horsehead",
+        title: "Horsehead / Flame 2013-2016",
+        status: "04c mixed-camera branch is accepted: 60D broadband base plus clean and half-weight washed T1i red support.",
+        stats: {
+          target: "Horsehead and Flame",
+          data: "60D broadband plus modified T1i support",
+          outcome: "Accepted 04c v1"
+        },
+        docs: [
+          ["Final v1", "projects/horsehead-flame-2013-2016/docs/final-v1.md"],
+          ["Status", "projects/horsehead-flame-2013-2016/docs/status.md"],
+          ["Journey", "projects/horsehead-flame-2013-2016/docs/processing-journey.md"],
+          ["Pipeline", "projects/horsehead-flame-2013-2016/docs/pipeline.md"]
+        ],
+        roots: ["hh-source"],
+        nodes: [
+          {
+            id: "hh-source",
+            title: "Historical reference and branch split",
+            status: "reference",
+            note: "Raw sessions were split by camera and exposure behavior before any support blending.",
+            images: [
+              img("2013 finished-work reference", "projects/horsehead-flame-2013-2016/docs/images/original-2013-finished-work.jpg", "Historical JPEG.")
+            ]
+          },
+          {
+            id: "hh-60d",
+            title: "Canon 60D broadband/color base",
+            status: "accepted",
+            note: "Unmodified 60D branch supplies broadband color and the registration reference.",
+            images: [
+              img("60D integrated preview", "projects/horsehead-flame-2013-2016/docs/images/horsehead-60d-20131231-geosats-stf-linked.jpg", "60D base before support."),
+              img("60D Phase 2", "projects/horsehead-flame-2013-2016/docs/images/horsehead-60d-20131231-geosats-phase2-linear-stf-linked.jpg", "Solved 60D branch.")
+            ]
+          },
+          {
+            id: "hh-t1i",
+            title: "Modified T1i red-support branches",
+            status: "diagnostic",
+            note: "Clean 180s support and washed 300s support were registered to the 60D grid for controlled blends.",
+            images: [
+              img("T1i clean STF", "projects/horsehead-flame-2013-2016/docs/images/horsehead-2016-modded-good-stf-linked.jpg", "Clean red-support integration."),
+              img("T1i clean solved", "projects/horsehead-flame-2013-2016/docs/images/horsehead-2016-modded-good-solved-stf-linked.jpg", "Solved clean support."),
+              img("T1i clean registered", "projects/horsehead-flame-2013-2016/docs/images/horsehead-2016-modded-good-registered-to-60d-stf-linked.jpg", "Clean red support."),
+              img("T1i washed STF", "projects/horsehead-flame-2013-2016/docs/images/horsehead-2016-modded-washed-out-test-stf-linked.jpg", "Washed 300s support integration."),
+              img("T1i washed solved", "projects/horsehead-flame-2013-2016/docs/images/horsehead-2016-modded-washed-out-test-solved-stf-linked.jpg", "Solved washed support."),
+              img("T1i washed registered", "projects/horsehead-flame-2013-2016/docs/images/horsehead-2016-modded-washed-out-test-registered-to-60d-stf-linked.jpg", "Washed-out red support.")
+            ]
+          },
+          {
+            id: "hh-blends",
+            title: "04a/04b/04c red-support comparison",
+            status: "accepted",
+            note: "ROI measurements selected 04c: most useful IC 434/Horsehead lift with reduced Alnitak penalty.",
+            images: [
+              img("04a clean support", "projects/horsehead-flame-2013-2016/docs/images/horsehead-04a-rgb-plus-t1i-good-red-support-stf-linked.jpg", "60D plus clean T1i support."),
+              img("04b full washed support", "projects/horsehead-flame-2013-2016/docs/images/horsehead-04b-rgb-plus-t1i-good-washed-red-support-stf-linked.jpg", "Full washed support diagnostic."),
+              img("60D-only comparison crop", "projects/horsehead-flame-2013-2016/docs/images/horsehead-compare-60d-only-crop-refstf.jpg", "Broadband-only crop reference."),
+              img("04a comparison crop", "projects/horsehead-flame-2013-2016/docs/images/horsehead-compare-04a-good-support-crop-refstf.jpg", "Clean-support crop comparison."),
+              img("04b comparison crop", "projects/horsehead-flame-2013-2016/docs/images/horsehead-compare-04b-good-washed-support-crop-refstf.jpg", "Full washed-support crop comparison."),
+              img("04c half washed comparison", "projects/horsehead-flame-2013-2016/docs/images/horsehead-compare-04c-good-washed-half-support-crop-refstf.jpg", "Selected blend preview."),
+              img("04c MaskedStretch crop", "projects/horsehead-flame-2013-2016/docs/images/horsehead-04c-maskedstretch-crop.jpg", "Selected branch stretch crop.")
+            ]
+          },
+          {
+            id: "hh-final",
+            title: "04c v1 polish",
+            status: "accepted",
+            note: "The selected 04c mixed-camera branch received the final nonlinear polish and became the accepted v1 result.",
+            images: [
+              img("04c v1 polish", "projects/horsehead-flame-2013-2016/docs/images/horsehead-04c-v1-polish.jpg", "Accepted final v1.")
+            ]
+          },
+          {
+            id: "hh-starreduce",
+            title: "Mild star-reduction check",
+            status: "rejected",
+            note: "A very mild star-reduction branch was exported for inspection, but the improvement was too subtle to replace the plain v1 polish.",
+            images: [
+              img("04c star-reduced diagnostic", "projects/horsehead-flame-2013-2016/docs/images/horsehead-04c-v1-polish-star-reduced.jpg", "Rejected as too subtle.")
+            ]
+          }
+        ],
+        edges: [
+          edge("hh-source", "hh-60d", "Build broadband anchor"),
+          edge("hh-source", "hh-t1i", "Prepare modified-camera red support"),
+          edge("hh-60d", "hh-blends", "Blend support branches and measure halo/background cost"),
+          edge("hh-t1i", "hh-blends", "Register and add red support"),
+          edge("hh-blends", "hh-final", "Promote 04c to nonlinear final polish"),
+          edge("hh-final", "hh-starreduce", "Test whether star reduction should replace the default")
+        ]
+      },
+      {
+        id: "trifid-lagoon",
+        title: "Trifid / Lagoon 2014",
+        status: "Final v1 accepted from the March no-dark/no-flats branch, not the initially processed May branch.",
+        stats: {
+          target: "Trifid and Lagoon",
+          data: "March and May ED80/reducer sessions",
+          outcome: "Accepted final v1"
+        },
+        docs: [
+          ["Final v1", "projects/trifid-lagoon-2014/docs/final-v1.md"],
+          ["Review", "projects/trifid-lagoon-2014/docs/review-2026-05-27.md"],
+          ["Status", "projects/trifid-lagoon-2014/docs/status.md"],
+          ["Journey", "projects/trifid-lagoon-2014/docs/processing-journey.md"],
+          ["Pipeline", "projects/trifid-lagoon-2014/docs/pipeline.md"]
+        ],
+        roots: ["tl-source"],
+        nodes: [
+          {
+            id: "tl-source",
+            title: "Historical references and two-session discovery",
+            status: "reference",
+            note: "The `-2` suffix led to finding the March session, which better matched the user's stronger 2014 reference.",
+            images: [
+              img("Original attempt-02 reference", "projects/trifid-lagoon-2014/docs/images/original-2014-attempt-02-asraw-ps.jpg", "Earlier historical comparison."),
+              img("Original attempt-02 reference", "projects/trifid-lagoon-2014/docs/images/original-2014-attempt-02-asraw-ps-2.jpg", "Primary historical comparison."),
+              img("Original finished-work reference", "projects/trifid-lagoon-2014/docs/images/original-2014-finished-work.jpg", "Historical finished-work JPEG.")
+            ]
+          },
+          {
+            id: "tl-may",
+            title: "May 2014 branch",
+            status: "diagnostic",
+            note: "Clean but too dark/conservative compared with the stronger historical reference.",
+            images: [
+              img("May WBPP", "projects/trifid-lagoon-2014/docs/images/trifid-lagoon-20140504-wbpp-linked-stf.jpg", "May integrated preview."),
+              img("May Phase 2", "projects/trifid-lagoon-2014/docs/images/trifid-lagoon-20140504-phase2-linear-linked-stf.jpg", "May solved/SPCC preview."),
+              img("May SPCC no BN", "projects/trifid-lagoon-2014/docs/images/trifid-lagoon-20140504-spcc-no-bn-linked-stf.jpg", "May color-calibration diagnostic."),
+              img("May MaskedStretch v1", "projects/trifid-lagoon-2014/docs/images/trifid-lagoon-20140504-maskedstretch-v1.jpg", "Initial May nonlinear stretch."),
+              img("May v1 polish", "projects/trifid-lagoon-2014/docs/images/trifid-lagoon-20140504-v1-polish.jpg", "First May nonlinear candidate."),
+              img("May v2 old-reference polish", "projects/trifid-lagoon-2014/docs/images/trifid-lagoon-20140504-v2-oldref-polish.jpg", "Intermediate old-reference attempt."),
+              img("May v3 old-reference lift", "projects/trifid-lagoon-2014/docs/images/trifid-lagoon-20140504-v3-oldref-lift.jpg", "Old-reference attempt.")
+            ]
+          },
+          {
+            id: "tl-march",
+            title: "March 2014 no-dark/no-flats branch",
+            status: "accepted",
+            note: "The March session better matched the historical reference. The no-dark/no-flats WBPP branch became the accepted technical baseline.",
+            images: [
+              img("March no-dark/no-flats WBPP", "projects/trifid-lagoon-2014/docs/images/trifid-lagoon-20140302-wbpp-nodark-noflats-linked-stf.jpg", "Accepted March baseline preview."),
+              img("March Phase 2", "projects/trifid-lagoon-2014/docs/images/trifid-lagoon-20140302-phase2-linear-linked-stf.jpg", "Solved March preview.")
+            ]
+          },
+          {
+            id: "tl-march-diagnostics",
+            title: "March calibration/background diagnostics",
+            status: "rejected",
+            note: "The flat/no-dark branch showed flat mismatch and banding. No-ABE kept too much gradient; ABE-divide produced severe green/chroma artifacts.",
+            images: [
+              img("March flat/no-dark WBPP control", "projects/trifid-lagoon-2014/docs/images/trifid-lagoon-20140302-wbpp-flat-nodark-linked-stf.jpg", "Rejected flat/no-dark control."),
+              img("March no-ABE Phase 2", "projects/trifid-lagoon-2014/docs/images/trifid-lagoon-20140302-phase2-noabe-linear-linked-stf.jpg", "Phase 2 control before ABE choice."),
+              img("March ABE divide", "projects/trifid-lagoon-2014/docs/images/trifid-lagoon-20140302-abe-divide-linked-stf.jpg", "Rejected divide ABE control.")
+            ]
+          },
+          {
+            id: "tl-march-review",
+            title: "March old-reference review candidates",
+            status: "accepted",
+            note: "The balanced March polish was cleaner than the vivid branch, which pushed the Lagoon core and red star field too hard.",
+            images: [
+              img("March old-reference polish", "projects/trifid-lagoon-2014/docs/images/trifid-lagoon-20140302-march-oldref-polish.jpg", "Cleaner review candidate."),
+              img("March old-reference vivid", "projects/trifid-lagoon-2014/docs/images/trifid-lagoon-20140302-march-oldref-vivid.jpg", "Brighter but too aggressive.")
+            ]
+          },
+          {
+            id: "tl-final",
+            title: "Final v1",
+            status: "accepted",
+            note: "Restrained finalizer from the cleaner March polish branch; protects nebulae and calms low-sky color without star reduction.",
+            images: [
+              img("Final v1", "projects/trifid-lagoon-2014/docs/images/trifid-lagoon-20140302-final-v1.jpg", "Accepted final result."),
+              img("Final v1 comparison", "projects/trifid-lagoon-2014/docs/images/trifid-lagoon-2014-final-v1-comparison.jpg", "Historical/review/final panel.")
+            ]
+          }
+        ],
+        edges: [
+          edge("tl-source", "tl-may", "Initial May processing path"),
+          edge("tl-source", "tl-march", "Switch to March session after reference review"),
+          edge("tl-march", "tl-march-diagnostics", "Reject flat/no-ABE/divide alternatives"),
+          edge("tl-march-diagnostics", "tl-march-review", "Keep subtractive ABE baseline for nonlinear review"),
+          edge("tl-march-review", "tl-final", "Use restrained polish instead of vivid branch")
+        ]
+      }
+    ];
+
+    function img(label, src, note) {
+      return { label, src, note: note || "" };
+    }
+
+    function edge(from, to, label) {
+      return { from, to, label };
+    }
+
+    const state = {
+      projectIndex: 0,
+      images: [],
+      lightboxIndex: 0
+    };
+
+    const els = {
+      pills: document.getElementById("projectPills"),
+      title: document.getElementById("projectTitle"),
+      status: document.getElementById("projectStatus"),
+      docs: document.getElementById("docLinks"),
+      stats: document.getElementById("projectStats"),
+      tree: document.getElementById("processTree"),
+      allImages: document.getElementById("allImages"),
+      lightbox: document.getElementById("lightbox"),
+      lightboxImage: document.getElementById("lightboxImage"),
+      lightboxProject: document.getElementById("lightboxProject"),
+      lightboxTitle: document.getElementById("lightboxTitle"),
+      lightboxNote: document.getElementById("lightboxNote"),
+      lightboxCounter: document.getElementById("lightboxCounter"),
+      close: document.getElementById("lightboxClose"),
+      prev: document.getElementById("lightboxPrev"),
+      next: document.getElementById("lightboxNext")
+    };
+
+    function esc(value) {
+      return String(value == null ? "" : value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;");
+    }
+
+    function flattenImages(project) {
+      const output = [];
+      const seen = new Set();
+      for (const node of project.nodes) {
+        for (const image of node.images || []) {
+          if (seen.has(image.src)) continue;
+          seen.add(image.src);
+          output.push({ ...image, node: node.title });
+        }
+      }
+      return output;
+    }
+
+    function renderPills() {
+      els.pills.innerHTML = projects.map((project, index) => `
+        <button class="project-pill" type="button" aria-selected="${index === state.projectIndex}" data-project-index="${index}">
+          ${esc(project.title)}
+        </button>
+      `).join("");
+    }
+
+    function statusClass(status) {
+      const s = String(status || "").toLowerCase();
+      if (["accepted", "review", "diagnostic", "reference", "rejected", "paused"].includes(s)) return s;
+      return "diagnostic";
+    }
+
+    function renderDocs(project) {
+      els.docs.innerHTML = project.docs.map(([label, href]) => `
+        <a href="${esc(href)}">${esc(label)}</a>
+      `).join("");
+    }
+
+    function renderStats(project) {
+      els.stats.innerHTML = Object.entries(project.stats || {}).map(([key, value]) => `
+        <div class="stat"><strong>${esc(key)}</strong><span>${esc(value)}</span></div>
+      `).join("");
+    }
+
+    function imageIndexFor(src) {
+      return state.images.findIndex(image => image.src === src);
+    }
+
+    function renderThumb(image) {
+      const index = imageIndexFor(image.src);
+      return `
+        <button class="thumb" type="button" data-image-index="${index}" aria-label="Open ${esc(image.label)}">
+          <img src="${esc(image.src)}" alt="${esc(image.label)}" loading="lazy">
+          <span>${esc(image.label)}</span>
+        </button>
+      `;
+    }
+
+    function renderTree(project) {
+      const nodes = new Map(project.nodes.map(node => [node.id, node]));
+      const children = new Map();
+      for (const node of project.nodes) children.set(node.id, []);
+      for (const item of project.edges) {
+        if (!children.has(item.from)) children.set(item.from, []);
+        children.get(item.from).push(item);
+      }
+
+      function nodeHtml(id) {
+        const node = nodes.get(id);
+        if (!node) return "";
+        const nodeChildren = children.get(id) || [];
+        const images = (node.images || []).map(renderThumb).join("");
+        return `
+          <li class="tree-node">
+            <article class="node-card">
+              <div class="node-main">
+                <div class="node-title-row">
+                  <h4 class="node-title">${esc(node.title)}</h4>
+                  <span class="badge ${statusClass(node.status)}">${esc(node.status)}</span>
+                </div>
+                <p class="node-note">${esc(node.note)}</p>
+              </div>
+              ${images ? `<div class="thumb-grid">${images}</div>` : ""}
+            </article>
+            ${nodeChildren.length ? `
+              <ul>
+                ${nodeChildren.map(child => `
+                  <li>
+                    <span class="edge-label">${esc(child.label)}</span>
+                    <ul class="tree">${nodeHtml(child.to)}</ul>
+                  </li>
+                `).join("")}
+              </ul>
+            ` : ""}
+          </li>
+        `;
+      }
+
+      els.tree.innerHTML = project.roots.map(nodeHtml).join("");
+    }
+
+    function renderAllImages() {
+      els.allImages.innerHTML = state.images.map((image, index) => `
+        <button class="mini-thumb" type="button" data-image-index="${index}" aria-label="Open ${esc(image.label)}">
+          <img src="${esc(image.src)}" alt="${esc(image.label)}" loading="lazy">
+        </button>
+      `).join("");
+    }
+
+    function renderProject(index) {
+      state.projectIndex = index;
+      const project = projects[index];
+      state.images = flattenImages(project);
+      els.title.textContent = project.title;
+      els.status.textContent = project.status;
+      renderPills();
+      renderDocs(project);
+      renderStats(project);
+      renderTree(project);
+      renderAllImages();
+      history.replaceState(null, "", "#" + project.id);
+    }
+
+    function openLightbox(index) {
+      if (index < 0 || index >= state.images.length) return;
+      state.lightboxIndex = index;
+      updateLightbox();
+      els.lightbox.classList.add("open");
+      els.close.focus();
+    }
+
+    function closeLightbox() {
+      els.lightbox.classList.remove("open");
+    }
+
+    function updateLightbox() {
+      const project = projects[state.projectIndex];
+      const image = state.images[state.lightboxIndex];
+      els.lightboxImage.src = image.src;
+      els.lightboxImage.alt = image.label;
+      els.lightboxProject.textContent = project.title;
+      els.lightboxTitle.textContent = image.label;
+      els.lightboxNote.textContent = [image.node, image.note].filter(Boolean).join(" - ");
+      els.lightboxCounter.textContent = `${state.lightboxIndex + 1} / ${state.images.length}`;
+    }
+
+    function moveLightbox(delta) {
+      if (!state.images.length) return;
+      state.lightboxIndex = (state.lightboxIndex + delta + state.images.length) % state.images.length;
+      updateLightbox();
+    }
+
+    document.addEventListener("click", event => {
+      const pill = event.target.closest("[data-project-index]");
+      if (pill) {
+        renderProject(Number(pill.dataset.projectIndex));
+        return;
+      }
+
+      const imageButton = event.target.closest("[data-image-index]");
+      if (imageButton) {
+        openLightbox(Number(imageButton.dataset.imageIndex));
+      }
+    });
+
+    els.close.addEventListener("click", closeLightbox);
+    els.prev.addEventListener("click", () => moveLightbox(-1));
+    els.next.addEventListener("click", () => moveLightbox(1));
+    els.lightbox.addEventListener("click", event => {
+      if (event.target === els.lightbox) closeLightbox();
+    });
+
+    document.addEventListener("keydown", event => {
+      if (!els.lightbox.classList.contains("open")) return;
+      if (event.key === "Escape") closeLightbox();
+      if (event.key === "ArrowLeft") moveLightbox(-1);
+      if (event.key === "ArrowRight") moveLightbox(1);
+    });
+
+    const initialId = location.hash.replace("#", "");
+    const initialIndex = Math.max(0, projects.findIndex(project => project.id === initialId));
+    renderProject(initialIndex);
+  </script>
+</body>
+</html>
