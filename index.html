@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>PixInsight Final Images</title>
+  <title>PixInsight Image Picks</title>
   <style>
     :root {
       color-scheme: dark;
@@ -405,8 +405,8 @@
   <div class="page">
     <header class="topbar">
       <div>
-        <h1>PixInsight Finals</h1>
-        <p class="subtitle">Approved results from the repeatable astrophotography processing projects.</p>
+        <h1>PixInsight Picks</h1>
+        <p class="subtitle">Approved finals and selected presentation results from the repeatable astrophotography processing projects.</p>
       </div>
       <nav class="nav-links" aria-label="Repository pages">
         <a href="project-gallery.html">Process Gallery</a>
@@ -414,10 +414,10 @@
       </nav>
     </header>
 
-    <main id="finalGrid" class="final-grid" aria-label="Final images"></main>
+    <main id="finalGrid" class="final-grid" aria-label="Selected images"></main>
   </div>
 
-  <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Final image viewer">
+  <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Selected image viewer">
     <div class="lightbox-top">
       <div class="lightbox-title">
         <strong id="lightboxTitle"></strong>
@@ -457,6 +457,14 @@
         meta: ["27 x 240s", "Canon EOS 60D", "Accepted v3"],
         note: "Modern PixInsight result with solved ED80 scale, SPCC color, v2 color cleanup, and v3 star/detail polish.",
         docs: "projects/m31-andromeda-2013/docs/status.html"
+      },
+      {
+        title: "M45 / Pleiades",
+        subtitle: "2013 v2 portrait crop",
+        src: "projects/m45-pleiades-2013-12-30/docs/images/m45-20131230-v2-portrait-crop.jpg",
+        meta: ["12 x 240s", "Canon EOS 60D", "Selected v2"],
+        note: "Selected modern Pleiades crop from the dark-calibrated no-flats branch, preserving blue reflection dust with a restrained background.",
+        docs: "projects/m45-pleiades-2013-12-30/docs/review-2026-05-27.html"
       },
       {
         title: "Horsehead / Flame",
