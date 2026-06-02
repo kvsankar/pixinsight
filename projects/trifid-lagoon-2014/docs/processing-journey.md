@@ -291,3 +291,30 @@ Visual read:
 - M8 remains red/pink with a bright core, but avoids the most washed-out vivid-branch look.
 - The Sagittarius star field remains dense; no star-reduction pass was accepted for v1.
 - The old 2014 reference remains brighter and more magenta/warm, but some of that character appears tied to gradient/vignetting and older color handling.
+
+## 2026-05-30 - BXT/NXT Retrofit Candidate
+
+The licensed RC Astro workflow was tested from the accepted March pre-denoise linear checkpoint:
+
+```text
+work/02-linear-20140302-good-nodark-noflats/02d-scnr.xisf
+```
+
+The BXT/NXT branch is intentionally conservative because this is a dense Milky Way field where stars dominate the presentation:
+
+```text
+work/02-linear-20140302-bxt-nxt-v1/02f-bxt.xisf
+work/02-linear-20140302-bxt-nxt-v1/02g-bxt-nxt.xisf
+```
+
+The existing March old-reference path was then repeated: MaskedStretch at target background 0.125, `03t-trifid-lagoon-v1-polish.js`, then the restrained `03t-trifid-lagoon-final-v1.js` finalizer.
+
+Review output:
+
+```text
+docs/images/trifid-lagoon-20140302-bxt-nxt-v1.jpg
+work/03-nonlinear-20140302-bxt-nxt-v1/03t-trifid-lagoon-20140302-bxt-nxt-v1.xisf
+work/03-nonlinear-20140302-bxt-nxt-v1/trifid-lagoon-20140302-bxt-nxt-v1.tif
+```
+
+Initial read: the candidate is cleaner and less red-heavy than final v1, with tighter stars and calmer background texture. It may also lose some of the warmth that made the earlier final closer to the historical reference, so it should be treated as a possible v2 direction rather than an automatic replacement.

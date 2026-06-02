@@ -1,7 +1,7 @@
 # Rosette Nebula Processing — Status
 
-**As of:** 2026-05-26 IST, Rosette has a StarXTerminator-based v3b clean presentation candidate and a v3g old-reference depth candidate.
-**Pipeline progress:** 94%, presentation branch improved — raw archive found, historical DSS/Photoshop processing inspected, project scaffold created, 33-frame WBPP integration completed, plate solve completed, multiple CFA/color-calibration branches tested, synthetic-background and manual-DBE branches tested, CR2 preview/color handling investigated, SPCC metadata failure diagnosed, SPCC diagnostics generated, SPCC-based visual exports produced, local starless approximations rejected, StarXTerminator starless/stars recombination completed, and an old-reference depth branch tuned against the 2014 finished-work image. Color/background handling is improved but still not scientifically final.
+**As of:** 2026-06-02 IST, Rosette has StarXTerminator-based v3b/v3g/v3j presentation candidates and BXT/NXT + StarXTerminator real-star diagnostics through v4t.
+**Pipeline progress:** 95%, presentation branch improved but Rosette star styling unresolved — raw archive found, historical DSS/Photoshop processing inspected, project scaffold created, 33-frame WBPP integration completed, plate solve completed, multiple CFA/color-calibration branches tested, synthetic-background and manual-DBE branches tested, CR2 preview/color handling investigated, SPCC metadata failure diagnosed, SPCC diagnostics generated, SPCC-based visual exports produced, local starless approximations rejected, StarXTerminator starless/stars recombination completed, old-reference depth branches tuned, and a BXT/NXT linear retrofit tested before the sparse-star recombination path. Color/background handling is improved but still not scientifically final.
 
 For the chronological record of how we got here, see [Processing journey](processing-journey.md).
 For the current presentation candidate, subs summary, and human-in-the-loop notes, see [Rosette v3b presentation candidate](final-v3b.md).
@@ -17,7 +17,7 @@ For the restrained star recombination branches, see [Rosette v3i/v3j subtle star
 PHASE 0 — Source inventory                         DONE
 PHASE 1 — Calibration + Integration                DONE, RGGB TEST ACTIVE
 PHASE 2 — Linear post-integration                  DONE, COLOR/BACKGROUND ISSUE
-PHASE 3 — Nonlinear processing/export              V3B CLEAN + V3G OLD-REFERENCE CANDIDATES
+PHASE 3 — Nonlinear processing/export              V3B/V3J + BXT/NXT STAR DIAGNOSTICS
 ```
 
 ## Dataset Summary
@@ -98,6 +98,13 @@ Calibration: 9 x 240s ISO 1600 darks, no flats, no bias.
 - Added optional old-reference depth controls to `scripts/pjsr/03r-rosette-starless-v3.js` and generated the `v3g` branch to better match the historical image's darker sky and crimson/red hue.
 - Generated `v3h` with the same old-reference red/depth treatment but `starScale=0`, because the recombined v3g star field reads too warm/red.
 - Added `depthBeforeStars`, `starThreshold`, and `starSoftness` controls, then generated v3i/v3j restrained star recombinations over the old-red nebula layer.
+- Added a BXT/NXT retrofit branch before the nonlinear visual/SPCC polish and reran StarXTerminator separation plus the v3j sparse-anchor-star recombination. The first checked-in review preview was `docs/images/rosette-bxt-nxt-starxterminator-v3j-sparse-anchor-stars.jpg`.
+- Rejected the synthetic v4d gem/spike branch because it painted star-like content and diffraction-like spikes instead of strictly recombining the actual captured stars. The repository guidance now forbids synthetic astrophotography content.
+- Reprocessed the BXT/NXT sparse-anchor-star finish as v4f using only the real StarXTerminator stars layer from this dataset. The pass uses a higher star gate and `starPower` tightening to suppress faint star haze and shrink real star halos without inventing star positions, colors, or spikes. The checked-in review preview is `docs/images/rosette-bxt-nxt-starxterminator-v4f-real-sparse-anchors.jpg`.
+- Surveyed real-data star-handling options between full starless and untouched stars. The next branch uses separate real-star processing: screen recombination, star-core tightening, real-star chroma amplification, and a normal StarMask/MorphologicalTransformation de-emphasis pass. The current checked-in review preview is `docs/images/rosette-bxt-nxt-starxterminator-v4j-real-gem-deemphasis.jpg`.
+- After v4j review, added a real-star soft-shine path and starless-nebula gloss controls. V4L avoided post-combine morphology, but user review still found the stars dull and paint-droplet-like, so it is now a rejected diagnostic rather than a current candidate.
+- Later v4m-v4q tests showed that simply preserving the extracted star layer restores profile but brings back a very dense, pale field; additive/screen recombination and magenta repair do not create the desired gem-like stars from the current BXT/NXT StarXTerminator stars layer.
+- V4S/V4T tested object-level selection of real star components using the exported StarXTerminator stars layer. This reduced star count, but the selected anchors still read as soft round blobs because the source star profiles are already saturated/soft and mostly white/magenta. Treat these as diagnostics, not accepted presentation outputs.
 - The raw CR2 embedded preview shows faint red Rosette signal. EXIF reports Canon white-balance multipliers of about `R=1964`, `G=1024`, `B=1830`, so camera/raw-preview software boosts red and blue strongly relative to green.
 - Earlier diagnostic previews used PixInsight auto STF with `linkedRGB=false`, which stretches each channel independently and can hide true red/magenta balance. The preview script now accepts `linkedRGB=true`; linked previews show the raw and integrated data are strongly magenta before background re-anchoring.
 - A DSS-style per-channel background calibration branch now gives the best non-SPCC visual result: it keeps the sky much more neutral while preserving pink/red Rosette signal.
@@ -167,7 +174,14 @@ First PixInsight run used: **top-level good east + west**. Rejection maps still 
 | StarXTerminator v3h old-red starless branch | `work/03-nonlinear/rosette-starxterminator-v3h-old-red-starless.jpg` and `.tif`; same red/depth treatment without star recombination |
 | StarXTerminator v3i subtle sparse stars | `work/03-nonlinear/rosette-starxterminator-v3i-subtle-sparse-stars.jpg` and `.tif`; subtle threshold-gated neutral stars over the old-red nebula |
 | StarXTerminator v3j sparse anchor stars | `work/03-nonlinear/rosette-starxterminator-v3j-sparse-anchor-stars.jpg` and `.tif`; fewer anchor stars over the old-red nebula, current best subtle-stars candidate |
-| Checked-in comparison previews | `docs/images/original-2014-photoshop.jpg`, `docs/images/rosette-starxterminator-v3b.jpg`, `docs/images/rosette-starxterminator-v3g-old-red-depth.jpg`, `docs/images/rosette-starxterminator-v3h-old-red-starless.jpg`, `docs/images/rosette-starxterminator-v3i-subtle-sparse-stars.jpg`, and `docs/images/rosette-starxterminator-v3j-sparse-anchor-stars.jpg`; compressed repo copies for quick historical/current comparison |
+| BXT/NXT + StarXTerminator v3j retrofit | `work/03-nonlinear-bxt-nxt-v1/rosette-bxt-nxt-starxterminator-v3j-sparse-anchor-stars.jpg` and checked-in `docs/images/rosette-bxt-nxt-starxterminator-v3j-sparse-anchor-stars.jpg`; brighter/cleaner plugin candidate, but its stars are still too spread and dull |
+| BXT/NXT real-sparse-anchor v4f | `work/03-nonlinear-bxt-nxt-v1/rosette-bxt-nxt-starxterminator-v4f-real-sparse-anchors.jpg`, `.tif`, and `03s-rosette-bxt-nxt-starxterminator-v4f-real-sparse-anchors.xisf`, plus checked-in `docs/images/rosette-bxt-nxt-starxterminator-v4f-real-sparse-anchors.jpg`; no synthetic stars or spikes, only threshold-gated/tightened real StarXTerminator stars recombined over the BXT/NXT nebula base |
+| BXT/NXT real-gem/de-emphasis v4j | `work/03-nonlinear-bxt-nxt-v1/rosette-bxt-nxt-starxterminator-v4j-real-gem-strong-deemphasis.jpg`, `.tif`, `03s-rosette-bxt-nxt-starxterminator-v4j-real-gem-strong-deemphasis.xisf`, and checked-in `docs/images/rosette-bxt-nxt-starxterminator-v4j-real-gem-deemphasis.jpg`; starts from the real-star v4h screen recombination and applies a StarMask/MorphologicalTransformation de-emphasis pass |
+| BXT/NXT real soft-shine/gloss v4l | `work/03-nonlinear-bxt-nxt-v1/rosette-bxt-nxt-starxterminator-v4l-real-soft-shine-gloss.jpg`, `.tif`, `03s-rosette-bxt-nxt-starxterminator-v4l-real-soft-shine-gloss.xisf`, and checked-in `docs/images/rosette-bxt-nxt-starxterminator-v4l-real-soft-shine-gloss.jpg`; rejected diagnostic because the stars still look dull/paint-like |
+| BXT/NXT profile-preserving v4m-v4q diagnostics | `work/03-nonlinear-bxt-nxt-v1/rosette-bxt-nxt-starxterminator-v4m-profile-preserve-stars.jpg`, `...v4n-profile-preserve-low-opacity.jpg`, `...v4o-real-star-color-lift.jpg`, `...v4p-real-star-contrast-color.jpg`, and `...v4q-real-star-magenta-repair.jpg`; showed that blend/color tweaks alone do not recover gem-like stars from the current extracted layer |
+| BXT/NXT selected real-star-object v4s/v4t diagnostics | `work/03-nonlinear-bxt-nxt-v1/rosette-bxt-nxt-starxterminator-v4s-selected-real-star-objects.jpg` and `...v4t-selected-real-star-gems.jpg`; `scripts/selected-star-recombine.py` object-level real-star selection reduced density but produced soft round anchors rather than crisp gem-like stars |
+| Rejected synthetic v4d branch | Ignored work outputs from the synthetic gem/spike attempts were removed; branch rejected because it painted artificial gem stars and X-spikes rather than deriving all star content from the captured data |
+| Checked-in comparison previews | `docs/images/original-2014-photoshop.jpg`, `docs/images/rosette-starxterminator-v3b.jpg`, `docs/images/rosette-starxterminator-v3g-old-red-depth.jpg`, `docs/images/rosette-starxterminator-v3h-old-red-starless.jpg`, `docs/images/rosette-starxterminator-v3i-subtle-sparse-stars.jpg`, `docs/images/rosette-starxterminator-v3j-sparse-anchor-stars.jpg`, `docs/images/rosette-bxt-nxt-starxterminator-v3j-sparse-anchor-stars.jpg`, `docs/images/rosette-bxt-nxt-starxterminator-v4f-real-sparse-anchors.jpg`, `docs/images/rosette-bxt-nxt-starxterminator-v4j-real-gem-deemphasis.jpg`, and `docs/images/rosette-bxt-nxt-starxterminator-v4l-real-soft-shine-gloss.jpg`; compressed repo copies for historical/plugin comparison |
 | Manual DBE interactive SPCC | `work/02-linear/02c-dbe-manual-spcc-interactive.xisf`; interactive SPCC completed, but the output was strongly green without background neutralization |
 | Manual DBE interactive SPCC + BN | `work/02-linear/02c-dbe-manual-spcc-interactive-bn.xisf`; background neutralization made the preview harsh/clipped-looking and still gray/green |
 | Manual DBE fallback color | `work/02-linear/02c-dbe-manual-colorcal.xisf`; BackgroundNeutralization + ColorCalibration completed |
@@ -295,6 +309,47 @@ docs/images/rosette-starxterminator-v3j-sparse-anchor-stars.jpg
 
 V3J applies the old-red/depth pass before star recombination, then adds a desaturated stars-only layer with `starThreshold=0.085`. This keeps only more prominent anchor stars and avoids tinting the whole star field red.
 
+The corrected BXT/NXT real-sparse-anchor redo is the v4f branch:
+
+```text
+work/03-nonlinear-bxt-nxt-v1/rosette-bxt-nxt-starxterminator-v4f-real-sparse-anchors.jpg
+work/03-nonlinear-bxt-nxt-v1/rosette-bxt-nxt-starxterminator-v4f-real-sparse-anchors.tif
+work/03-nonlinear-bxt-nxt-v1/03s-rosette-bxt-nxt-starxterminator-v4f-real-sparse-anchors.xisf
+docs/images/rosette-bxt-nxt-starxterminator-v4f-real-sparse-anchors.jpg
+```
+
+![Rosette BXT/NXT v4f real sparse anchors](images/rosette-bxt-nxt-starxterminator-v4f-real-sparse-anchors.jpg)
+
+V4F starts from the BXT/NXT StarXTerminator starless/stars layers and only transforms the actual captured stars. It uses stricter star gating and `starPower=2.45` to reduce faint star haze and tighten real star halos, then recombines those real stars over the BXT/NXT nebula base. It deliberately does not add diffraction spikes or painted stars; if the optical data did not record spikes, the final image should not invent them.
+
+The earlier v4d gem/spike experiment is rejected and not checked in as a public preview. It was useful only as a boundary-setting mistake: reference images can guide taste, but all sky content in final candidates must come from the user's raw data or derived layers.
+
+The current real-star de-emphasis review candidate is v4j:
+
+```text
+work/03-nonlinear-bxt-nxt-v1/rosette-bxt-nxt-starxterminator-v4j-real-gem-strong-deemphasis.jpg
+work/03-nonlinear-bxt-nxt-v1/rosette-bxt-nxt-starxterminator-v4j-real-gem-strong-deemphasis.tif
+work/03-nonlinear-bxt-nxt-v1/03s-rosette-bxt-nxt-starxterminator-v4j-real-gem-strong-deemphasis.xisf
+docs/images/rosette-bxt-nxt-starxterminator-v4j-real-gem-deemphasis.jpg
+```
+
+![Rosette BXT/NXT v4j real star de-emphasis](images/rosette-bxt-nxt-starxterminator-v4j-real-gem-deemphasis.jpg)
+
+V4J follows the searched middle-ground workflow: process starless nebula and real extracted stars separately, use screen-style recombination, boost only the real star-layer chroma, then apply a normal StarMask/MorphologicalTransformation de-emphasis pass. It does not create saturated jewel colors where the extracted star layer has only weak color; the practical improvement is smaller/tighter real stars and less star dominance over the Rosette.
+
+The later soft-shine/gloss diagnostic was v4l:
+
+```text
+work/03-nonlinear-bxt-nxt-v1/rosette-bxt-nxt-starxterminator-v4l-real-soft-shine-gloss.jpg
+work/03-nonlinear-bxt-nxt-v1/rosette-bxt-nxt-starxterminator-v4l-real-soft-shine-gloss.tif
+work/03-nonlinear-bxt-nxt-v1/03s-rosette-bxt-nxt-starxterminator-v4l-real-soft-shine-gloss.xisf
+docs/images/rosette-bxt-nxt-starxterminator-v4l-real-soft-shine-gloss.jpg
+```
+
+![Rosette BXT/NXT v4l real soft shine gloss](images/rosette-bxt-nxt-starxterminator-v4l-real-soft-shine-gloss.jpg)
+
+V4L attempted to address two review issues from v4j. First, it removed the post-combine MorphologicalTransformation that made some stars read like paint droplets. Instead it built each visible star contribution from the actual extracted star layer: a tightened core, a small real halo component, screen recombination, and a cap on the star term to avoid flat white disks. Second, it applied mild LocalHistogramEqualization to the starless nebula before recombination for a glossier surface and clearer filaments. Later review still found the stars dull and paint-like, so v4l is rejected as a final candidate. It remains useful as a real-data diagnostic.
+
 The previous best SPCC-based visual output was the v2g branch:
 
 ```text
@@ -419,10 +474,20 @@ Set local `.env` values or pass paths explicitly. For this target, `PI_LIGHT_DIR
   -Fresh
 ```
 
+## Pause State - 2026-06-02
+
+Rosette BXT/NXT gem-star work is paused. The latest v4m-v4t diagnostics did not improve the result: preserving the current StarXTerminator stars layer restores profile but brings back a dense, pale field; reducing or selecting from it makes the visible stars look dull, soft, or blob-like. Since synthetic stars, painted colors, and fake spikes are not allowed, do not keep tuning the current extracted stars layer as if it can become a gem-star finish.
+
+Best current resume points:
+
+1. For the existing presentation set, use the older accepted/diagnostic comparison images: `rosette-starxterminator-v3b.jpg`, `rosette-starxterminator-v3j-sparse-anchor-stars.jpg`, `rosette-bxt-nxt-starxterminator-v4f-real-sparse-anchors.jpg`, and the rejected-but-informative `v4j`/`v4l` previews.
+2. If returning to gem-like stars, make a better real stars-only source first: start from an earlier, less saturated stretch, preserve star color and unsaturated cores, run StarXTerminator from that source, then recombine. Do not synthesize spikes or star positions.
+3. If returning to calibrated color, focus on background/flat correction before SPCC: refine manual DBE, search for real flats/twilight flats, or test an external gradient/background tool.
+
 ## Next Tasks
 
-1. Compare `rosette-starxterminator-v3b.jpg`, `rosette-starxterminator-v3h-old-red-starless.jpg`, and `rosette-starxterminator-v3j-sparse-anchor-stars.jpg` against the historical 2014 Photoshop output on a calibrated display.
-2. Decide whether the cleaner v3b or the deeper old-reference v3j should be the default with-stars presentation.
+1. Decide whether to pause Rosette entirely or restart from a better real star-source stretch.
+2. Compare the clean v3b, old-reference v3j, and BXT/NXT v4f previews against the historical 2014 Photoshop output on a calibrated display.
 3. Refine the DSS-style per-channel background calibration path and compare it with the historical 2014 output.
 4. Inspect WBPP rejection maps and frame quality for the 33-frame set.
 5. Decide whether to rerun with the historical 31-frame DSS-equivalent set, the 33-frame top-level good set, or all 37 good frames.

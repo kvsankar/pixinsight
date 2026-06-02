@@ -6,7 +6,12 @@
 // Optional old-reference/depth controls:
 //   skyDarken, depthContrast, warmDepth, blueDrop, blueTarget
 // Optional subtle/sparse star controls:
-//   depthBeforeStars, starThreshold, starSoftness
+//   depthBeforeStars, starThreshold, starSoftness, starPower,
+//   starColorBoost, starBlend=add|screen, starHaloPower,
+//   starHaloMix, starTermLimit, starUnderDarken, starUnderPower,
+//   starMagentaRepair
+// Optional starless nebula controls:
+//   nebulaGlossAmount, nebulaGlossRadius, nebulaGlossSlope
 
 #engine v8
 
@@ -76,6 +81,18 @@ try
    let depthBeforeStars = arg( "depthBeforeStars", "false" ) == "true";
    let starThreshold = numArg( "starThreshold", 0.0 );
    let starSoftness = numArg( "starSoftness", 0.035 );
+   let starPower = numArg( "starPower", 1.0 );
+   let starColorBoost = numArg( "starColorBoost", 1.0 );
+   let starBlend = arg( "starBlend", "add" );
+   let starHaloPower = numArg( "starHaloPower", starPower );
+   let starHaloMix = numArg( "starHaloMix", 0.0 );
+   let starTermLimit = numArg( "starTermLimit", 1.0 );
+   let starUnderDarken = numArg( "starUnderDarken", 0.0 );
+   let starUnderPower = numArg( "starUnderPower", 0.70 );
+   let starMagentaRepair = numArg( "starMagentaRepair", 0.0 );
+   let nebulaGlossAmount = numArg( "nebulaGlossAmount", 0.0 );
+   let nebulaGlossRadius = numArg( "nebulaGlossRadius", 72 );
+   let nebulaGlossSlope = numArg( "nebulaGlossSlope", 1.20 );
    let crop = arg( "crop", "false" ) == "true";
 
    logMsg( "starless=" + starlessPath );
@@ -91,7 +108,19 @@ try
            " blueDrop=" + blueDrop + " blueTarget=" + blueTarget +
            " depthBeforeStars=" + depthBeforeStars +
            " starThreshold=" + starThreshold +
-           " starSoftness=" + starSoftness + " crop=" + crop );
+           " starSoftness=" + starSoftness +
+           " starPower=" + starPower +
+           " starColorBoost=" + starColorBoost +
+           " starBlend=" + starBlend +
+           " starHaloPower=" + starHaloPower +
+           " starHaloMix=" + starHaloMix +
+           " starTermLimit=" + starTermLimit +
+           " starUnderDarken=" + starUnderDarken +
+           " starUnderPower=" + starUnderPower +
+           " starMagentaRepair=" + starMagentaRepair +
+           " nebulaGlossAmount=" + nebulaGlossAmount +
+           " nebulaGlossRadius=" + nebulaGlossRadius +
+           " nebulaGlossSlope=" + nebulaGlossSlope + " crop=" + crop );
 
    let starlessWin = openOne( starlessPath, "starless" );
    let starsWin = openOne( starsPath, "stars" );
@@ -144,6 +173,19 @@ try
          throw new Error( "Starless saturation curve failed" );
    }
 
+   if ( nebulaGlossAmount > 0 )
+   {
+      logMsg( "Applying optional starless nebula gloss/clarity pass..." );
+      let LHE = new LocalHistogramEqualization;
+      LHE.radius = Math.round( nebulaGlossRadius );
+      LHE.slopeLimit = nebulaGlossSlope;
+      LHE.amount = nebulaGlossAmount;
+      LHE.histogramBins = 0;
+      LHE.circularKernel = true;
+      if ( !LHE.executeOn( view ) )
+         throw new Error( "Nebula LocalHistogramEqualization failed" );
+   }
+
    let outWin = new ImageWindow( image.width, image.height,
                                  image.numberOfChannels, 32, true,
                                  true, "rosette_v3_recombined" );
@@ -194,22 +236,69 @@ try
    logMsg( "Recombining stars from view " + starId + "..." );
    P = new PixelMath;
    P.useSingleExpression = false;
-   let starLum = "((" + starId + "[0]+" + starId + "[1]+" + starId + "[2])/3)";
+   let star0 = starId + "[0]";
+   let star1 = starId + "[1]";
+   let star2 = starId + "[2]";
+   if ( starMagentaRepair > 0 )
+   {
+      let magentaExcess = "max(min(min(" + star0 + "," + star2 + ")-" + star1 + ",1),0)";
+      star0 = "max(min(" + star0 + "-" + jsNum( starMagentaRepair*0.72 ) + "*" + magentaExcess + ",1),0)";
+      star1 = "max(min(" + star1 + "+" + jsNum( starMagentaRepair*0.30 ) + "*" + magentaExcess + ",1),0)";
+      star2 = "max(min(" + star2 + "-" + jsNum( starMagentaRepair*0.44 ) + "*" + magentaExcess + ",1),0)";
+   }
+   let starLum = "((" + star0 + "+" + star1 + "+" + star2 + ")/3)";
    let starGate = starThreshold > 0 ?
                   "max(min((" + starLum + "-" + jsNum( starThreshold ) + ")/" + jsNum( starSoftness ) + ",1),0)" :
                   "1";
-   P.expression0 = "max(min($T[0] + " + jsNum( starScale ) + "*" + starGate + "*" +
-                   "((" + starId + "[0]*(1-" + jsNum( starDesat ) + "))+" +
-                   "((( " + starId + "[0]+" + starId + "[1]+" + starId + "[2])/3)*" +
-                   jsNum( starDesat ) + ")),1),0)";
-   P.expression1 = "max(min($T[1] + " + jsNum( starScale ) + "*" + starGate + "*" +
-                   "((" + starId + "[1]*(1-" + jsNum( starDesat ) + "))+" +
-                   "((( " + starId + "[0]+" + starId + "[1]+" + starId + "[2])/3)*" +
-                   jsNum( starDesat ) + ")),1),0)";
-   P.expression2 = "max(min($T[2] + " + jsNum( starScale ) + "*" + starGate + "*" +
-                   "((" + starId + "[2]*(1-" + jsNum( starDesat ) + "))+" +
-                   "((( " + starId + "[0]+" + starId + "[1]+" + starId + "[2])/3)*" +
-                   jsNum( starDesat ) + ")),1),0)";
+   let tightStar0 = starPower == 1.0 ? star0 : "((" + star0 + ")^" + jsNum( starPower ) + ")";
+   let tightStar1 = starPower == 1.0 ? star1 : "((" + star1 + ")^" + jsNum( starPower ) + ")";
+   let tightStar2 = starPower == 1.0 ? star2 : "((" + star2 + ")^" + jsNum( starPower ) + ")";
+   let tightLum = "((" + tightStar0 + "+" + tightStar1 + "+" + tightStar2 + ")/3)";
+   let haloStar0 = starHaloPower == 1.0 ? star0 : "((" + star0 + ")^" + jsNum( starHaloPower ) + ")";
+   let haloStar1 = starHaloPower == 1.0 ? star1 : "((" + star1 + ")^" + jsNum( starHaloPower ) + ")";
+   let haloStar2 = starHaloPower == 1.0 ? star2 : "((" + star2 + ")^" + jsNum( starHaloPower ) + ")";
+   let haloLum = "((" + haloStar0 + "+" + haloStar1 + "+" + haloStar2 + ")/3)";
+   let chromaStar0 = "max(min(" + tightLum + "+(" + tightStar0 + "-" + tightLum + ")*" + jsNum( starColorBoost ) + ",1),0)";
+   let chromaStar1 = "max(min(" + tightLum + "+(" + tightStar1 + "-" + tightLum + ")*" + jsNum( starColorBoost ) + ",1),0)";
+   let chromaStar2 = "max(min(" + tightLum + "+(" + tightStar2 + "-" + tightLum + ")*" + jsNum( starColorBoost ) + ",1),0)";
+   let haloChroma0 = "max(min(" + haloLum + "+(" + haloStar0 + "-" + haloLum + ")*" + jsNum( starColorBoost ) + ",1),0)";
+   let haloChroma1 = "max(min(" + haloLum + "+(" + haloStar1 + "-" + haloLum + ")*" + jsNum( starColorBoost ) + ",1),0)";
+   let haloChroma2 = "max(min(" + haloLum + "+(" + haloStar2 + "-" + haloLum + ")*" + jsNum( starColorBoost ) + ",1),0)";
+   let finalStar0 = "max(min(((" + chromaStar0 + ")*(1-" + jsNum( starDesat ) + "))+" +
+                    "(" + tightLum + "*" + jsNum( starDesat ) + "),1),0)";
+   let finalStar1 = "max(min(((" + chromaStar1 + ")*(1-" + jsNum( starDesat ) + "))+" +
+                    "(" + tightLum + "*" + jsNum( starDesat ) + "),1),0)";
+   let finalStar2 = "max(min(((" + chromaStar2 + ")*(1-" + jsNum( starDesat ) + "))+" +
+                    "(" + tightLum + "*" + jsNum( starDesat ) + "),1),0)";
+   let finalHalo0 = "max(min(((" + haloChroma0 + ")*(1-" + jsNum( starDesat ) + "))+" +
+                    "(" + haloLum + "*" + jsNum( starDesat ) + "),1),0)";
+   let finalHalo1 = "max(min(((" + haloChroma1 + ")*(1-" + jsNum( starDesat ) + "))+" +
+                    "(" + haloLum + "*" + jsNum( starDesat ) + "),1),0)";
+   let finalHalo2 = "max(min(((" + haloChroma2 + ")*(1-" + jsNum( starDesat ) + "))+" +
+                    "(" + haloLum + "*" + jsNum( starDesat ) + "),1),0)";
+   let mixedStar0 = "max(min(" + finalStar0 + "*(1-" + jsNum( starHaloMix ) + ")+" + finalHalo0 + "*" + jsNum( starHaloMix ) + ",1),0)";
+   let mixedStar1 = "max(min(" + finalStar1 + "*(1-" + jsNum( starHaloMix ) + ")+" + finalHalo1 + "*" + jsNum( starHaloMix ) + ",1),0)";
+   let mixedStar2 = "max(min(" + finalStar2 + "*(1-" + jsNum( starHaloMix ) + ")+" + finalHalo2 + "*" + jsNum( starHaloMix ) + ",1),0)";
+   let term0 = "max(min(" + jsNum( starScale ) + "*" + starGate + "*" + mixedStar0 + "," + jsNum( starTermLimit ) + "),0)";
+   let term1 = "max(min(" + jsNum( starScale ) + "*" + starGate + "*" + mixedStar1 + "," + jsNum( starTermLimit ) + "),0)";
+   let term2 = "max(min(" + jsNum( starScale ) + "*" + starGate + "*" + mixedStar2 + "," + jsNum( starTermLimit ) + "),0)";
+   let underMaskRaw = starUnderPower == 1.0 ? starLum : "((" + starLum + ")^" + jsNum( starUnderPower ) + ")";
+   let underMask = "max(min(" + underMaskRaw + ",1),0)";
+   let base0 = starUnderDarken > 0 ? "max(min($T[0]*(1-" + jsNum( starUnderDarken ) + "*" + underMask + "),1),0)" : "$T[0]";
+   let base1 = starUnderDarken > 0 ? "max(min($T[1]*(1-" + jsNum( starUnderDarken ) + "*" + underMask + "),1),0)" : "$T[1]";
+   let base2 = starUnderDarken > 0 ? "max(min($T[2]*(1-" + jsNum( starUnderDarken ) + "*" + underMask + "),1),0)" : "$T[2]";
+   if ( starBlend == "screen" )
+   {
+      P.expression0 = "max(min(1-(1-" + base0 + ")*(1-" + term0 + "),1),0)";
+      P.expression1 = "max(min(1-(1-" + base1 + ")*(1-" + term1 + "),1),0)";
+      P.expression2 = "max(min(1-(1-" + base2 + ")*(1-" + term2 + "),1),0)";
+   }
+   else
+   {
+      P.expression0 = "max(min(" + base0 + "+" + term0 + ",1),0)";
+      P.expression1 = "max(min(" + base1 + "+" + term1 + ",1),0)";
+      P.expression2 = "max(min(" + base2 + "+" + term2 + ",1),0)";
+   }
    P.truncate = true;
    P.truncateLower = 0;
    P.truncateUpper = 1;

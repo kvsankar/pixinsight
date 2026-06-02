@@ -1,7 +1,7 @@
 # Horsehead / Flame 2013-2016 Processing — Status
 
-**As of:** 2026-05-26 IST, the primary narrow-field masters are solved, registered, blended, and a v1 presentation candidate has been exported.
-**Pipeline progress:** 75%, v1 Horsehead candidate complete — remaining work is optional refinement/comparison.
+**As of:** 2026-05-30 IST, the primary narrow-field masters are solved, registered, blended, a v1 presentation candidate has been exported, and a separate BXT/NXT retrofit candidate has been generated.
+**Pipeline progress:** 78%, v1 Horsehead candidate complete plus BXT/NXT review candidate — remaining work is optional refinement/comparison.
 
 For the repo-level planning document, see [Horsehead / Flame processing plan](../../../docs/horsehead-processing-plan.md).
 For the chronological log, see [Processing journey](processing-journey.md).
@@ -13,7 +13,7 @@ For the accepted result, see [Final v1](final-v1.md).
 PHASE 0 — Source inventory and project setup       COMPLETE FOR PRIMARY SETS
 PHASE 1 — Calibration + integration                COMPLETE FOR PRIMARY SETS
 PHASE 2 — Linear post-integration                  COMPLETE FOR FIRST CANDIDATE
-PHASE 3 — Nonlinear processing/export              V1 COMPLETE
+PHASE 3 — Nonlinear processing/export              V1 COMPLETE + BXT/NXT REVIEW CANDIDATE
 ```
 
 ## Dataset Summary
@@ -26,7 +26,7 @@ PHASE 3 — Nonlinear processing/export              V1 COMPLETE
 | Main goal | Combine modded and unmodded narrow-field data for better S/N without losing believable broadband color |
 | Wide-field role | Separate context/large-scale support only; not part of the fine-detail integration |
 | Checked-in historical preview | `docs/images/original-2013-finished-work.jpg`, sourced from `finished-work/20131231-Flame-Horsehead-Nebulae.jpg` |
-| Current blocker | None for v1; remaining work is optional refinement/comparison |
+| Current blocker | None for v1; BXT/NXT candidate needs review, including orientation/presentation choice |
 
 ## Candidate Light Sets
 
@@ -75,6 +75,7 @@ Skip for now: `bad`, `bad-tree-shadow`, `tree-obscured`, `aborted`, `trial-shots
 - Added `scripts/pjsr/crop-xisf.js`, cropped `04c`, and ran a first conservative MaskedStretch. This is now the current nonlinear checkpoint.
 - Added `scripts/pjsr/03h-horsehead-v1-polish.js` and exported the first v1 presentation candidate from `04c`.
 - Ran a very mild star-reduction comparison branch. It is retained for inspection, but the plain v1 polish is the current preferred candidate because the star reduction is subtle and not worth making the default path yet.
+- Added a BXT/NXT retrofit branch from the selected `04c` linear blend and exported `docs/images/horsehead-04c-bxt-nxt-v1-polish.jpg` as a review candidate. The plugin branch matches the `04c` linear preview orientation, while the earlier accepted JPEG appears mirrored relative to that preview, so it is not promoted until that presentation choice is resolved.
 - Do not mix modded T1i, unmodified 60D, and 70mm wide-field frames in one raw integration.
 - Use the unmodified 60D stack for broadband color reference where possible.
 - Use the modded T1i stack as H-alpha/red signal enhancement, not as the only color truth.

@@ -1,7 +1,7 @@
 # M31 Andromeda Processing — Status
 
-**As of:** 2026-05-24, v3 ED80-aware final export complete
-**Pipeline progress:** 95% — Phase 1 done, Phase 2 done, Phase 3 nonlinear stretch/enhancement/crop/export done, plus v2 color/chroma refinement and v3 ED80-aware star/detail polish. Optional external-tool experiments remain.
+**As of:** 2026-05-30, v3 ED80-aware final export complete; BXT/NXT retrofit candidate exported for review.
+**Pipeline progress:** 97% — Phase 1 done, Phase 2 done, Phase 3 nonlinear stretch/enhancement/crop/export done, plus v2 color/chroma refinement, v3 ED80-aware star/detail polish, and a separate BXT/NXT review branch. Optional external-tool experiments remain.
 
 ---
 
@@ -19,6 +19,7 @@ PHASE 3 — Non-linear                              ✅ V3 DONE
   Stretch → Mask building → HDRMT → LHE → Curves
   → Crop → Export → v2 color/chroma cleanup → v2 Export
   → v3 mild star reduction/detail polish → v3 Export
+  → BXT/NXT retrofit candidate exported separately
   Optional: bright-star halo treatment / external tools
 ```
 
@@ -36,10 +37,14 @@ PHASE 3 — Non-linear                              ✅ V3 DONE
 `work/03-nonlinear/m31-final-v3.tif` — current recommended ED80-aware 16-bit archival TIFF export.
 `work/03-nonlinear/03g-final-v3.xisf` — current recommended ED80-aware PixInsight working final.
 
+`work/03-nonlinear-bxt-nxt-v1/03g-final-bxt-nxt-v1.xisf` — BXT/NXT retrofit candidate.
+`work/03-nonlinear-bxt-nxt-v1/m31-bxt-nxt-v1.tif` — BXT/NXT retrofit TIFF export.
+
 Compressed images checked into the repo for quick comparison:
 
 - [2013 Photoshop result](images/original-2013-photoshop.jpg)
 - [2026 PixInsight v3 result](images/pixinsight-v3-ed80.jpg)
+- [2026 BXT/NXT retrofit candidate](images/m31-bxt-nxt-v1.jpg)
 
 ## Quick visual comparison
 
@@ -47,12 +52,37 @@ Compressed images checked into the repo for quick comparison:
 |---|---|
 | ![Original 2013 Photoshop result](images/original-2013-photoshop.jpg) | ![2026 PixInsight automation v3 result](images/pixinsight-v3-ed80.jpg) |
 
+| 2026 BXT/NXT retrofit candidate |
+|---|
+| ![2026 BXT/NXT retrofit candidate](images/m31-bxt-nxt-v1.jpg) |
+
 What you should see:
 - Sky background: neutral gray/brown (no green tint — fixed by SPCC/SCNR)
 - M31 bulge: pale warm yellow
 - M31 disk: faint, with blue-gray spiral arms, stronger dust lanes in v3, and reduced green/cyan bias
 - Stars: round near center, comatic at corners, mildly reduced in v3
 - Image is now **nonlinear** and ready to view/export.
+
+## 2026-05-30 BXT/NXT Retrofit
+
+The licensed RC Astro workflow was tested from the accepted pre-denoise linear checkpoint:
+
+```text
+work/02-linear/02d-scnr.xisf
+```
+
+The branch used `scripts/run-bxt-nxt-linear.ps1`, then reused the existing M31 nonlinear sequence: MaskedStretch, galaxy enhancement, v2 color cleanup, ED80-aware finishing, and final crop/export.
+
+Outputs:
+
+```text
+work/02-linear-bxt-nxt-v1/02f-bxt.xisf
+work/02-linear-bxt-nxt-v1/02g-bxt-nxt.xisf
+work/03-nonlinear-bxt-nxt-v1/03g-final-bxt-nxt-v1.xisf
+docs/images/m31-bxt-nxt-v1.jpg
+```
+
+Initial read: cleaner background and tighter stars than the accepted v3, with dust lanes still intact. Keep this as a review candidate until it is compared at full size against `pixinsight-v3-ed80.jpg`.
 
 ---
 

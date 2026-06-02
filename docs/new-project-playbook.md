@@ -26,6 +26,10 @@ Any known bad folders or calibration caveats:
 
 ## Agent Procedure
 
+### Data Authenticity Guardrail
+
+All visible sky content must come from the user's captured frames or products directly derived from those frames. Reference images can guide review language and taste, but do not synthesize, paint, clone, or generate stars, spikes, nebulosity, background texture, or any other astrophotography content.
+
 ### 0. Load Local-Only Archive Context
 
 Actual archive roots are private machine details. They should live only in ignored local files such as `.env` or `.env.local`, or be provided by the user in the current session.

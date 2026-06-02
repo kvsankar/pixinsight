@@ -1,6 +1,6 @@
 # Orion Nebula / M42 2013 Processing Pipeline
 
-This plan has produced an accepted February 2013 M42 final v1 presentation result, plus later BXT/NXT replacement diagnostics. After review, BXT/NXT is the preferred replacement direction; v2 is the current review candidate.
+This plan has produced an accepted February 2013 M42 final v1 presentation result, plus later BXT/NXT replacement diagnostics. After review, BXT/NXT is the preferred replacement direction; v3 is the current cleaner review candidate.
 
 For the accepted output and caveats, see [Final v1](final-v1.md). For source inventory and open questions, see [Status](status.md). For web findings behind the HDR strategy, see [M42 processing research](research/01-m42-processing.md).
 
@@ -53,7 +53,7 @@ Phase 2 diagnostic status:
 - Complete as post-final diagnostic: `02-linear-2013-m42-180s-noflats-bxt-nxt`
 - Complete as post-final diagnostic: `02-linear-2013-m42-300s-flat-nodark-bxt-nxt`
 - Complete: registration of 300s and 60s diagnostic masters to the 180s no-flats grid
-- Complete: nonlinear 180s no-flats refinement, crop/color revision, first 300s faint-support test, accepted final v1 export `m42-2013-v8-presentation.jpg`, BXT/NXT v1 review export `m42-2013-bxt-nxt-v1-presentation.jpg`, and BXT/NXT v2 300s-support export `m42-2013-bxt-nxt-v2-presentation.jpg`
+- Complete: nonlinear 180s no-flats refinement, crop/color revision, first 300s faint-support test, accepted final v1 export `m42-2013-v8-presentation.jpg`, BXT/NXT v1 review export `m42-2013-bxt-nxt-v1-presentation.jpg`, BXT/NXT v2 300s-support export `m42-2013-bxt-nxt-v2-presentation.jpg`, and cleaner BXT/NXT v3 no-300s export `m42-2013-bxt-nxt-v3-presentation.jpg`
 
 Command examples below assume:
 
@@ -334,14 +334,18 @@ The accepted result uses a conservative MaskedStretch, M42 core mask, HDRMultisc
 BXT/NXT diagnostics:
 
 - source: `work/02-linear-2013-m42-180s-noflats-bxt-nxt/02h-bxt-nxt-scnr.xisf`
+- v3 source: `work/02-linear-2013-m42-180s-noflats-bxt-nxt-v3/02h-bxt-nxt-scnr.xisf`
 - v1 nonlinear branch: `work/03-nonlinear-2013-m42-bxt-nxt-v1/`
 - v2 nonlinear branch: `work/03-nonlinear-2013-m42-bxt-nxt-v2/`
+- v3 nonlinear branch: `work/03-nonlinear-2013-m42-bxt-nxt-v3/`
 - v1 review JPEG: `docs/images/m42-2013-bxt-nxt-v1-presentation.jpg`
 - v2 review JPEG: `docs/images/m42-2013-bxt-nxt-v2-presentation.jpg`
+- v3 review JPEG: `docs/images/m42-2013-bxt-nxt-v3-presentation.jpg`
 - comparison panels: `docs/images/m42-2013-v8-vs-bxt-nxt-v1-v2-comparison.jpg`, `docs/images/m42-2013-v8-vs-bxt-nxt-v1-v2-core-crop.jpg`, `docs/images/m42-2013-v8-vs-bxt-nxt-v1-v2-sky-crop.jpg`
+- v3 comparison panels: `docs/images/m42-2013-v8-vs-bxt-nxt-v2-v3-comparison.jpg`, `docs/images/m42-2013-v8-vs-bxt-nxt-v2-v3-core-crop.jpg`, `docs/images/m42-2013-v8-vs-bxt-nxt-v2-v3-sky-crop.jpg`
 - close crops: `docs/images/m42-2013-v8-vs-bxt-nxt-v1-core-crop.jpg`, `docs/images/m42-2013-v8-vs-bxt-nxt-v1-sky-crop.jpg`
 
-The v1 plugin diagnostic reuses the v8 crop, rich/corequiet split, core blend, and final-presentation machinery, but with a gentler final lift because the BXT/NXT stretch already opens the faint field. Human review preferred it to the pre-BXT/NXT cut. V2 then adds freshly processed 300s support at a conservative blend amount. V2 is the current replacement candidate, pending final review.
+The v1 plugin diagnostic reuses the v8 crop, rich/corequiet split, core blend, and final-presentation machinery, but with a gentler final lift because the BXT/NXT stretch already opens the faint field. Human review preferred it to the pre-BXT/NXT cut. V2 then adds freshly processed 300s support at a conservative blend amount. Later noise review demoted v2. V3 returns to an 180s-only branch with lower BXT sharpening, stronger NXT, darker stretch, reduced local contrast, no final faint-lift, and no 300s support; it is the current cleaner replacement candidate, pending final review.
 
 Candidate outputs to prepare after review:
 

@@ -1,7 +1,7 @@
 # M45 / Pleiades 2013-12-30 Processing - Status
 
-**As of:** 2026-05-27 IST, the primary dark-calibrated branch has completed WBPP, Phase 2, the M45-specific nonlinear v1 polish, and a v2 portrait crop. A no-dark WBPP control was also run and rejected as the baseline.
-**Pipeline progress:** 90%, v2 crop review candidate exported. Remaining work is human review and optional final brightness/color refinement.
+**As of:** 2026-05-30 IST, the primary dark-calibrated branch has completed WBPP, Phase 2, the M45-specific nonlinear v1 polish, a v2 portrait crop, and a separate conservative BXT/NXT retrofit candidate. A no-dark WBPP control was also run and rejected as the baseline.
+**Pipeline progress:** 93%, v2 crop and BXT/NXT crop review candidates exported. Remaining work is human review and optional final brightness/color refinement.
 
 For the proposed workflow, see [Processing pipeline](pipeline.md).
 For the review checkpoint, see [Review checkpoint](review-2026-05-27.md).
@@ -15,7 +15,7 @@ For historical local artifacts, see [Original 2013 processing evidence](original
 PHASE 0 - Source inventory and project setup       COMPLETE
 PHASE 1 - Calibration + integration                COMPLETE FOR PRIMARY + NO-DARK CONTROL
 PHASE 2 - Linear post-integration                  COMPLETE FOR PRIMARY
-PHASE 3 - Nonlinear processing/export              V2 CROP REVIEW CANDIDATE COMPLETE
+PHASE 3 - Nonlinear processing/export              V2 CROP + BXT/NXT REVIEW CANDIDATES COMPLETE
 ```
 
 ## Dataset Summary
@@ -32,8 +32,8 @@ PHASE 3 - Nonlinear processing/export              V2 CROP REVIEW CANDIDATE COMP
 | Light temperature range | +27 to +31 C |
 | Primary usable integration | 12 x 240s = 48 min |
 | Historical reference | `docs/images/original-2013-finished-work.jpg` |
-| Current result | `docs/images/m45-20131230-v2-portrait-crop.jpg` |
-| Current blocker | Human review of v2 crop taste and final brightness |
+| Current result | `docs/images/m45-20131230-v2-portrait-crop.jpg`; BXT/NXT candidate at `docs/images/m45-20131230-bxt-nxt-v1-portrait-crop.jpg` |
+| Current blocker | Human review of crop taste, final brightness, and whether BXT/NXT preserves reflection dust naturally |
 
 ## Archive Search Results
 
@@ -89,12 +89,14 @@ Current calibration decision:
 - Exported the first v1 review candidate: `docs/images/m45-20131230-v1-polish.jpg`.
 - Cropped the v1 polish into the v2 portrait review candidate: `docs/images/m45-20131230-v2-portrait-crop.jpg`.
 - Ran `wbpp-20131230-good-nodark-noflats-control`. It completed, but the linked-STF preview had stronger broad-field gradient and did not solve the raw green tendency, so the dark-calibrated branch remains preferred.
+- Added a conservative BXT/NXT retrofit branch from the accepted pre-denoise checkpoint. The branch uses low BXT/NXT strengths to protect reflection nebulosity and exports both a full-frame polish and a portrait crop.
 
 ## Review Questions
 
 1. Is the v2 portrait crop the preferred presentation over the wider v1 landscape frame?
-2. Is the cleaner, darker modern background preferable, or should a final pass move closer to the brighter old finished-work look?
-3. Is the blue reflection dust strong enough, or should a final pass lift dust more aggressively with a stronger noise tradeoff?
+2. Does the BXT/NXT portrait candidate improve the star field without making the blue dust look over-smoothed or too contrasty?
+3. Is the cleaner, darker modern background preferable, or should a final pass move closer to the brighter old finished-work look?
+4. Is the blue reflection dust strong enough, or should a final pass lift dust more aggressively with a stronger noise tradeoff?
 
 ## Outputs
 
@@ -115,5 +117,10 @@ Current calibration decision:
 | `work/03-nonlinear-20131230-v1/03p-m45-v2-portrait-crop.xisf` | Current v2 portrait-crop XISF |
 | `work/03-nonlinear-20131230-v1/m45-20131230-v2-portrait-crop.tif` | Current v2 portrait-crop TIFF export |
 | `docs/images/m45-20131230-v2-portrait-crop.jpg` | Current v2 portrait-crop JPEG review candidate |
+| `work/02-linear-20131230-bxt-nxt-v1/02g-bxt-nxt.xisf` | Conservative BXT/NXT linear retrofit candidate |
+| `work/03-nonlinear-20131230-bxt-nxt-v1/03p-bxt-nxt-v1-polish.xisf` | BXT/NXT v1 full-frame polish |
+| `docs/images/m45-20131230-bxt-nxt-v1-polish.jpg` | BXT/NXT v1 full-frame JPEG review candidate |
+| `work/03-nonlinear-20131230-bxt-nxt-v1/03q-bxt-nxt-v1-portrait-crop.xisf` | BXT/NXT v1 portrait-crop XISF |
+| `docs/images/m45-20131230-bxt-nxt-v1-portrait-crop.jpg` | BXT/NXT v1 portrait-crop JPEG review candidate |
 | `work/wbpp-20131230-good-nodark-noflats-control/master/masterLight_BIN-1_5202x3464_EXPOSURE-240.00s_FILTER-NoFilter_RGB_autocrop.xisf` | No-dark diagnostic master |
 | `docs/images/m45-20131230-wbpp-nodark-linked-stf.jpg` | No-dark diagnostic preview, rejected as baseline |

@@ -156,3 +156,31 @@ docs/images/m45-20131230-v2-portrait-crop.jpg
 work/03-nonlinear-20131230-v1/03p-m45-v2-portrait-crop.xisf
 work/03-nonlinear-20131230-v1/m45-20131230-v2-portrait-crop.tif
 ```
+
+## 2026-05-30 - BXT/NXT Retrofit Candidate
+
+After BlurXTerminator and NoiseXTerminator were licensed, the M45 path was rerun from the accepted pre-denoise linear checkpoint:
+
+```text
+work/02-linear-20131230-good-dark25-30-noflats/02d-scnr.xisf
+```
+
+The plugin branch uses conservative settings because M45's reflection dust is real target signal and can be over-smoothed easily:
+
+```text
+work/02-linear-20131230-bxt-nxt-v1/02f-bxt.xisf
+work/02-linear-20131230-bxt-nxt-v1/02g-bxt-nxt.xisf
+```
+
+The existing nonlinear path was then reused: MaskedStretch at target background 0.095, `03p-m45-v1-polish.js`, and the same v2 portrait crop geometry.
+
+Review outputs:
+
+```text
+docs/images/m45-20131230-bxt-nxt-v1-polish.jpg
+docs/images/m45-20131230-bxt-nxt-v1-portrait-crop.jpg
+work/03-nonlinear-20131230-bxt-nxt-v1/03p-bxt-nxt-v1-polish.xisf
+work/03-nonlinear-20131230-bxt-nxt-v1/03q-bxt-nxt-v1-portrait-crop.xisf
+```
+
+Initial read: the BXT/NXT crop has tighter stars and a cleaner field than the pre-plugin crop, but it changes the presentation enough that it should be reviewed side by side with `m45-20131230-v2-portrait-crop.jpg` before replacing the accepted candidate.

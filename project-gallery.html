@@ -558,7 +558,7 @@
         <nav class="site-links" aria-label="Repository pages">
           <a href="index.html">Image Picks</a>
           <a href="intent.html">Project Intent</a>
-          <a href="https://github.com/kvsankar/pixinsight#readme">Project README</a>
+          <a href="readme.md">Project README</a>
         </nav>
         <nav id="projectPills" class="project-pills" aria-label="Projects"></nav>
       </div>
@@ -626,11 +626,11 @@
       {
         id: "m42",
         title: "Orion Nebula / M42 2013",
-        status: "BXT/NXT v2 is the current replacement candidate. The earlier v8 remains the historically accepted final v1.",
+        status: "BXT/NXT v3 is the current cleaner replacement candidate. The earlier v8 remains the historically accepted final v1.",
         stats: {
           target: "M42, M43, Running Man",
           data: "31 x 180s base, 20 x 300s faint support",
-          outcome: "BXT/NXT v2 pending final review"
+          outcome: "BXT/NXT v3 pending final review"
         },
         docs: [
           ["Status", "projects/orion-nebula-m42-2013/docs/status.md"],
@@ -724,14 +724,29 @@
             id: "bxt-v2",
             title: "BXT/NXT v2: plugin 300s support",
             status: "review",
-            note: "Processes 300s support through BXT/NXT, registers it to the 180s plugin branch, and blends it conservatively. Current replacement candidate.",
+            note: "Processes 300s support through BXT/NXT, registers it to the 180s plugin branch, and blends it conservatively. Later review found the field still too noisy, so this was demoted.",
             images: [
               img("BXT/NXT v2 300s support", "projects/orion-nebula-m42-2013/docs/images/m42-2013-bxt-nxt-v2-300s-support.jpg", "Freshly processed 300s support crop."),
               img("BXT/NXT v2 support blend", "projects/orion-nebula-m42-2013/docs/images/m42-2013-bxt-nxt-v2-300s-supportblend.jpg", "Conservative 300s support blend."),
-              img("BXT/NXT v2 presentation", "projects/orion-nebula-m42-2013/docs/images/m42-2013-bxt-nxt-v2-presentation.jpg", "Current replacement candidate."),
+              img("BXT/NXT v2 presentation", "projects/orion-nebula-m42-2013/docs/images/m42-2013-bxt-nxt-v2-presentation.jpg", "Demoted 300s-support candidate."),
               img("v8 / BXT v1 / BXT v2", "projects/orion-nebula-m42-2013/docs/images/m42-2013-v8-vs-bxt-nxt-v1-v2-comparison.jpg", "Three-way full-frame review."),
               img("v8 / BXT v1 / BXT v2 core", "projects/orion-nebula-m42-2013/docs/images/m42-2013-v8-vs-bxt-nxt-v1-v2-core-crop.jpg", "Three-way core crop."),
               img("v8 / BXT v1 / BXT v2 sky", "projects/orion-nebula-m42-2013/docs/images/m42-2013-v8-vs-bxt-nxt-v1-v2-sky-crop.jpg", "Three-way sky crop.")
+            ]
+          },
+          {
+            id: "bxt-v3",
+            title: "BXT/NXT v3: quieter 180s-only redo",
+            status: "review",
+            note: "Drops the no-dark 300s support layer, backs off BXT sharpening, uses stronger NXT, stretches darker, reduces final lift, and blends in a quiet-core variant to avoid the magenta core artifact.",
+            images: [
+              img("BXT/NXT v3 no 300s", "projects/orion-nebula-m42-2013/docs/images/m42-2013-bxt-nxt-v3-no300s.jpg", "180s-only plugin branch before the quiet-core blend."),
+              img("BXT/NXT v3 quiet core", "projects/orion-nebula-m42-2013/docs/images/m42-2013-bxt-nxt-v3-corequiet.jpg", "Quiet-core layer used to correct the first v3 core artifact."),
+              img("BXT/NXT v3 core blend", "projects/orion-nebula-m42-2013/docs/images/m42-2013-bxt-nxt-v3-coreblend.jpg", "Core-corrected 180s-only BXT/NXT branch."),
+              img("BXT/NXT v3 presentation", "projects/orion-nebula-m42-2013/docs/images/m42-2013-bxt-nxt-v3-presentation.jpg", "Current cleaner replacement candidate."),
+              img("v8 / BXT v2 / BXT v3", "projects/orion-nebula-m42-2013/docs/images/m42-2013-v8-vs-bxt-nxt-v2-v3-comparison.jpg", "Full-frame review of the cleaner redo."),
+              img("v8 / BXT v2 / BXT v3 core", "projects/orion-nebula-m42-2013/docs/images/m42-2013-v8-vs-bxt-nxt-v2-v3-core-crop.jpg", "Core comparison crop."),
+              img("v8 / BXT v2 / BXT v3 sky", "projects/orion-nebula-m42-2013/docs/images/m42-2013-v8-vs-bxt-nxt-v2-v3-sky-crop.jpg", "Sky texture comparison crop.")
             ]
           },
           {
@@ -761,6 +776,7 @@
           edge("m42-core-hdr", "stock-v8", "Stock MLT path with core blend and 300s support"),
           edge("phase2", "bxt-v1", "Replace old MLT with BXT/NXT before stretch"),
           edge("bxt-v1", "bxt-v2", "Add freshly processed 300s support"),
+          edge("bxt-v2", "bxt-v3", "Drop noisy 300s support and redo for cleaner sky"),
           edge("phase2", "support", "Inspect alternate exposure groups")
         ]
       },
@@ -878,11 +894,11 @@
       {
         id: "m45",
         title: "M45 / Pleiades 2013-12-30",
-        status: "v2 portrait crop is the current review candidate from the dark-calibrated no-flats branch.",
+        status: "v2 portrait crop and a conservative BXT/NXT portrait crop are current review candidates from the dark-calibrated no-flats branch.",
         stats: {
           target: "Pleiades reflection nebulosity",
           data: "12 x 240s Canon EOS 60D",
-          outcome: "Portrait crop under review"
+          outcome: "Portrait crops under review"
         },
         docs: [
           ["Status", "projects/m45-pleiades-2013-12-30/docs/status.md"],
@@ -949,6 +965,16 @@
             ]
           },
           {
+            id: "m45-bxt",
+            title: "BXT/NXT v1 portrait crop",
+            status: "review",
+            note: "Conservative BlurXTerminator and NoiseXTerminator pass from the pre-denoise linear checkpoint, then the same M45 polish and portrait crop. Review against v2 for dust texture and star/halo taste.",
+            images: [
+              img("BXT/NXT v1 full-frame polish", "projects/m45-pleiades-2013-12-30/docs/images/m45-20131230-bxt-nxt-v1-polish.jpg", "Full-frame plugin candidate."),
+              img("BXT/NXT v1 portrait crop", "projects/m45-pleiades-2013-12-30/docs/images/m45-20131230-bxt-nxt-v1-portrait-crop.jpg", "Plugin portrait crop candidate.")
+            ]
+          },
+          {
             id: "m45-nodark",
             title: "No-dark/no-flats control",
             status: "rejected",
@@ -964,17 +990,18 @@
           edge("m45-linear", "m45-stretch", "Conservative nonlinear stretch"),
           edge("m45-stretch", "m45-polish", "Dust color shaping and halo restraint"),
           edge("m45-polish", "m45-v2-crop", "Review feedback favors portrait framing"),
+          edge("m45-linear", "m45-bxt", "Retrofit BXT/NXT before the same stretch/polish/crop"),
           edge("m45-source", "m45-nodark", "Control branch after pedestal warnings")
         ]
       },
       {
         id: "m31",
         title: "M31 / Andromeda 2013",
-        status: "v3 ED80-aware PixInsight export is the accepted modern result.",
+        status: "v3 ED80-aware PixInsight export is the accepted modern result; BXT/NXT v1 is a review candidate.",
         stats: {
           target: "Andromeda Galaxy",
           data: "27 x 240s Canon EOS 60D",
-          outcome: "Accepted v3"
+          outcome: "Accepted v3 plus BXT/NXT candidate"
         },
         docs: [
           ["Status", "projects/m31-andromeda-2013/docs/status.md"],
@@ -1036,6 +1063,15 @@
             images: [
               img("PixInsight v3 ED80", "projects/m31-andromeda-2013/docs/images/pixinsight-v3-ed80.jpg", "Accepted modern M31 result.")
             ]
+          },
+          {
+            id: "m31-bxt",
+            title: "BXT/NXT v1 retrofit",
+            status: "review",
+            note: "Starts from the accepted pre-denoise SCNR checkpoint, runs BXT/NXT, then reuses the M31 stretch/enhance/refine/ED80-finish sequence. Initial read: cleaner background and tighter stars without obvious dust-lane loss.",
+            images: [
+              img("BXT/NXT v1", "projects/m31-andromeda-2013/docs/images/m31-bxt-nxt-v1.jpg", "Plugin retrofit candidate.")
+            ]
           }
         ],
         edges: [
@@ -1044,17 +1080,18 @@
           edge("m31-solve", "m31-linear-clean", "Run SPCC and conservative linear cleanup"),
           edge("m31-linear-clean", "m31-v1", "Stretch, enhance, crop, export"),
           edge("m31-v1", "m31-v2", "Reduce residual green/cyan and background chroma"),
-          edge("m31-v2", "m31-v3", "Apply ED80-aware star/detail polish")
+          edge("m31-v2", "m31-v3", "Apply ED80-aware star/detail polish"),
+          edge("m31-linear-clean", "m31-bxt", "Retrofit BXT/NXT before stretch")
         ]
       },
       {
         id: "rosette",
         title: "Rosette Nebula 2014",
-        status: "StarXTerminator v3b/v3g/v3h/v3j presentation branches are documented; none is treated as scientifically final.",
+        status: "StarXTerminator v3b/v3g/v3h/v3j and BXT/NXT+StarXTerminator presentation branches are documented; none is treated as scientifically final.",
         stats: {
           target: "Rosette Nebula",
           data: "33 x 240s Canon EOS 60D",
-          outcome: "Presentation candidates"
+          outcome: "Presentation candidates plus BXT/NXT retrofit"
         },
         docs: [
           ["Status", "projects/rosette-2014-03-02/docs/status.md"],
@@ -1131,6 +1168,18 @@
               img("v3i subtle sparse stars", "projects/rosette-2014-03-02/docs/images/rosette-starxterminator-v3i-subtle-sparse-stars.jpg", "Subtle sparse-star diagnostic."),
               img("v3j sparse anchor stars", "projects/rosette-2014-03-02/docs/images/rosette-starxterminator-v3j-sparse-anchor-stars.jpg", "Best sparse-star presentation.")
             ]
+          },
+          {
+            id: "ros-bxt",
+            title: "BXT/NXT + StarXTerminator real sparse stars",
+            status: "review",
+            note: "Runs BXT/NXT from the SPCC/manual-DBE linear baseline, then repeats the v2e polish and StarXTerminator separation. v4f is the honest sparse baseline; v4j and v4l are rejected real-star de-emphasis/soft-shine diagnostics. Later v4m-v4t tests showed that this extracted star layer is too dense, soft, and pale for the desired gem-star finish without inventing stars or spikes. The synthetic v4d gem/spike experiment was rejected.",
+            images: [
+              img("BXT/NXT StarXTerminator v3j", "projects/rosette-2014-03-02/docs/images/rosette-bxt-nxt-starxterminator-v3j-sparse-anchor-stars.jpg", "Plugin sparse-star candidate before the corrected real-star redo."),
+              img("BXT/NXT v4f real sparse anchors", "projects/rosette-2014-03-02/docs/images/rosette-bxt-nxt-starxterminator-v4f-real-sparse-anchors.jpg", "Corrected real-data-only sparse-anchor redo."),
+              img("BXT/NXT v4j real star de-emphasis", "projects/rosette-2014-03-02/docs/images/rosette-bxt-nxt-starxterminator-v4j-real-gem-deemphasis.jpg", "Stronger real-star de-emphasis candidate."),
+              img("BXT/NXT v4l real soft shine gloss", "projects/rosette-2014-03-02/docs/images/rosette-bxt-nxt-starxterminator-v4l-real-soft-shine-gloss.jpg", "Rejected soft-shine/gloss diagnostic; stars remained dull and paint-like.")
+            ]
           }
         ],
         edges: [
@@ -1140,17 +1189,18 @@
           edge("ros-spcc-diagnostic", "ros-v2g", "Use SPCC baseline as a visual-polish starting point"),
           edge("ros-v2g", "ros-local-starless", "Try local starless approximations"),
           edge("ros-v2g", "ros-v3b", "Use StarXTerminator for clean starless/stars workflow"),
-          edge("ros-v3b", "ros-oldred", "Tune against historical red/depth preference")
+          edge("ros-v3b", "ros-oldred", "Tune against historical red/depth preference"),
+          edge("ros-spcc-diagnostic", "ros-bxt", "Retrofit BXT/NXT before the sparse-star presentation path")
         ]
       },
       {
         id: "horsehead",
         title: "Horsehead / Flame 2013-2016",
-        status: "04c mixed-camera branch is accepted: 60D broadband base plus clean and half-weight washed T1i red support.",
+        status: "04c mixed-camera branch is accepted; BXT/NXT v1 is a cleaner review candidate with an orientation/presentation question.",
         stats: {
           target: "Horsehead and Flame",
           data: "60D broadband plus modified T1i support",
-          outcome: "Accepted 04c v1"
+          outcome: "Accepted 04c v1 plus BXT/NXT candidate"
         },
         docs: [
           ["Final v1", "projects/horsehead-flame-2013-2016/docs/final-v1.md"],
@@ -1225,6 +1275,15 @@
             images: [
               img("04c star-reduced diagnostic", "projects/horsehead-flame-2013-2016/docs/images/horsehead-04c-v1-polish-star-reduced.jpg", "Rejected as too subtle.")
             ]
+          },
+          {
+            id: "hh-bxt",
+            title: "04c BXT/NXT v1 polish",
+            status: "review",
+            note: "BXT/NXT from the selected 04c linear blend, followed by the same crop, MaskedStretch, and v1 polish. Cleaner and more detailed, but the orientation should be reviewed against the accepted v1 before promotion.",
+            images: [
+              img("04c BXT/NXT v1 polish", "projects/horsehead-flame-2013-2016/docs/images/horsehead-04c-bxt-nxt-v1-polish.jpg", "Plugin retrofit candidate.")
+            ]
           }
         ],
         edges: [
@@ -1233,17 +1292,18 @@
           edge("hh-60d", "hh-blends", "Blend support branches and measure halo/background cost"),
           edge("hh-t1i", "hh-blends", "Register and add red support"),
           edge("hh-blends", "hh-final", "Promote 04c to nonlinear final polish"),
-          edge("hh-final", "hh-starreduce", "Test whether star reduction should replace the default")
+          edge("hh-final", "hh-starreduce", "Test whether star reduction should replace the default"),
+          edge("hh-blends", "hh-bxt", "Retrofit BXT/NXT before the same nonlinear polish")
         ]
       },
       {
         id: "trifid-lagoon",
         title: "Trifid / Lagoon 2014",
-        status: "Final v1 accepted from the March no-dark/no-flats branch, not the initially processed May branch.",
+        status: "Final v1 accepted from the March no-dark/no-flats branch; BXT/NXT v1 is a possible v2 review candidate.",
         stats: {
           target: "Trifid and Lagoon",
           data: "March and May ED80/reducer sessions",
-          outcome: "Accepted final v1"
+          outcome: "Accepted final v1 plus BXT/NXT candidate"
         },
         docs: [
           ["Final v1", "projects/trifid-lagoon-2014/docs/final-v1.md"],
@@ -1320,6 +1380,15 @@
               img("Final v1", "projects/trifid-lagoon-2014/docs/images/trifid-lagoon-20140302-final-v1.jpg", "Accepted final result."),
               img("Final v1 comparison", "projects/trifid-lagoon-2014/docs/images/trifid-lagoon-2014-final-v1-comparison.jpg", "Historical/review/final panel.")
             ]
+          },
+          {
+            id: "tl-bxt",
+            title: "BXT/NXT v1 retrofit",
+            status: "review",
+            note: "Starts from the accepted March pre-denoise checkpoint, then repeats the old-reference polish and finalizer. Cleaner and less red-heavy than final v1; review for warmth versus clarity.",
+            images: [
+              img("BXT/NXT v1", "projects/trifid-lagoon-2014/docs/images/trifid-lagoon-20140302-bxt-nxt-v1.jpg", "Plugin retrofit candidate.")
+            ]
           }
         ],
         edges: [
@@ -1327,7 +1396,8 @@
           edge("tl-source", "tl-march", "Switch to March session after reference review"),
           edge("tl-march", "tl-march-diagnostics", "Reject flat/no-ABE/divide alternatives"),
           edge("tl-march-diagnostics", "tl-march-review", "Keep subtractive ABE baseline for nonlinear review"),
-          edge("tl-march-review", "tl-final", "Use restrained polish instead of vivid branch")
+          edge("tl-march-review", "tl-final", "Use restrained polish instead of vivid branch"),
+          edge("tl-march", "tl-bxt", "Retrofit BXT/NXT before repeating the final path")
         ]
       }
     ];

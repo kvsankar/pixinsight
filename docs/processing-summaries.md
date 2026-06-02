@@ -140,6 +140,9 @@ Detailed notes:
 - [2026 StarXTerminator v3g old-red depth result](../projects/rosette-2014-03-02/docs/images/rosette-starxterminator-v3g-old-red-depth.jpg)
 - [2026 StarXTerminator v3h old-red starless result](../projects/rosette-2014-03-02/docs/images/rosette-starxterminator-v3h-old-red-starless.jpg)
 - [2026 StarXTerminator v3j subtle stars result](../projects/rosette-2014-03-02/docs/images/rosette-starxterminator-v3j-sparse-anchor-stars.jpg)
+- [2026 BXT/NXT v4f real-sparse-anchor result](../projects/rosette-2014-03-02/docs/images/rosette-bxt-nxt-starxterminator-v4f-real-sparse-anchors.jpg)
+- [2026 BXT/NXT v4j real-star de-emphasis result](../projects/rosette-2014-03-02/docs/images/rosette-bxt-nxt-starxterminator-v4j-real-gem-deemphasis.jpg)
+- [2026 BXT/NXT v4l real soft-shine/gloss result](../projects/rosette-2014-03-02/docs/images/rosette-bxt-nxt-starxterminator-v4l-real-soft-shine-gloss.jpg)
 
 Summary process:
 
@@ -166,7 +169,14 @@ Summary process:
 11. Added compressed, metadata-stripped comparison previews for the historical finished-work result and the current v3b result.
 12. Compared v3b against the historical finished-work image and tuned a v3g old-reference depth branch with darker sky, stronger midtone contrast, and protected crimson/red hue shift.
 13. Exported v3h as the same old-reference red/depth treatment with no star recombination after v3g's stars read too warm/red.
-14. Exported v3i/v3j by applying red/depth before stars and adding back threshold-gated, desaturated stars; v3j is the best sparse-anchor-star version so far.
+14. Exported v3i/v3j by applying red/depth before stars and adding back threshold-gated, desaturated stars; v3j became the first sparse-anchor-star baseline.
+15. After BXT/NXT licensing, reran the Rosette presentation branch from the manual-DBE SPCC baseline through BXT, NXT, v2e polish, StarXTerminator separation, and v3j sparse-anchor-star recombination.
+16. Rejected the synthetic v4d gem/spike branch after review because it painted artificial star-like content rather than deriving every star from the captured data.
+17. Reworked the BXT/NXT sparse-anchor-star result as v4f using only the real StarXTerminator stars layer, with stricter star gating and `starPower` tightening to reduce faint star haze and shrink real star halos without adding fake spikes or positions.
+18. Surveyed real-data star-handling workflows between starless and untouched stars, then ran v4g/v4h/v4i/v4j using real extracted stars, screen recombination, chroma emphasis, and PixInsight StarMask/MorphologicalTransformation de-emphasis. V4J was later rejected because the stars still read too much like droplets.
+19. After v4j still made some stars look droplet-like, ran v4k/v4l without post-combine morphology. V4L uses a real-star core plus real-halo blend, capped screen recombination, and starless-nebula LHE for a glossier surface, but later review still found the stars dull/paint-like.
+20. Ran v4m-v4q profile-preserving, additive/screen, under-star contrast, and magenta-repair diagnostics, plus v4s/v4t connected-component real-star selection. These reduced density in different ways but did not produce crisp gem-like stars from the current BXT/NXT StarXTerminator stars layer. The next credible path is a better real star layer from an earlier, less saturated stretch.
+21. Paused the Rosette BXT/NXT gem-star thread. Resume by creating a better real stars-only source from a less saturated, star-color-preserving stretch; do not keep tuning the current extracted stars layer as if it can produce gem-like stars.
 
 Subs used for v3b:
 
@@ -245,7 +255,7 @@ Primary feedback signals:
 
 ## Orion Nebula / M42 2013
 
-Current result: accepted final v1 from the v8 300s faint-support branch. Post-final BXT/NXT v1/v2 diagnostics are now preferred as the replacement direction, with v2 as the current review candidate.
+Current result: accepted final v1 from the v8 300s faint-support branch. Post-final BXT/NXT v1/v2/v3 diagnostics are now preferred as the replacement direction, with v3 as the current cleaner review candidate.
 
 Detailed notes:
 
@@ -263,6 +273,9 @@ Detailed notes:
 - [Final v1 vs BXT/NXT v1/v2 comparison](../projects/orion-nebula-m42-2013/docs/images/m42-2013-v8-vs-bxt-nxt-v1-v2-comparison.jpg)
 - [Final v1 vs BXT/NXT v1/v2 core crop](../projects/orion-nebula-m42-2013/docs/images/m42-2013-v8-vs-bxt-nxt-v1-v2-core-crop.jpg)
 - [Final v1 vs BXT/NXT v1/v2 sky crop](../projects/orion-nebula-m42-2013/docs/images/m42-2013-v8-vs-bxt-nxt-v1-v2-sky-crop.jpg)
+- [Final v1 vs BXT/NXT v2/v3 comparison](../projects/orion-nebula-m42-2013/docs/images/m42-2013-v8-vs-bxt-nxt-v2-v3-comparison.jpg)
+- [Final v1 vs BXT/NXT v2/v3 core crop](../projects/orion-nebula-m42-2013/docs/images/m42-2013-v8-vs-bxt-nxt-v2-v3-core-crop.jpg)
+- [Final v1 vs BXT/NXT v2/v3 sky crop](../projects/orion-nebula-m42-2013/docs/images/m42-2013-v8-vs-bxt-nxt-v2-v3-sky-crop.jpg)
 
 Summary process:
 
@@ -278,6 +291,7 @@ Summary process:
 10. Accepted final v1 from v8: an adjusted-crop 180s base with quiet-core blend, conservative registered-300s faint support, and a lighter final presentation polish.
 11. Ran a later BXT/NXT v1 diagnostic from the 180s no-flats SPCC checkpoint before old MLT denoise, then exported a side-by-side comparison against final v1.
 12. After review found BXT/NXT v1 better than the pre-plugin cut, ran BXT/NXT v2 with freshly processed 300s support blended conservatively.
+13. After v2 still looked noisy, ran BXT/NXT v3 as a cleaner 180s-only branch with stronger NXT, darker stretch, no 300s support, and a quiet-core blend.
 
 Primary feedback signals:
 
@@ -286,7 +300,8 @@ Primary feedback signals:
 - Visual feedback showed the v6 crop was high, v7 color/contrast was improved but too conservative on background nebulosity, and v8 gave the preferred depth/crop balance.
 - The 300s support layer improved surrounding haze at the cost of some background texture; that tradeoff was accepted for final v1.
 - BXT/NXT v1 opens the faint field and sharpens structure without the M81/M82 scratch-noise failure mode.
-- BXT/NXT v2 keeps the plugin look and adds only a small amount of freshly processed 300s support; it is the current replacement candidate pending final review.
+- BXT/NXT v2 kept the plugin look and added only a small amount of freshly processed 300s support, but it still showed too much background texture.
+- BXT/NXT v3 is the current cleaner replacement candidate pending final review; it sacrifices some 300s-assisted faint haze to reduce noise.
 
 ## Trifid / Lagoon 2014
 

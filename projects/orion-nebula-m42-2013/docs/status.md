@@ -1,7 +1,7 @@
 # Orion Nebula / M42 2013 Processing - Status
 
-**As of:** 2026-05-28 IST, source inventory, web research, Phase 1 diagnostics, Phase 2 comparisons, nonlinear refinement, crop/color revision, 300s faint-nebulosity support test, final v1 documentation, and BXT/NXT v1/v2 replacement diagnostics are complete.
-**Pipeline progress:** M42 final v1 accepted historically; BXT/NXT is now the preferred replacement direction after review feedback, with v2 as the current review candidate. Optional January wide-field/context work remains separate.
+**As of:** 2026-05-31 IST, source inventory, web research, Phase 1 diagnostics, Phase 2 comparisons, nonlinear refinement, crop/color revision, 300s faint-nebulosity support test, final v1 documentation, and BXT/NXT v1/v2/v3 replacement diagnostics are complete.
+**Pipeline progress:** M42 final v1 accepted historically; BXT/NXT is now the preferred replacement direction after review feedback, with v3 as the current cleaner review candidate. Optional January wide-field/context work remains separate.
 
 For the accepted result, see [Final v1](final-v1.md).
 For the target-specific processing plan, see [Pipeline](pipeline.md).
@@ -188,7 +188,7 @@ V1 review outputs:
 
 Review feedback: BXT/NXT v1 looks better than the pre-BXT/NXT cut. Unlike the M81/M82 experiment, this branch does not make the field collapse into colored scratch noise. It opens up faint nebulosity and gives the core/filaments a cleaner, sharper look. The tradeoff is a brighter, more textured sky, and v1 does not include a fresh BXT/NXT treatment of the 300s support layer.
 
-V2 then processed the 300s support through the same plugin path, registered it to the 180s BXT/NXT branch, and blended it conservatively (`amount=0.12`) before final presentation. Current BXT/NXT review outputs:
+V2 then processed the 300s support through the same plugin path, registered it to the 180s BXT/NXT branch, and blended it conservatively (`amount=0.12`) before final presentation. Review feedback found that M42 still had too much visible noise/texture, so v2 is no longer the preferred replacement candidate.
 
 - [BXT/NXT v2 300s support](images/m42-2013-bxt-nxt-v2-300s-support.jpg)
 - [BXT/NXT v2 300s support blend](images/m42-2013-bxt-nxt-v2-300s-supportblend.jpg)
@@ -197,7 +197,19 @@ V2 then processed the 300s support through the same plugin path, registered it t
 - [Accepted v8 vs BXT/NXT v1 vs v2 core crop](images/m42-2013-v8-vs-bxt-nxt-v1-v2-core-crop.jpg)
 - [Accepted v8 vs BXT/NXT v1 vs v2 sky crop](images/m42-2013-v8-vs-bxt-nxt-v1-v2-sky-crop.jpg)
 
-Initial v2 read: v2 keeps the v1 structural/detail improvement and brings only a small, conservative amount of plugin-cleaned 300s haze back into the field. It is the current replacement candidate, pending final human review.
+V3 backs away from the noisy support layer. It starts again from the 180s no-flats SPCC checkpoint, reduces BXT sharpening (`sharpenStars=0.16`, `sharpenNonstellar=0.20`), uses stronger NXT (`denoise=0.72`, `denoiseColor=0.90`, `denoiseLf=0.34`, `denoiseLfColor=0.80`, `detail=0.10`), stretches to a darker `targetBackground=0.092`, omits the 300s blend, and uses a quieter core-blend presentation with no extra final faint-nebulosity lift.
+
+V3 review outputs:
+
+- [BXT/NXT v3 no-300s field](images/m42-2013-bxt-nxt-v3-no300s.jpg)
+- [BXT/NXT v3 quiet core](images/m42-2013-bxt-nxt-v3-corequiet.jpg)
+- [BXT/NXT v3 core blend](images/m42-2013-bxt-nxt-v3-coreblend.jpg)
+- [BXT/NXT v3 presentation](images/m42-2013-bxt-nxt-v3-presentation.jpg)
+- [Accepted v8 vs BXT/NXT v2 vs v3 comparison](images/m42-2013-v8-vs-bxt-nxt-v2-v3-comparison.jpg)
+- [Accepted v8 vs BXT/NXT v2 vs v3 core crop](images/m42-2013-v8-vs-bxt-nxt-v2-v3-core-crop.jpg)
+- [Accepted v8 vs BXT/NXT v2 vs v3 sky crop](images/m42-2013-v8-vs-bxt-nxt-v2-v3-sky-crop.jpg)
+
+Current read: v3 is the cleaner BXT/NXT replacement candidate for review. It gives up some of the 300s-assisted faint haze from v2, but the background is less scratchy and the core artifact from the first v3 pass was corrected with a quiet-core blend.
 
 ## Decisions So Far
 
@@ -229,7 +241,8 @@ Initial v2 read: v2 keeps the v1 structural/detail improvement and brings only a
 | `03-m42-300s-support-test` | Register/use 300s support only through masks if it improves faint outer nebulosity |
 | `final-v1` | Accepted M42/M43/Running Man result from the v8 300s faint-support branch |
 | `bxt-nxt-v1` | Post-final diagnostic from the 180s no-flats SPCC checkpoint; visually preferred to the pre-BXT/NXT cut |
-| `bxt-nxt-v2` | Current replacement candidate with freshly processed 300s support blended conservatively |
+| `bxt-nxt-v2` | Demoted review branch; freshly processed 300s support still left too much background texture |
+| `bxt-nxt-v3` | Current cleaner BXT/NXT replacement candidate; 180s-only, stronger NXT, no 300s support |
 | `wbpp-2013-orion-widefield-10s` | Separate provisional wide-field Orion branch; plate solve before true-scale claims |
 
 ## Outputs
@@ -257,7 +270,10 @@ Nonlinear candidate outputs are in:
 - `work/02-linear-2013-m42-300s-flat-nodark-bxt-nxt/`
 - `work/registered-to-180s-bxt-nxt/`
 - `work/03-nonlinear-2013-m42-bxt-nxt-v2/`
+- `work/02-linear-2013-m42-180s-noflats-bxt-nxt-v3/`
+- `work/03-nonlinear-2013-m42-bxt-nxt-v3/`
 - `docs/images/m42-2013-v8-presentation.jpg`
 - `docs/images/m42-2013-bxt-nxt-v1-presentation.jpg`
 - `docs/images/m42-2013-bxt-nxt-v2-presentation.jpg`
+- `docs/images/m42-2013-bxt-nxt-v3-presentation.jpg`
 - `docs/images/m42-2013-original-v7-v8-presentation-comparison.jpg`

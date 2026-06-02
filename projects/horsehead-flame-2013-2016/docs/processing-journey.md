@@ -393,3 +393,24 @@ docs/images/horsehead-04c-v1-polish-star-reduced.jpg
 Decision: keep the non-star-reduced v1 polish as the current presentation candidate. The star-reduced version is subtle and useful for comparison, but not enough of an improvement to make it the default.
 
 Historical comparison note: a compressed, metadata-stripped copy of `finished-work/20131231-Flame-Horsehead-Nebulae.jpg` is checked in as `docs/images/original-2013-finished-work.jpg` so the old finished-work result can be compared directly with the 2026 v1 PixInsight result.
+
+## 2026-05-30 - BXT/NXT Retrofit Candidate
+
+After BlurXTerminator and NoiseXTerminator were licensed, the selected `04c` mixed-camera linear blend was rerun through a separate BXT/NXT branch:
+
+```text
+work/04-combine/04c-rgb-plus-t1i-good-washed-half-red-support.xisf
+work/04-combine-bxt-nxt-v1/02f-bxt.xisf
+work/04-combine-bxt-nxt-v1/02g-bxt-nxt.xisf
+```
+
+The existing nonlinear path was then repeated in a separate branch:
+
+```text
+work/03-nonlinear-bxt-nxt-v1/03a-04c-bxt-nxt-cropped.xisf
+work/03-nonlinear-bxt-nxt-v1/03b-04c-bxt-nxt-maskedstretch.xisf
+work/03-nonlinear-bxt-nxt-v1/03h-04c-bxt-nxt-v1-polish.xisf
+docs/images/horsehead-04c-bxt-nxt-v1-polish.jpg
+```
+
+Initial read: the candidate has cleaner stars/background and stronger small-scale structure, but its presentation orientation matches the `04c` linear preview while the earlier accepted JPEG appears mirrored relative to that preview. Keep this as a review candidate and do not replace the accepted v1 until the orientation question is resolved deliberately.

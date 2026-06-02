@@ -654,6 +654,170 @@ Current evidence supports this interpretation:
 | `work/03-nonlinear/rosette-dbe-manual-spcc-visual-v2f-strong-stars.jpg` | Aggressive star-reduction comparison from the v2e polish |
 | `work/03-nonlinear/rosette-dbe-manual-spcc-visual-v2g-starless-two-pass.jpg` | Best local scripted starless approximation; diagnostic only, not accepted |
 | `work/03-nonlinear/rosette-dbe-manual-spcc-visual-v2g-starless-matte.jpg` | Broad starless support matte; diagnostic only, loses fine texture |
+
+## 2026-05-30 - BXT/NXT + StarXTerminator Retrofit Candidate
+
+After BlurXTerminator and NoiseXTerminator were licensed, the Rosette presentation path was rerun from the SPCC-calibrated manual-DBE linear baseline:
+
+```text
+work/02-linear/02c-dbe-manual-spccmeta-spcc.xisf
+work/02-linear-bxt-nxt-v1/02f-bxt.xisf
+work/02-linear-bxt-nxt-v1/02g-bxt-nxt.xisf
+```
+
+The branch then reused the same presentation shape as the previous sparse-star work:
+
+1. Linked hard-STF stretch with no SCNR/curves.
+2. Restrained SPCC visual color shaping.
+3. v2e polish settings.
+4. StarXTerminator separation from the pre-morphological v2e-polished image.
+5. v3j sparse-anchor-star recombination over the old-red/depth nebula treatment.
+
+Outputs:
+
+```text
+work/03-nonlinear-bxt-nxt-v1/03r-bxt-nxt-visual-v2e-polished.xisf
+work/03-nonlinear-bxt-nxt-v1/03s-bxt-nxt-v2e-starxterminator-starless.xisf
+work/03-nonlinear-bxt-nxt-v1/03s-bxt-nxt-v2e-starxterminator-stars.xisf
+work/03-nonlinear-bxt-nxt-v1/03s-rosette-bxt-nxt-starxterminator-v3j-sparse-anchor-stars.xisf
+docs/images/rosette-bxt-nxt-starxterminator-v3j-sparse-anchor-stars.jpg
+```
+
+Initial read: the candidate is brighter and cleaner than the earlier v3j sparse-anchor-star branch, with stronger nebula contrast. It is also less restrained, so keep both images visible in the gallery until human review decides whether the plugin branch is an improvement or simply a different look.
+
+Follow-up review found that the BXT/NXT v3j sparse-anchor-star version still had the wrong star character: too many soft gray stars, with the stars reading spread out and dull rather than small, selected, gem-like anchors. A reference Rosette image shifted the target toward a more editorial star treatment: a nearly starless nebula field with crisp colored pinpoints and a few subtle sparkle anchors.
+
+An attempted v4 synthetic/gem-star branch painted selected stars and diffraction-like spikes over the starless nebula. That direction is rejected. It violated the desired provenance boundary: final astrophotography candidates must not synthesize stars, spikes, nebulosity, texture, or any other sky detail. `AGENTS.md` now records this explicitly, and the synthetic helper/output are not part of the public documented result.
+
+The corrected v4f branch returns to the real StarXTerminator stars layer extracted from this dataset. `scripts/pjsr/03r-rosette-starless-v3.js` now has a `starPower` control that tightens the actual stars by suppressing their faint halos before recombination. V4F also uses a stricter star luminance gate, so faint star haze is reduced while the remaining anchors come from the captured data.
+
+Outputs:
+
+```text
+work/03-nonlinear-bxt-nxt-v1/03s-rosette-bxt-nxt-starxterminator-v4f-real-sparse-anchors.xisf
+work/03-nonlinear-bxt-nxt-v1/rosette-bxt-nxt-starxterminator-v4f-real-sparse-anchors.tif
+work/03-nonlinear-bxt-nxt-v1/rosette-bxt-nxt-starxterminator-v4f-real-sparse-anchors.jpg
+docs/images/rosette-bxt-nxt-starxterminator-v4f-real-sparse-anchors.jpg
+```
+
+Initial read: v4f is less flashy than the rejected synthetic branch, but it is honest. It gives a sparser, tighter real-star field over the BXT/NXT nebula base without artificial placement or spikes. The absence of prominent X-spikes is now treated as a data truth rather than a problem to paint over.
+
+## Research Note: Real-Data Options Between Starless And Full Stars
+
+After v4f review, the remaining issue was that the stars were honest but did not look gem-like. A short workflow survey found that the real middle ground is star de-emphasis and separate real-star processing, not synthetic sparse-star drawing.
+
+Relevant techniques:
+
+- Process the nebula starless, process the extracted stars separately, then recombine. Sky at Night describes using separate starless/stars processing and PixelMath/screen-style recombination, and Cloudy Nights discussion around StarXTerminator also favors screen-style recombination over simple addition when adding stars back.
+- Reduce star presence with a real star mask and MorphologicalTransformation, but modestly. Sky & Telescope and Star Watcher both frame PixInsight star reduction as a gentle mask-driven operation where small adjustments matter.
+- Preserve or enhance color in the real stars layer before recombination. Several PixInsight workflows stretch stars separately, often with color-preserving approaches such as Arcsinh/GHS, so stars keep color rather than becoming pale dots.
+- Use a star de-emphasis approach when the goal is between full starless and untouched stars: reduce the visual weight of stars so nebulosity dominates, while retaining the real field.
+
+Sources:
+
+```text
+https://www.skyatnightmagazine.com/astrophotography/astrophoto-tips/pixinsight-enhance-galaxy-brightness-without-affecting-stars
+https://www.cloudynights.com/forums/topic/850369-need-help-what-is-your-pixinsight-workflow-to-recombine-starless-star-only-images/
+https://skyandtelescope.org/astronomy-resources/astrophotography-tips/star-power-stellar-images-with-pixinsight/
+https://www.star-watcher.ch/image-processing/reduce-star-size-in-pixinsight/
+https://www.reflected-space.com/tutorials/pixinsight-beginner-tutorial/
+https://pixinsight.com.ar/es/section/star-de-emphasizer-script-tutorial-53.html
+```
+
+Decision for the next branch: make a real-star gem pass, not a sparse synthetic-star pass. Use the existing BXT/NXT StarXTerminator starless/stars layers, tighten the actual stars with `starPower`, boost their chroma around their own luminance with `starColorBoost`, and recombine with a `screen` blend so the stars read more like small colored points without painting positions, spikes, or colors from a reference image.
+
+Planned v4g controls:
+
+```text
+starBlend=screen
+starPower=2.20
+starColorBoost=2.60
+starThreshold=0.78
+starSoftness=0.035
+starScale=1.35
+```
+
+V4G completed, but the lower gate brought back too much of the dense field. It was a useful diagnostic for screen recombination but moved too close to the as-is star-field side of the spectrum.
+
+V4H tightened the real stars further and pushed chroma harder:
+
+```text
+starBlend=screen
+starPower=3.00
+starColorBoost=6.00
+starThreshold=0.84
+starSoftness=0.020
+starScale=2.20
+```
+
+V4H was closer: the star field stayed real and the cores were tighter, but the captured/extracted star colors remained subtle. The data does not support dramatic jewel colors without inventing color.
+
+V4I/V4J then used normal PixInsight star de-emphasis on the v4h result: StarMask plus MorphologicalTransformation Selection. V4I used `amount=0.26`; v4j used `amount=0.42`. V4J gave the Rosette more visual priority while staying within real-data processing, but later review rejected it because some stars looked like paint droplets.
+
+Outputs:
+
+```text
+work/03-nonlinear-bxt-nxt-v1/03s-rosette-bxt-nxt-starxterminator-v4j-real-gem-strong-deemphasis.xisf
+work/03-nonlinear-bxt-nxt-v1/rosette-bxt-nxt-starxterminator-v4j-real-gem-strong-deemphasis.tif
+work/03-nonlinear-bxt-nxt-v1/rosette-bxt-nxt-starxterminator-v4j-real-gem-strong-deemphasis.jpg
+docs/images/rosette-bxt-nxt-starxterminator-v4j-real-gem-deemphasis.jpg
+```
+
+Initial read: v4j is the best honest middle-ground candidate from this sequence. It is not a reference-style jewel-star image, because the actual extracted star layer is mostly pale, but it gets closer to the desired direction by reducing star dominance and tightening real star cores without synthetic placement, color, or spikes.
+
+Follow-up review: v4j was better directionally, but two issues remained. Some stars looked like paint droplets, and the Rosette nebulosity needed a glossier surface. The likely cause of the droplet look was the post-combine MorphologicalTransformation: it reduced star dominance but also flattened the profile of some stars.
+
+`scripts/pjsr/03r-rosette-starless-v3.js` was extended again with real-data-only controls:
+
+```text
+starHaloPower
+starHaloMix
+starTermLimit
+nebulaGlossAmount
+nebulaGlossRadius
+nebulaGlossSlope
+```
+
+V4K tested the new direction: no post-combine morphology, a tightened real-star core, a small real halo component from the extracted stars layer, capped screen recombination to avoid flat white disks, and a mild LHE gloss pass on the starless nebula. It improved the shine/gloss direction but pushed some stars yellow-green.
+
+V4L reduced the chroma push, used more real halo, capped stars slightly lower, and increased the starless-nebula gloss pass:
+
+```text
+starBlend=screen
+starPower=3.45
+starHaloPower=1.20
+starHaloMix=0.38
+starTermLimit=0.66
+starColorBoost=3.00
+starDesat=0.18
+nebulaGlossAmount=0.18
+nebulaGlossRadius=64
+nebulaGlossSlope=1.25
+```
+
+Outputs:
+
+```text
+work/03-nonlinear-bxt-nxt-v1/03s-rosette-bxt-nxt-starxterminator-v4l-real-soft-shine-gloss.xisf
+work/03-nonlinear-bxt-nxt-v1/rosette-bxt-nxt-starxterminator-v4l-real-soft-shine-gloss.tif
+work/03-nonlinear-bxt-nxt-v1/rosette-bxt-nxt-starxterminator-v4l-real-soft-shine-gloss.jpg
+docs/images/rosette-bxt-nxt-starxterminator-v4l-real-soft-shine-gloss.jpg
+```
+
+Initial read: v4l looked directionally better than v4j, but later user review rejected it. The stars still looked dull and paint-droplet-like rather than gem-like.
+
+Follow-up diagnostics tested why the real-star path was failing:
+
+| Branch | Result |
+|---|---|
+| v4m | Preserved the real extracted star profile with no morphology or thresholding. Profiles returned, but the frame became too dense and the stars stayed pale. |
+| v4n | Lowered the opacity of the same profile-preserving star layer. Density improved, but the stars still lacked color/shine. |
+| v4o | Switched from screen to low-opacity additive recombination with a native-halo lift. It did not materially restore sparkle. |
+| v4p | Added under-star darkening based on real star profiles so star color had room to show over the bright red nebula. This created colored wash/holes around stars and was rejected. |
+| v4q | Added magenta repair on the extracted stars layer. It reduced some magenta contamination but still did not produce gem-like stars. |
+| v4s/v4t | Exported the real stars layer, selected whole real star components by connected-component flux with `scripts/selected-star-recombine.py`, and recombined only the selected anchors plus a faint full-star layer. This reduced density, but the selected stars read as soft round blobs because the source profiles are already soft/saturated and mostly white/magenta. |
+
+Diagnostic conclusion: the current BXT/NXT StarXTerminator stars layer is not a good source for the requested gem-star presentation. More recombination tuning either restores the dense field or turns selected stars into blobs. Since synthetic stars/spikes are not allowed, the next credible path is to generate a better real star layer earlier in the workflow: preserve star color during stretch, avoid saturating cores, and then run StarXTerminator/recombination from that better star source.
 | `work/03-nonlinear/rosette-dbe-manual-spcc-visual-restrained-star-reduced.jpg` | Older SPCC-based visual candidate; selective nebula color enhancement plus mild star reduction |
 | `work/03-nonlinear/rosette-dbe-manual-spcc-visual-restrained.jpg` | Same SPCC-based visual candidate without star reduction |
 | `work/03-nonlinear/rosette-dss-bgcal-experimental.jpg` | Best current restrained visual rendering; manual DBE plus DSS-style per-channel background calibration, not SPCC-calibrated |
@@ -668,13 +832,22 @@ Current evidence supports this interpretation:
 | `work/02-linear/02a-dbe-manual-subtract.xisf` | User-guided manual DBE correction |
 | `work/02-linear/02c-synthbg-subtract-spcc.xisf` | Synthetic-background SPCC branch |
 
-## What We Should Try Next
+## Pause State - 2026-06-02
 
-The next useful work should focus on gradient/flat correction, not plate solving.
+Rosette BXT/NXT gem-star work is paused after the v4m-v4t diagnostics. The important result is negative but useful: the current BXT/NXT StarXTerminator stars layer is not a good source for crisp gem-like stars. It is too dense, soft, saturated, and mostly white/magenta. More recombination tuning either restores the dense field or turns selected stars into soft blobs.
+
+Do not resume by inventing stars, spikes, highlight shapes, or colors. If the gem-star goal returns, build a better real star layer first:
+
+1. Start from an earlier, less saturated stretch or make a separate stars-preserving stretch.
+2. Preserve star color and avoid clipping/saturating star cores.
+3. Run StarXTerminator on that better real star source.
+4. Recombine the new real stars layer over the processed starless nebula.
+
+For calibrated color, the next useful work should still focus on gradient/flat correction, not plate solving.
 
 Priority options:
 
-1. Compare the clean v3b and old-reference v3g branches against the historical Photoshop output on a calibrated display.
+1. Compare the clean v3b, old-reference v3j, and BXT/NXT v4f branches against the historical Photoshop output on a calibrated display.
 2. Search for real matching flats or twilight flats from the same setup.
 3. Refine the manual DBE process or try a second DBE pass with different sample placement.
 4. Try a dedicated external gradient/background tool if available.

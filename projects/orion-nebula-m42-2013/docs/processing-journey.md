@@ -258,4 +258,45 @@ docs/images/m42-2013-v8-vs-bxt-nxt-v1-v2-core-crop.jpg
 docs/images/m42-2013-v8-vs-bxt-nxt-v1-v2-sky-crop.jpg
 ```
 
-The 300s support blend uses `amount=0.12`, intentionally lower than the old v8 support blend. Initial read: v2 keeps the BXT/NXT structural improvement while adding a small amount of plugin-cleaned 300s haze. It is the current replacement candidate, pending final review.
+The 300s support blend uses `amount=0.12`, intentionally lower than the old v8 support blend. Initial read: v2 keeps the BXT/NXT structural improvement while adding a small amount of plugin-cleaned 300s haze. Later review found that it still carried too much background texture/noise, so it was demoted in favor of a cleaner 180s-only redo.
+
+## 2026-05-31 - BXT/NXT V3 Noise Redo
+
+Review feedback: M42 still looked noisy after v2. The likely cause was the combination of the no-dark 300s support layer and the presentation lift used to keep broad haze visible.
+
+V3 was rebuilt as an 180s-only BXT/NXT branch rather than another support blend:
+
+```text
+work/02-linear-2013-m42-180s-noflats-bxt-nxt-v3/02f-bxt.xisf
+work/02-linear-2013-m42-180s-noflats-bxt-nxt-v3/02g-bxt-nxt.xisf
+work/02-linear-2013-m42-180s-noflats-bxt-nxt-v3/02h-bxt-nxt-scnr.xisf
+work/03-nonlinear-2013-m42-bxt-nxt-v3/03a-stretched.xisf
+work/03-nonlinear-2013-m42-bxt-nxt-v3/03m-m42-bxt-nxt-v3-presentation.xisf
+```
+
+Linear/plugin settings:
+
+- BXT: `sharpenStars=0.16`, `adjustHalos=0.03`, `sharpenNonstellar=0.20`.
+- NXT: `denoise=0.72`, `denoiseColor=0.90`, `denoiseLf=0.34`, `denoiseLfColor=0.80`, `frequencyScale=5`, `iterations=2`, `detail=0.10`.
+- SCNR was applied after NXT.
+
+Nonlinear changes:
+
+- MaskedStretch target background reduced to `0.092`.
+- Local contrast and saturation in the M42 polish were reduced.
+- The first v3 presentation exposed a magenta core artifact, so a quiet-core variant was generated and blended into the no-300s base.
+- Final presentation used no extra faint-nebulosity lift and a darker black point (`0.006`).
+
+Outputs:
+
+```text
+docs/images/m42-2013-bxt-nxt-v3-no300s.jpg
+docs/images/m42-2013-bxt-nxt-v3-corequiet.jpg
+docs/images/m42-2013-bxt-nxt-v3-coreblend.jpg
+docs/images/m42-2013-bxt-nxt-v3-presentation.jpg
+docs/images/m42-2013-v8-vs-bxt-nxt-v2-v3-comparison.jpg
+docs/images/m42-2013-v8-vs-bxt-nxt-v2-v3-core-crop.jpg
+docs/images/m42-2013-v8-vs-bxt-nxt-v2-v3-sky-crop.jpg
+```
+
+Assessment: v3 is cleaner than v2 and avoids the no-dark 300s support texture, but gives up some of the extra faint haze v2 was trying to preserve. It is the current BXT/NXT replacement candidate for review.

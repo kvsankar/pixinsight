@@ -1,7 +1,7 @@
 # Trifid / Lagoon 2014 Processing - Status
 
-**As of:** 2026-05-27 IST, final v1 has been exported from the March 2014 no-dark/no-flats branch.
-**Pipeline progress:** 100%, final v1 complete. Future work would be a separate v2 experiment, not required to finish this target.
+**As of:** 2026-05-30 IST, final v1 has been exported from the March 2014 no-dark/no-flats branch, and a separate BXT/NXT retrofit candidate has been generated.
+**Pipeline progress:** 100%, final v1 complete. The BXT/NXT output is a review candidate for a possible future v2, not required to finish this target.
 
 For the accepted result, see [Final v1](final-v1.md).
 For the proposed workflow, see [Processing pipeline](pipeline.md).
@@ -16,7 +16,7 @@ For historical local artifacts, see [Original 2014 processing evidence](original
 PHASE 0 - Source inventory and project setup       COMPLETE
 PHASE 1 - Calibration + integration                COMPLETE FOR MAY AND MARCH BASELINES
 PHASE 2 - Linear post-integration                  COMPLETE FOR MAY AND MARCH BASELINES
-PHASE 3 - Nonlinear processing/export              FINAL V1 COMPLETE
+PHASE 3 - Nonlinear processing/export              FINAL V1 COMPLETE + BXT/NXT REVIEW CANDIDATE
 ```
 
 ## Dataset Summary
@@ -30,8 +30,8 @@ PHASE 3 - Nonlinear processing/export              FINAL V1 COMPLETE
 | Main exposure pattern | 120s, ISO 1600 |
 | Main goal | Produce a believable wide-field Sagittarius result with M8, M20, dark lanes, and Milky Way context |
 | Historical reference | `docs/images/original-2014-attempt-02-asraw-ps-2.jpg`, copied from the 2014 attempt-02 processing folder |
-| Current result | `docs/images/trifid-lagoon-20140302-final-v1.jpg` |
-| Current blocker | None |
+| Current result | `docs/images/trifid-lagoon-20140302-final-v1.jpg`; BXT/NXT candidate at `docs/images/trifid-lagoon-20140302-bxt-nxt-v1.jpg` |
+| Current blocker | None; BXT/NXT candidate needs taste review before any v2 promotion |
 
 ## Why The May Folder Is Suffixed `-2`
 

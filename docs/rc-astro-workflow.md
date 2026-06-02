@@ -30,6 +30,7 @@ If the branch is a comparison against older stock-only results, keep the old MLT
 
 ## Guardrails
 
+- All visible sky content must come from the user's captured data or layers derived from it. StarXTerminator recombination may only add back the actual extracted stars; do not draw artificial stars, diffraction spikes, nebulosity, background texture, or other decorative sky detail.
 - BlurXTerminator AI4 requires linear input. Do not run it on already stretched review JPEG/XISF products.
 - Do not apply noise reduction before BlurXTerminator or any other deconvolution step.
 - Do not remove stars before BlurXTerminator unless using a deliberate manual-PSF workflow.
@@ -63,3 +64,24 @@ When revisiting older projects:
 3. Preserve the accepted historical final as a reference, not as a target to exactly match.
 4. Export side-by-side review JPEGs before replacing any accepted final.
 5. Update repo-level processing summaries only after the new branch is accepted or explicitly recorded as rejected.
+
+Use the shared wrapper for the common linear retrofit step:
+
+```powershell
+& .\scripts\run-bxt-nxt-linear.ps1 `
+  -ProjectDir .\projects\<target-slug> `
+  -InputPath .\projects\<target-slug>\work\<accepted-linear-checkpoint>\02d-or-02c.xisf `
+  -OutputSubdir 02-linear-bxt-nxt-v1 `
+  -Fresh
+```
+
+Then run the existing target-specific nonlinear scripts from `work/<OutputSubdir>/02g-bxt-nxt.xisf` into a separate `03-nonlinear-*-bxt-nxt-v1` branch. For older targets, do not overwrite accepted `docs/images/` previews; add clearly named candidate images such as `<target>-bxt-nxt-v1.jpg`.
+
+Initial retrofit settings should be target-sensitive:
+
+| Target type | BXT stars | BXT nonstellar | NXT luminance/color | Note |
+| --- | ---: | ---: | --- | --- |
+| Broadband galaxy | 0.18-0.22 | 0.28-0.34 | 0.60 / 0.82 | Check dust lanes and galaxy core for over-sharpening. |
+| Reflection dust | 0.14-0.16 | 0.18-0.22 | 0.55 / 0.78 | Preserve faint dust texture; avoid plastic sky. |
+| Emission nebula | 0.14-0.18 | 0.20-0.24 | 0.58-0.62 / 0.80-0.82 | Watch fine filaments and star halos. |
+| Dense Milky Way field | 0.12-0.16 | 0.18-0.22 | 0.52-0.58 / 0.76-0.80 | Keep a no-plugin comparison because stars dominate the visual read. |

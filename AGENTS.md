@@ -8,6 +8,14 @@ This repo is an experiment in using generative AI to build repeatable astrophoto
 
 Keep work reproducible, public-repo friendly, and organized by target/session.
 
+## Data Authenticity
+
+Process only the user's own captured astronomy data and products derived from it. Do not synthesize, generate, paint in, clone in, or hallucinate astrophotography content.
+
+This specifically forbids artificial stars, synthetic diffraction spikes, generated nebulosity, generated background texture, generative fill, AI-created sky details, or decorative elements added to make an image look more impressive. Reference images may guide taste and review language, but they must not be used as source content.
+
+Allowed operations must be transformations of the user's data: calibration, registration, stacking, gradient/background correction, plate solving, color calibration, deconvolution, denoise, stretching, star separation, star reduction, masks, curves, saturation, sharpening, cropping, and recombination of real starless/stars layers extracted from the user's own image. Star removal/recombination is acceptable only when the recombined stars come from the actual image data, not from synthetic placement or drawing.
+
 For a full repeatable new-target workflow, follow [docs/new-project-playbook.md](docs/new-project-playbook.md). That playbook captures the typical archive search, target research, planning, processing, review, and finalization procedure.
 
 For current licensed third-party processing, follow [docs/rc-astro-workflow.md](docs/rc-astro-workflow.md). BlurXTerminator, NoiseXTerminator, and StarXTerminator are available and should be used as documented there unless a target-specific plan calls for a stock-only diagnostic.
