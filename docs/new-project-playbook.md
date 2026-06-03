@@ -189,6 +189,18 @@ Phase 3: nonlinear presentation.
 - Keep XISF/TIFF/FITS and full processing outputs under ignored `work/`.
 - Do not accept a pushed branch just because it resembles the old reference; compare whether it is technically plausible from the raw data.
 
+Phase 4: LLM-as-judge review.
+
+- Treat the LLM as a critical reviewer, not as an image source or aesthetic oracle. It must judge only products derived from the user's captured data.
+- Create a small number of very narrow diagnostic crops before asking for judgment. Usually 3-6 crops is enough; avoid flooding the review with dozens of tiles.
+- Use the same crop geometry across competing branches so the comparison is fair.
+- Include at least one crop from clean-looking background, one from the main target/detail area, one from a representative medium-bright star field, and one from any suspicious edge/corner/framing area.
+- For galaxy fields or faint dust targets, include a crop where faint structure and empty background coexist, since over-denoise and pattern noise are easiest to see there.
+- Ask the LLM to judge concrete technical qualities first: diagonal/walking noise, fixed-pattern or chroma streaks, blotchy over-denoise, star roundness, star color, halos, registration trails, deconvolution artifacts, clipped cores, gradients, color casts, edge clipping, and whether faint real signal is being erased.
+- Ask for branch-level decisions only after the crop findings are listed. A good answer should say which branch is technically safer, which defects are upstream calibration/integration problems, and which are presentation-polish problems.
+- If narrow crops reveal strong fixed-pattern/walking noise, revisit calibration, rejection, drizzle/integration choices, or branch selection before trying to hide it with heavier nonlinear denoise.
+- Record the crop names, crop geometry, LLM findings, and accepted/rejected branch decisions in `docs/review-<date>.md`, `status.md`, and `processing-journey.md`.
+
 ### 6. Review And Finalize
 
 For review, provide:
@@ -196,6 +208,7 @@ For review, provide:
 - Historical reference image, if available.
 - Best clean candidate.
 - Best old-reference candidate, if different.
+- LLM-as-judge narrow crop set and findings.
 - Rejected diagnostics with one-line reasons.
 - Open decision questions.
 
@@ -252,6 +265,7 @@ Canon EOS 60D B
 - SPCC background neutralization can help or harm depending on whether any clean background exists. Keep no-BN diagnostics for target-rich fields.
 - SCNR should be light and documented.
 - Linked versus unlinked STF matters: use linked previews to judge real color balance.
+- Full-frame previews can hide severe local defects. Always use narrow crop review before accepting a branch as final.
 
 ### PixInsight Automation
 
@@ -292,6 +306,9 @@ Canon EOS 60D B
 [ ] Run BXT/NXT linear branch when appropriate, preserving stock diagnostics.
 [ ] Preserve and document diagnostics.
 [ ] Build nonlinear candidates, then review.
+[ ] Create 3-6 matched narrow crops for LLM-as-judge review.
+[ ] Judge crops for noise, star shapes, gradients, artifacts, clipping, and faint-signal preservation.
+[ ] Record LLM-as-judge findings and any branch promotion/rejection decision.
 [ ] Export final v1 and comparison panel.
 [ ] Update readme and processing summaries.
 [ ] Check public docs for local paths and secrets.
