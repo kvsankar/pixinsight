@@ -12,7 +12,7 @@ This repository is organized for repeatable PixInsight processing across multipl
 
 The current processed targets are `projects/m31-andromeda-2013`, `projects/rosette-2014-03-02`, `projects/horsehead-flame-2013-2016`, `projects/orion-nebula-m42-2013`, and `projects/trifid-lagoon-2014`.
 
-The current review-stage targets are `projects/m45-pleiades-2013-12-30`, `projects/m81-m82-2014-03-03`, `projects/markarian-chain-2014-03-03`, and `projects/omega-centauri-2014-05-04`.
+The current review-stage targets are `projects/m45-pleiades-2013-12-30`, `projects/m81-m82-2014-03-03`, `projects/markarian-chain-2014-03-03`, `projects/omega-centauri-2014-05-04`, and `projects/eta-carinae-2013-03-10`.
 
 ## Documentation
 
@@ -77,6 +77,14 @@ Omega Centauri 2014-05-04 processing notes:
 - [Processing journey](projects/omega-centauri-2014-05-04/docs/processing-journey.md) - chronological planning record and decision trail.
 - [Omega Centauri processing research](projects/omega-centauri-2014-05-04/docs/research/01-omega-centauri-processing.md) - target-specific facts and processing implications for the globular cluster.
 - [Original 2014 processing evidence](projects/omega-centauri-2014-05-04/docs/original-2014-processing.md) - historical finished-work and local processing artifact evidence.
+
+Eta Carinae 2013-03-10 processing notes:
+
+- [Current status](projects/eta-carinae-2013-03-10/docs/status.md) - source inventory, calibration candidates, exposure groups, and review questions.
+- [Processing pipeline](projects/eta-carinae-2013-03-10/docs/pipeline.md) - 120s baseline, dark diagnostics, sibling exposure branches, nonlinear, and LLM-as-judge plan.
+- [Processing journey](projects/eta-carinae-2013-03-10/docs/processing-journey.md) - chronological planning record and decision trail.
+- [Eta Carinae processing research](projects/eta-carinae-2013-03-10/docs/research/01-eta-carinae-processing.md) - target-specific facts and processing implications for the Carina Nebula.
+- [Original 2013 processing evidence](projects/eta-carinae-2013-03-10/docs/original-2013-processing.md) - historical local stack and Photoshop artifact evidence.
 
 Rosette Nebula 2014 processing notes:
 
