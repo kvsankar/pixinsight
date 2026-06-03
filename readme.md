@@ -12,7 +12,7 @@ This repository is organized for repeatable PixInsight processing across multipl
 
 The current processed targets are `projects/m31-andromeda-2013`, `projects/rosette-2014-03-02`, `projects/horsehead-flame-2013-2016`, `projects/orion-nebula-m42-2013`, and `projects/trifid-lagoon-2014`.
 
-The current review-stage targets are `projects/m45-pleiades-2013-12-30` and `projects/m81-m82-2014-03-03`. The current planning-stage target is `projects/markarian-chain-2014-03-03`.
+The current review-stage targets are `projects/m45-pleiades-2013-12-30`, `projects/m81-m82-2014-03-03`, `projects/markarian-chain-2014-03-03`, and `projects/omega-centauri-2014-05-04`.
 
 ## Documentation
 
@@ -62,13 +62,21 @@ M81 / M82 2014-03-03 review notes:
 - [Original 2014 processing evidence](projects/m81-m82-2014-03-03/docs/original-2014-processing.md) - historical DSS/Photoshop artifacts and finished-work reference.
 - [2014 finished-work reference](projects/m81-m82-2014-03-03/docs/images/original-2014-finished-work.jpg), [2026 v4 tight crop](projects/m81-m82-2014-03-03/docs/images/m81-m82-20140303-v4-detail-tight-crop.jpg), [rejected BXT/NXT v1 tight crop](projects/m81-m82-2014-03-03/docs/images/m81-m82-20140303-bxt-nxt-v1-tight-crop.jpg), and [NXT-only v2 diagnostic](projects/m81-m82-2014-03-03/docs/images/m81-m82-20140303-nxt-calm-v2-dark-tight-crop.jpg) - compressed comparison images.
 
-Markarian Chain 2014-03-03 planning notes:
+Markarian Chain 2014-03-03 processing notes:
 
 - [Current status](projects/markarian-chain-2014-03-03/docs/status.md) - source inventory, calibration candidates, related Virgo session, and review questions.
 - [Processing pipeline](projects/markarian-chain-2014-03-03/docs/pipeline.md) - WBPP, Phase 2, RC Astro, and nonlinear plan for the Markarian Chain data.
 - [Processing journey](projects/markarian-chain-2014-03-03/docs/processing-journey.md) - chronological planning record and decision trail.
 - [Markarian Chain processing research](projects/markarian-chain-2014-03-03/docs/research/01-markarian-chain-processing.md) - target-specific facts and processing implications for the Virgo Cluster galaxy chain.
 - [Original 2014 processing evidence](projects/markarian-chain-2014-03-03/docs/original-2014-processing.md) - historical DSS artifacts and local archive evidence.
+
+Omega Centauri 2014-05-04 processing notes:
+
+- [Current status](projects/omega-centauri-2014-05-04/docs/status.md) - source inventory, calibration candidates, historical references, and review questions.
+- [Processing pipeline](projects/omega-centauri-2014-05-04/docs/pipeline.md) - WBPP, Phase 2, RC Astro, nonlinear, and LLM-as-judge plan for the Omega Centauri data.
+- [Processing journey](projects/omega-centauri-2014-05-04/docs/processing-journey.md) - chronological planning record and decision trail.
+- [Omega Centauri processing research](projects/omega-centauri-2014-05-04/docs/research/01-omega-centauri-processing.md) - target-specific facts and processing implications for the globular cluster.
+- [Original 2014 processing evidence](projects/omega-centauri-2014-05-04/docs/original-2014-processing.md) - historical finished-work and local processing artifact evidence.
 
 Rosette Nebula 2014 processing notes:
 
