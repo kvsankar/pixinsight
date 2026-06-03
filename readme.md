@@ -12,7 +12,7 @@ This repository is organized for repeatable PixInsight processing across multipl
 
 The current processed targets are `projects/m31-andromeda-2013`, `projects/rosette-2014-03-02`, `projects/horsehead-flame-2013-2016`, `projects/orion-nebula-m42-2013`, and `projects/trifid-lagoon-2014`.
 
-The current review-stage targets are `projects/m45-pleiades-2013-12-30`, `projects/m81-m82-2014-03-03`, `projects/markarian-chain-2014-03-03`, `projects/omega-centauri-2014-05-04`, and `projects/eta-carinae-2013-03-10`.
+The current review-stage targets are `projects/m45-pleiades-2013-12-30`, `projects/m81-m82-2014-03-03`, `projects/markarian-chain-2014-03-03`, `projects/omega-centauri-2014-05-04`, `projects/eta-carinae-2013-03-10`, and `projects/canis-major-2013-01-14`.
 
 ## Documentation
 
@@ -85,6 +85,15 @@ Eta Carinae 2013-03-10 processing notes:
 - [Processing journey](projects/eta-carinae-2013-03-10/docs/processing-journey.md) - chronological planning record and decision trail.
 - [Eta Carinae processing research](projects/eta-carinae-2013-03-10/docs/research/01-eta-carinae-processing.md) - target-specific facts and processing implications for the Carina Nebula.
 - [Original 2013 processing evidence](projects/eta-carinae-2013-03-10/docs/original-2013-processing.md) - historical local stack and Photoshop artifact evidence.
+
+Canis Major 2013-01-14 processing notes:
+
+- [Current status](projects/canis-major-2013-01-14/docs/status.md) - source inventory, failed WBPP registration, WCS recovery integration, current v2 review branch, and judge-crop findings.
+- [Processing pipeline](projects/canis-major-2013-01-14/docs/pipeline.md) - 50mm wide-field plan, WCS recovery branch, Phase 2, nonlinear v2, and LLM-as-judge review.
+- [Processing journey](projects/canis-major-2013-01-14/docs/processing-journey.md) - chronological planning and processing decision trail.
+- [Canis Major processing research](projects/canis-major-2013-01-14/docs/research/01-canis-major-processing.md) - target-specific facts and processing implications for Sirius/M41 wide-field processing.
+- [Original 2013 processing evidence](projects/canis-major-2013-01-14/docs/original-2013-processing.md) - historical local stack and processing artifact evidence.
+- [2026 WCS v2 review image](projects/canis-major-2013-01-14/docs/images/canis-major-2013-wcs-v2-review.jpg) and [v2 judge crops](projects/canis-major-2013-01-14/docs/images/canis-major-2013-wcs-v2-judge-crops.jpg) - compressed review outputs.
 
 Rosette Nebula 2014 processing notes:
 

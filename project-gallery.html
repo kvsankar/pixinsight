@@ -1399,6 +1399,360 @@
           edge("tl-march-review", "tl-final", "Use restrained polish instead of vivid branch"),
           edge("tl-march", "tl-bxt", "Retrofit BXT/NXT before repeating the final path")
         ]
+      },
+      {
+        id: "markarian-chain",
+        title: "Markarian Chain 2014-03-03",
+        status: "Dark-calibrated BXT/NXT MaskedStretch is the current lead. The no-dark and flat branches remain documented diagnostics, with no final presentation accepted yet.",
+        stats: {
+          target: "Markarian's Chain and Virgo Cluster galaxies",
+          data: "19 x 240s Canon EOS 60D",
+          outcome: "Dark branch review crop preferred"
+        },
+        docs: [
+          ["Status", "projects/markarian-chain-2014-03-03/docs/status.md"],
+          ["Pipeline", "projects/markarian-chain-2014-03-03/docs/pipeline.md"],
+          ["Journey", "projects/markarian-chain-2014-03-03/docs/processing-journey.md"],
+          ["Research", "projects/markarian-chain-2014-03-03/docs/research/01-markarian-chain-processing.md"],
+          ["Original evidence", "projects/markarian-chain-2014-03-03/docs/original-2014-processing.md"]
+        ],
+        roots: ["mc-source"],
+        nodes: [
+          {
+            id: "mc-source",
+            title: "2014 Markarian Chain archive",
+            status: "reference",
+            note: "The curated `good` folder is the primary source. Framing trials, archive `bad` buckets, DSS autosaves, and the related 2013 Virgo wide-field folder are documented but not raw-combined.",
+            images: []
+          },
+          {
+            id: "mc-dark-wbpp",
+            title: "Dark-calibrated no-flats branch",
+            status: "accepted",
+            note: "The dark-calibrated branch produced a rougher initial STF than the no-dark control, but later nonlinear review showed materially lower diagonal chroma texture.",
+            images: [
+              img("Dark WBPP linked STF", "projects/markarian-chain-2014-03-03/docs/images/markarian-chain-20140303-wbpp-dark-linked-stf.jpg", "Dark-calibrated integrated preview."),
+              img("Dark WBPP unlinked STF", "projects/markarian-chain-2014-03-03/docs/images/markarian-chain-20140303-wbpp-dark-unlinked-stf.jpg", "Dark-calibrated color-balance diagnostic.")
+            ]
+          },
+          {
+            id: "mc-nodark",
+            title: "No-dark/no-flats control",
+            status: "diagnostic",
+            note: "The no-dark control looked calmer early but registered fewer useful frames and later showed stronger diagonal red/blue pattern noise in the Markarian crop.",
+            images: [
+              img("No-dark WBPP linked STF", "projects/markarian-chain-2014-03-03/docs/images/markarian-chain-20140303-wbpp-nodark-linked-stf.jpg", "No-dark integrated preview."),
+              img("No-dark WBPP unlinked STF", "projects/markarian-chain-2014-03-03/docs/images/markarian-chain-20140303-wbpp-nodark-unlinked-stf.jpg", "No-dark color-balance diagnostic."),
+              img("No-dark Phase 2 SCNR", "projects/markarian-chain-2014-03-03/docs/images/markarian-chain-20140303-phase2-nodark-scnr-linked-stf.jpg", "Solved/SPCC/SCNR no-dark checkpoint.")
+            ]
+          },
+          {
+            id: "mc-flat",
+            title: "Same-trip flat diagnostic",
+            status: "rejected",
+            note: "All 19 lights registered with the 1/3200s flat set, but the preview showed a severe bottom-half green gradient. The flat branch is rejected as a baseline.",
+            images: [
+              img("Flat diagnostic linked STF", "projects/markarian-chain-2014-03-03/docs/images/markarian-chain-20140303-wbpp-dark-flat3200-linked-stf.jpg", "Rejected flat-calibrated diagnostic.")
+            ]
+          },
+          {
+            id: "mc-nodark-bxt",
+            title: "No-dark BXT/NXT MaskedStretch",
+            status: "rejected",
+            note: "The full field showed many Virgo galaxies, but the right-half traditional framing made the diagonal DSLR chroma texture too obvious.",
+            images: [
+              img("No-dark BXT/NXT full frame", "projects/markarian-chain-2014-03-03/docs/images/markarian-chain-20140303-bxt-nxt-maskedstretch.jpg", "First no-dark plugin stretch."),
+              img("No-dark BXT/NXT right-half crop", "projects/markarian-chain-2014-03-03/docs/images/markarian-chain-20140303-bxt-nxt-maskedstretch-right-half.jpg", "Sibling traditional chain framing.")
+            ]
+          },
+          {
+            id: "mc-dark-bxt",
+            title: "Dark BXT/NXT MaskedStretch sibling framings",
+            status: "review",
+            note: "The same nonlinear path on the dark-calibrated branch reduces the diagonal chroma streaking. Keep both full-field and right-side framings available for review.",
+            images: [
+              img("Dark BXT/NXT full frame", "projects/markarian-chain-2014-03-03/docs/images/markarian-chain-20140303-dark-bxt-nxt-maskedstretch.jpg", "Current full-field review image."),
+              img("Dark BXT/NXT right-side crop", "projects/markarian-chain-2014-03-03/docs/images/markarian-chain-20140303-dark-bxt-nxt-maskedstretch-right-side.jpg", "Corrected traditional chain crop.")
+            ]
+          },
+          {
+            id: "mc-next",
+            title: "Paused before final polish",
+            status: "paused",
+            note: "Next meaningful work is final noise/background refinement on the dark branch and a possible stock/no-plugin comparison before accepting either sibling framing.",
+            images: []
+          }
+        ],
+        edges: [
+          edge("mc-source", "mc-dark-wbpp", "Primary calibrated branch with matched 240s darks"),
+          edge("mc-source", "mc-nodark", "No-dark control after pedestal/color concerns"),
+          edge("mc-source", "mc-flat", "Same-trip flat diagnostic"),
+          edge("mc-nodark", "mc-nodark-bxt", "First BXT/NXT MaskedStretch and right-half crop"),
+          edge("mc-dark-wbpp", "mc-dark-bxt", "Repeat Phase 2, BXT/NXT, and crop on darker/cleaner branch"),
+          edge("mc-flat", "mc-next", "Rejected: severe flat gradient"),
+          edge("mc-nodark-bxt", "mc-next", "Rejected as lead: diagonal chroma noise"),
+          edge("mc-dark-bxt", "mc-next", "Preferred branch awaiting final polish")
+        ]
+      },
+      {
+        id: "omega-centauri",
+        title: "Omega Centauri 2014-05-04",
+        status: "No-dark/no-flats BXT/NXT MaskedStretch and centered crop are the current review candidates, with narrow judge crops documenting the main background-noise limit.",
+        stats: {
+          target: "Omega Centauri / NGC 5139",
+          data: "27 x 60s Canon EOS 60D",
+          outcome: "Centered crop under review"
+        },
+        docs: [
+          ["Status", "projects/omega-centauri-2014-05-04/docs/status.md"],
+          ["Pipeline", "projects/omega-centauri-2014-05-04/docs/pipeline.md"],
+          ["Journey", "projects/omega-centauri-2014-05-04/docs/processing-journey.md"],
+          ["Research", "projects/omega-centauri-2014-05-04/docs/research/01-omega-centauri-processing.md"],
+          ["Original evidence", "projects/omega-centauri-2014-05-04/docs/original-2014-processing.md"]
+        ],
+        roots: ["oc-source"],
+        nodes: [
+          {
+            id: "oc-source",
+            title: "2014 Omega Centauri archive",
+            status: "reference",
+            note: "The 27 top-level `good` lights are the only homogeneous Omega set found. Tree-obstructed frames, trial shots, old DSS products, and the finished-work JPEG are historical/reference material only.",
+            images: []
+          },
+          {
+            id: "oc-wbpp",
+            title: "No-dark/no-flats WBPP",
+            status: "accepted",
+            note: "All 27 lights registered and locally normalized. The previews show no-flats vignetting/color imbalance, but the cluster registration is sound.",
+            images: [
+              img("WBPP linked STF", "projects/omega-centauri-2014-05-04/docs/images/omega-centauri-20140504-wbpp-nodark-linked-stf.jpg", "No-dark integrated preview."),
+              img("WBPP unlinked STF", "projects/omega-centauri-2014-05-04/docs/images/omega-centauri-20140504-wbpp-nodark-unlinked-stf.jpg", "Color-balance diagnostic.")
+            ]
+          },
+          {
+            id: "oc-phase2",
+            title: "Solved/SPCC linear checkpoint",
+            status: "accepted",
+            note: "ABE, ImageSolver, SPCC, and SCNR completed after correcting the stale 50 mm EXIF assumption to the ED80/reducer scale.",
+            images: [
+              img("Phase 2 linked STF", "projects/omega-centauri-2014-05-04/docs/images/omega-centauri-20140504-phase2-nodark-scnr-linked-stf.jpg", "Solved/SPCC/SCNR checkpoint.")
+            ]
+          },
+          {
+            id: "oc-bxt",
+            title: "BXT/NXT MaskedStretch",
+            status: "review",
+            note: "Conservative BXT/NXT followed by a first MaskedStretch produced both full-frame context and a centered crop candidate.",
+            images: [
+              img("BXT/NXT full frame", "projects/omega-centauri-2014-05-04/docs/images/omega-centauri-20140504-bxt-nxt-maskedstretch.jpg", "Full-frame nonlinear preview."),
+              img("BXT/NXT centered crop", "projects/omega-centauri-2014-05-04/docs/images/omega-centauri-20140504-bxt-nxt-maskedstretch-centered-crop.jpg", "Current centered crop review candidate.")
+            ]
+          },
+          {
+            id: "oc-judge",
+            title: "LLM-as-judge narrow crops",
+            status: "diagnostic",
+            note: "The core remains resolved but a little soft. Background/edge crops show diagonal DSLR texture and red/cyan speckles, which are the current limiting artifacts.",
+            images: [
+              img("Judge core", "projects/omega-centauri-2014-05-04/docs/images/omega-centauri-20140504-judge-core.jpg", "Core detail and softness check."),
+              img("Judge outer halo", "projects/omega-centauri-2014-05-04/docs/images/omega-centauri-20140504-judge-outer-halo.jpg", "Halo/background transition check."),
+              img("Judge corner stars", "projects/omega-centauri-2014-05-04/docs/images/omega-centauri-20140504-judge-corner-stars.jpg", "Corner star-shape check."),
+              img("Judge background edge", "projects/omega-centauri-2014-05-04/docs/images/omega-centauri-20140504-judge-background-edge.jpg", "Worst background texture check.")
+            ]
+          }
+        ],
+        edges: [
+          edge("oc-source", "oc-wbpp", "Build no-dark/no-flats baseline"),
+          edge("oc-wbpp", "oc-phase2", "ABE, solve, SPCC, and SCNR"),
+          edge("oc-phase2", "oc-bxt", "Conservative BXT/NXT before stretch"),
+          edge("oc-bxt", "oc-judge", "Crop audit for core, halo, stars, and background")
+        ]
+      },
+      {
+        id: "eta-carinae",
+        title: "Eta Carinae 2013-03-10",
+        status: "The 120s no-dark branch has v2, v3, and v4 sibling crops. v4 cleaned is the most legible nebula view, while v3 is the cleaner restraint point.",
+        stats: {
+          target: "Eta Carinae / Carina Nebula / NGC 3372",
+          data: "16 x 120s lead branch, 240s diagnostic",
+          outcome: "V4 cleaned crop accepted by review taste"
+        },
+        docs: [
+          ["Status", "projects/eta-carinae-2013-03-10/docs/status.md"],
+          ["Pipeline", "projects/eta-carinae-2013-03-10/docs/pipeline.md"],
+          ["Journey", "projects/eta-carinae-2013-03-10/docs/processing-journey.md"],
+          ["Research", "projects/eta-carinae-2013-03-10/docs/research/01-eta-carinae-processing.md"],
+          ["Original evidence", "projects/eta-carinae-2013-03-10/docs/original-2013-processing.md"]
+        ],
+        roots: ["eta-source"],
+        nodes: [
+          {
+            id: "eta-source",
+            title: "2013 Eta Carinae exposure groups",
+            status: "reference",
+            note: "The archive contains 30s, 60s, 120s, and 240s groups. Each exposure family is documented as a sibling branch; raw groups are not blindly combined.",
+            images: []
+          },
+          {
+            id: "eta-wbpp",
+            title: "120s no-dark/no-flats baseline",
+            status: "accepted",
+            note: "The 16 x 120s `good` group became the first processed baseline because it is the largest homogeneous deep-light set with useful Carina structure.",
+            images: [
+              img("120s WBPP linked STF", "projects/eta-carinae-2013-03-10/docs/images/eta-carinae-20130310-wbpp-120s-nodark-linked-stf.jpg", "No-dark integrated preview."),
+              img("120s WBPP unlinked STF", "projects/eta-carinae-2013-03-10/docs/images/eta-carinae-20130310-wbpp-120s-nodark-unlinked-stf.jpg", "Color-balance diagnostic.")
+            ]
+          },
+          {
+            id: "eta-phase2",
+            title: "Solved/SPCC 120s checkpoint",
+            status: "accepted",
+            note: "ABE, ImageSolver, SPCC, and SCNR completed at the solved ED80/reducer-era scale, preparing a clean input for the conservative plugin branch.",
+            images: [
+              img("120s Phase 2 linked STF", "projects/eta-carinae-2013-03-10/docs/images/eta-carinae-20130310-phase2-120s-nodark-scnr-linked-stf.jpg", "Solved/SPCC/SCNR linked preview."),
+              img("120s Phase 2 unlinked STF", "projects/eta-carinae-2013-03-10/docs/images/eta-carinae-20130310-phase2-120s-nodark-scnr-unlinked-stf.jpg", "Unlinked color diagnostic.")
+            ]
+          },
+          {
+            id: "eta-bxt-v1",
+            title: "BXT/NXT first stretch and crop",
+            status: "review",
+            note: "The first MaskedStretch/crop made the centered Carina structure visible, but the presentation was still subdued.",
+            images: [
+              img("BXT/NXT MaskedStretch full frame", "projects/eta-carinae-2013-03-10/docs/images/eta-carinae-20130310-bxt-nxt-maskedstretch.jpg", "Full-frame nonlinear preview."),
+              img("BXT/NXT Carina crop", "projects/eta-carinae-2013-03-10/docs/images/eta-carinae-20130310-bxt-nxt-maskedstretch-carina-crop.jpg", "First centered crop."),
+              img("BXT/NXT brighter crop", "projects/eta-carinae-2013-03-10/docs/images/eta-carinae-20130310-bxt-nxt-maskedstretch-bright-carina-crop.jpg", "Brighter v2 MaskedStretch crop.")
+            ]
+          },
+          {
+            id: "eta-240s",
+            title: "240s depth diagnostic",
+            status: "diagnostic",
+            note: "The 240s `good` group registered only three useful frames. It shows some red signal but is weak/noisy and was not combined into the 120s baseline.",
+            images: [
+              img("240s WBPP linked STF", "projects/eta-carinae-2013-03-10/docs/images/eta-carinae-20130310-wbpp-240s-nodark-linked-stf.jpg", "240s diagnostic integration."),
+              img("240s WBPP unlinked STF", "projects/eta-carinae-2013-03-10/docs/images/eta-carinae-20130310-wbpp-240s-nodark-unlinked-stf.jpg", "240s color/background diagnostic.")
+            ]
+          },
+          {
+            id: "eta-v2",
+            title: "V2 polished crop and judge crops",
+            status: "review",
+            note: "V2 adds restrained sky cleanup, protected red-nebula lift, and local contrast. The judge crops made the noise/star-shape tradeoffs explicit.",
+            images: [
+              img("V2 polished crop", "projects/eta-carinae-2013-03-10/docs/images/eta-carinae-20130310-v2-polished-carina-crop.jpg", "First polished Carina crop."),
+              img("V2 judge core/Keyhole", "projects/eta-carinae-2013-03-10/docs/images/eta-carinae-20130310-v2-judge-core-keyhole.jpg", "Core and Keyhole quality check."),
+              img("V2 judge central dust", "projects/eta-carinae-2013-03-10/docs/images/eta-carinae-20130310-v2-judge-central-dust.jpg", "Central dust structure check."),
+              img("V2 judge upper red nebulosity", "projects/eta-carinae-2013-03-10/docs/images/eta-carinae-20130310-v2-judge-upper-red-nebulosity.jpg", "Faint red/background check."),
+              img("V2 judge corner stars", "projects/eta-carinae-2013-03-10/docs/images/eta-carinae-20130310-v2-judge-corner-background-stars.jpg", "Corner stars and background texture check.")
+            ]
+          },
+          {
+            id: "eta-v3",
+            title: "V3 deeper stretch and annotated orientation",
+            status: "review",
+            note: "V3 makes the nebula easier to see while staying cleaner than the extra-stretched v4. The annotated sibling labels bright stars and Carina structures for orientation.",
+            images: [
+              img("V3 deeper crop", "projects/eta-carinae-2013-03-10/docs/images/eta-carinae-20130310-v3-deeper-carina-crop.jpg", "Deeper unannotated crop."),
+              img("V3 judge core/Keyhole", "projects/eta-carinae-2013-03-10/docs/images/eta-carinae-20130310-v3-judge-core-keyhole.jpg", "Deeper core crop check."),
+              img("V3 annotated crop", "projects/eta-carinae-2013-03-10/docs/images/eta-carinae-20130310-v3-deeper-carina-crop-annotated.jpg", "Orientation aid over the real processed crop.")
+            ]
+          },
+          {
+            id: "eta-v4",
+            title: "V4 extra stretch and cleanup",
+            status: "accepted",
+            note: "V4 is the most legible full-field nebula view after an extra stretch and low-sky chroma cleanup. Its cost is visibly higher background/chroma noise.",
+            images: [
+              img("V4 extra stretch", "projects/eta-carinae-2013-03-10/docs/images/eta-carinae-20130310-v4-extra-stretch-carina-crop.jpg", "Raw extra-stretch crop."),
+              img("V4 extra stretch cleaned", "projects/eta-carinae-2013-03-10/docs/images/eta-carinae-20130310-v4-extra-stretch-clean-carina-crop.jpg", "Current accepted taste point.")
+            ]
+          }
+        ],
+        edges: [
+          edge("eta-source", "eta-wbpp", "Process the homogeneous 120s group first"),
+          edge("eta-wbpp", "eta-phase2", "ABE, solve, SPCC, and SCNR"),
+          edge("eta-phase2", "eta-bxt-v1", "Conservative BXT/NXT and first crop"),
+          edge("eta-source", "eta-240s", "Inspect 240s group separately before any combination"),
+          edge("eta-bxt-v1", "eta-v2", "Brighten and polish the crop"),
+          edge("eta-v2", "eta-v3", "Stretch deeper and create orientation aid"),
+          edge("eta-v3", "eta-v4", "Extra stretch plus low-sky chroma cleanup")
+        ]
+      },
+      {
+        id: "canis-major",
+        title: "Canis Major 2013-01-14",
+        status: "WBPP registration failed for this wide Sirius field, so the current review image comes from an 18-frame WCS-solved no-hallow recovery branch.",
+        stats: {
+          target: "Canis Major, Sirius, and M41",
+          data: "18 x 10s WCS-aligned recovery stack",
+          outcome: "V2 review image accepted as far as this data should go"
+        },
+        docs: [
+          ["Status", "projects/canis-major-2013-01-14/docs/status.md"],
+          ["Pipeline", "projects/canis-major-2013-01-14/docs/pipeline.md"],
+          ["Journey", "projects/canis-major-2013-01-14/docs/processing-journey.md"],
+          ["Research", "projects/canis-major-2013-01-14/docs/research/01-canis-major-processing.md"],
+          ["Original evidence", "projects/canis-major-2013-01-14/docs/original-2013-processing.md"]
+        ],
+        roots: ["cm-source"],
+        nodes: [
+          {
+            id: "cm-source",
+            title: "2013 Canis Major archive and historical attempt",
+            status: "reference",
+            note: "The historical stacked/PSE attempt is documented as context only. The modern run excluded hallow/problem buckets and treated the source as a wide-field Sirius/M41 star-field project.",
+            images: [
+              img("2013 stacked/PSE reference", "projects/canis-major-2013-01-14/docs/images/original-2013-attempt-01-stacked-pse.jpg", "Historical processing reference.")
+            ]
+          },
+          {
+            id: "cm-wbpp",
+            title: "WBPP no-hallow diagnostic",
+            status: "rejected",
+            note: "Calibration, debayer, and subframe selection completed, but WBPP StarAlignment registered only two frames and doubled/jerked Sirius. The WBPP master was not a useful baseline.",
+            images: []
+          },
+          {
+            id: "cm-wcs",
+            title: "WCS solve and AlignByCoordinates recovery",
+            status: "accepted",
+            note: "A clean reference solved at the corrected Canis Major seed. Seventeen batch frames plus the clean reference were WCS-aligned and integrated into an 18 x 10s recovery master.",
+            images: []
+          },
+          {
+            id: "cm-phase2",
+            title: "Recovered Phase 2 linear branch",
+            status: "accepted",
+            note: "The WCS recovery master ran through ABE, ImageSolver, SPCC, SCNR, and linear noise reduction before a restrained nonlinear finish.",
+            images: []
+          },
+          {
+            id: "cm-v2",
+            title: "V2 review image",
+            status: "accepted",
+            note: "V2 calms Sirius and bright-star color while keeping the wide Canis Major/M41 field. Remaining coma/trailing is real capture/lens behavior and not worth further processing here.",
+            images: [
+              img("WCS v2 review image", "projects/canis-major-2013-01-14/docs/images/canis-major-2013-wcs-v2-review.jpg", "Current review image from the WCS recovery branch.")
+            ]
+          },
+          {
+            id: "cm-judge",
+            title: "LLM-as-judge crop review",
+            status: "diagnostic",
+            note: "Small crops checked Sirius halo behavior, M41, background texture, and edge-star shapes. The review confirmed star trails/coma are baked into the short wide-field subs.",
+            images: [
+              img("WCS v2 judge crops", "projects/canis-major-2013-01-14/docs/images/canis-major-2013-wcs-v2-judge-crops.jpg", "Contact sheet of narrow quality-review crops.")
+            ]
+          }
+        ],
+        edges: [
+          edge("cm-source", "cm-wbpp", "Try normal WBPP with no-hallow light set"),
+          edge("cm-wbpp", "cm-wcs", "Recover after StarAlignment failure using per-sub WCS solves"),
+          edge("cm-wcs", "cm-phase2", "Integrate WCS-aligned stack and run Phase 2"),
+          edge("cm-phase2", "cm-v2", "Restrained nonlinear polish"),
+          edge("cm-v2", "cm-judge", "Narrow crop audit for noise, halos, and star shapes")
+        ]
       }
     ];
 

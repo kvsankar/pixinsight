@@ -15,6 +15,31 @@ function arg( name, def )
    return def;
 }
 
+function boolArg( name, def )
+{
+   let v = arg( name, def ? "true" : "false" );
+   if ( typeof v != "string" )
+      return !!v;
+   v = v.toLowerCase();
+   return v == "1" || v == "true" || v == "yes" || v == "on";
+}
+
+function numArg( name, def )
+{
+   let v = arg( name, "" );
+   if ( v === "" )
+      return def;
+   let n = Number( v );
+   if ( isNaN( n ) )
+      throw new Error( "Invalid numeric argument " + name + "=" + v );
+   return n;
+}
+
+function intArg( name, def )
+{
+   return Math.round( numArg( name, def ) );
+}
+
 var logPath = arg( "log", "work/logs/register-to-reference-pjsr.log" );
 var f = new File;
 f.createForWriting( logPath );
@@ -77,22 +102,47 @@ try
    SA.inheritAstrometricSolution = true;
    SA.propagateAstrometricSolutions = true;
 
-   SA.distortionCorrection = true;
+   SA.mode = StarAlignment.RegisterMatch;
+   SA.distortionCorrection = boolArg( "distortionCorrection", true );
    SA.rbfType = StarAlignment.DDMThinPlateSpline;
-   SA.maxSplinePoints = 4000;
-   SA.splineOrder = 2;
-   SA.splineSmoothness = 0.005;
+   SA.maxSplinePoints = intArg( "maxSplinePoints", 4000 );
+   SA.splineOrder = intArg( "splineOrder", 2 );
+   SA.splineSmoothness = numArg( "splineSmoothness", 0.005 );
+   SA.matcherTolerance = numArg( "matcherTolerance", 0.0500 );
+   SA.ransacTolerance = numArg( "ransacTolerance", 1.9000 );
+   SA.ransacMaxIterations = intArg( "ransacMaxIterations", 2000 );
 
    SA.pixelInterpolation = StarAlignment.Auto;
-   SA.structureLayers = 5;
-   SA.sensitivity = 0.50;
-   SA.peakResponse = 0.50;
-   SA.brightThreshold = 3.0;
-   SA.maxStarDistortion = 0.60;
-   SA.restrictToPreviews = false;
-   SA.useTriangles = false;
-   SA.useScaleDifferences = true;
+   SA.structureLayers = intArg( "structureLayers", 5 );
+   SA.noiseLayers = intArg( "noiseLayers", 0 );
+   SA.hotPixelFilterRadius = intArg( "hotPixelFilterRadius", 1 );
+   SA.noiseReductionFilterRadius = intArg( "noiseReductionFilterRadius", 0 );
+   SA.minStructureSize = intArg( "minStructureSize", 0 );
+   SA.sensitivity = numArg( "sensitivity", 0.50 );
+   SA.peakResponse = numArg( "peakResponse", 0.50 );
+   SA.brightThreshold = numArg( "brightThreshold", 3.0 );
+   SA.maxStarDistortion = numArg( "maxStarDistortion", 0.60 );
+   SA.allowClusteredSources = boolArg( "allowClusteredSources", false );
+   SA.localMaximaDetectionLimit = numArg( "localMaximaDetectionLimit", 0.75 );
+   SA.restrictToPreviews = boolArg( "restrictToPreviews", false );
+   SA.useTriangles = boolArg( "useTriangles", false );
+   SA.polygonSides = intArg( "polygonSides", 5 );
+   SA.descriptorsPerStar = intArg( "descriptorsPerStar", 20 );
+   SA.useBrightnessRelations = boolArg( "useBrightnessRelations", false );
+   SA.useScaleDifferences = boolArg( "useScaleDifferences", true );
+   SA.scaleTolerance = numArg( "scaleTolerance", 0.100 );
    SA.onError = 0;
+
+   log( "settings: distortionCorrection=" + SA.distortionCorrection
+      + " useTriangles=" + SA.useTriangles
+      + " sensitivity=" + SA.sensitivity
+      + " peakResponse=" + SA.peakResponse
+      + " brightThreshold=" + SA.brightThreshold
+      + " maxStarDistortion=" + SA.maxStarDistortion
+      + " matcherTolerance=" + SA.matcherTolerance
+      + " ransacTolerance=" + SA.ransacTolerance
+      + " ransacMaxIterations=" + SA.ransacMaxIterations
+      + " useScaleDifferences=" + SA.useScaleDifferences );
 
    log( "executing StarAlignment" );
    let ok = SA.executeGlobal();
@@ -111,6 +161,8 @@ catch ( e )
    log( "EXCEPTION: " + e );
    if ( e.stack )
       log( "STACK: " + e.stack );
+   if ( boolArg( "failOnError", false ) )
+      throw e;
 }
 
 f.close();
