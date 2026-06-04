@@ -47,7 +47,16 @@ function parseBoolArg( name, def )
    return v == "1" || v == "true" || v == "yes";
 }
 
-function autoSTF( view, linkedRGB )
+function numericArg( name, def )
+{
+   let v = getArg( name );
+   if ( v == null || v.length == 0 )
+      return def;
+   let n = parseFloat( v );
+   return isNaN( n ) ? def : n;
+}
+
+function autoSTF( view, linkedRGB, shadowsClipping, targetBackground )
 {
    let n = view.image.isColor ? 3 : 1;
    let medianValues = view.computeOrFetchProperty( "Median" );
@@ -59,7 +68,7 @@ function autoSTF( view, linkedRGB )
       median[c] = Math.max( 0.00001, medianValues[c] );
       mad[c] = 1.4826 * madValues[c];
    }
-   return view.image.computeAutoStretch( median, mad, -2.8, 0.25, linkedRGB );
+   return view.image.computeAutoStretch( median, mad, shadowsClipping, targetBackground, linkedRGB );
 }
 
 try
@@ -67,9 +76,12 @@ try
    let inFile = getArg( "input" );
    let outFile = getArg( "output" );
    let linkedRGB = parseBoolArg( "linkedRGB", false );
+   let shadowsClipping = numericArg( "shadows", -2.8 );
+   let targetBackground = numericArg( "targetBg", 0.25 );
    logMsg( "input=" + inFile );
    logMsg( "output=" + outFile );
    logMsg( "linkedRGB=" + linkedRGB );
+   logMsg( "shadows=" + shadowsClipping + " targetBg=" + targetBackground );
    if ( !inFile || !outFile )
       throw new Error( "Missing input or output argument" );
 
@@ -85,7 +97,7 @@ try
                                   image.isColor, "stf_preview" );
    preview.mainView.beginProcess( UndoFlag.NoSwapFile );
    preview.mainView.image.assign( image );
-   preview.mainView.image.applyDisplayFunction( autoSTF( source.mainView, linkedRGB ) );
+   preview.mainView.image.applyDisplayFunction( autoSTF( source.mainView, linkedRGB, shadowsClipping, targetBackground ) );
    preview.mainView.endProcess();
    logMsg( "applied STF" );
 

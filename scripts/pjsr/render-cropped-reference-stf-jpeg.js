@@ -76,7 +76,7 @@ function applyCrop( view, cx, cy, w, h )
       throw new Error( "DynamicCrop failed" );
 }
 
-function autoSTF( view, linkedRGB )
+function autoSTF( view, linkedRGB, shadowsClipping, targetBackground )
 {
    let n = view.image.isColor ? 3 : 1;
    let medianValues = view.computeOrFetchProperty( "Median" );
@@ -88,7 +88,7 @@ function autoSTF( view, linkedRGB )
       median[c] = Math.max( 0.00001, medianValues[c] );
       mad[c] = 1.4826 * madValues[c];
    }
-   return view.image.computeAutoStretch( median, mad, -2.8, 0.25, linkedRGB );
+   return view.image.computeAutoStretch( median, mad, shadowsClipping, targetBackground, linkedRGB );
 }
 
 try
@@ -102,6 +102,8 @@ try
    let height = numArg( "height", 0.74 );
    let scale = numArg( "scale", 0.50 );
    let linkedRGB = boolArg( "linkedRGB", true );
+   let shadowsClipping = numArg( "shadows", -2.8 );
+   let targetBackground = numArg( "targetBg", 0.25 );
 
    if ( !input || !reference || !output )
       throw new Error( "Missing input, reference, or output argument" );
@@ -112,10 +114,11 @@ try
    log( "crop centerX=" + centerX + " centerY=" + centerY +
         " width=" + width + " height=" + height );
    log( "scale=" + scale + " linkedRGB=" + linkedRGB );
+   log( "shadows=" + shadowsClipping + " targetBg=" + targetBackground );
 
    let refWin = openOne( reference );
    applyCrop( refWin.mainView, centerX, centerY, width, height );
-   let df = autoSTF( refWin.mainView, linkedRGB );
+   let df = autoSTF( refWin.mainView, linkedRGB, shadowsClipping, targetBackground );
    log( "reference cropped size=" + refWin.mainView.image.width + "x" +
         refWin.mainView.image.height );
 

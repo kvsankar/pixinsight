@@ -60,6 +60,23 @@ function numericArg( name, def )
    return v == null || v.length == 0 ? def : Number( v );
 }
 
+function applyCameraPreset( SPCC, camera )
+{
+   camera = ( camera || "" ).toLowerCase();
+   if ( camera == "canoneos500d" || camera == "eos500d" || camera == "t1i" )
+   {
+      SPCC.redFilterName = "Canon EOS 500D R";
+      SPCC.greenFilterName = "Canon EOS 500D G";
+      SPCC.blueFilterName = "Canon EOS 500D B";
+   }
+   else if ( camera == "canoneos60d" || camera == "eos60d" || camera == "60d" )
+   {
+      SPCC.redFilterName = "Canon EOS 60D R";
+      SPCC.greenFilterName = "Canon EOS 60D G";
+      SPCC.blueFilterName = "Canon EOS 60D B";
+   }
+}
+
 try
 {
    logMsg( "=== Phase 2c: SPCC starting ===" );
@@ -118,6 +135,7 @@ try
       SPCC.generateStarMaps = false;
       SPCC.generateTextFiles = false;
 
+      applyCameraPreset( SPCC, stringArg( "camera", "" ) );
       SPCC.redFilterName = stringArg( "redFilter", SPCC.redFilterName );
       SPCC.greenFilterName = stringArg( "greenFilter", SPCC.greenFilterName );
       SPCC.blueFilterName = stringArg( "blueFilter", SPCC.blueFilterName );

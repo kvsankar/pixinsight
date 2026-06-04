@@ -29,6 +29,7 @@ function log( s )
 try
 {
    let processName = arg( "process", "" );
+   let dumpSource = arg( "dumpSource", "false" ).toLowerCase() == "true";
    if ( !processName )
       throw new Error( "Missing process argument" );
 
@@ -52,6 +53,12 @@ try
          v = "<unreadable: " + e + ">";
       }
       log( k + "=" + v );
+   }
+
+   if ( dumpSource )
+   {
+      log( "--- toSource ---" );
+      log( P.toSource() );
    }
 }
 catch ( e )

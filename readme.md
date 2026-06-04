@@ -16,7 +16,7 @@ The current processed targets are `projects/m31-andromeda-2013`, `projects/roset
 
 The current review-stage targets are `projects/m45-pleiades-2013-12-30`, `projects/m81-m82-2014-03-03`, `projects/markarian-chain-2014-03-03`, `projects/omega-centauri-2014-05-04`, `projects/eta-carinae-2013-03-10`, and `projects/canis-major-2013-01-14`.
 
-There are no current newly-started targets.
+The current stopped comet-processing experiment is `projects/comet-catalina-2016-01-09`.
 
 ## Documentation
 
@@ -107,6 +107,20 @@ M7 / Ptolemy Cluster 2013-03-10 processing notes:
 - [M7 processing research](projects/m7-ptolemy-cluster-2013-03-10/docs/research/01-m7-ptolemy-cluster-processing.md) - target facts and processing implications for the open cluster.
 - [Original 2013 processing evidence](projects/m7-ptolemy-cluster-2013-03-10/docs/original-2013-processing.md) - historical local stack and Photoshop artifact evidence.
 - [2013 cropped/edited reference](projects/m7-ptolemy-cluster-2013-03-10/docs/images/original-2013-attempt-01-cropped-edited.jpg), [accepted 2026 BXT/NXT MaskedStretch checkpoint image](projects/m7-ptolemy-cluster-2013-03-10/docs/images/m7-20130310-bxt-nxt-maskedstretch-bg075.jpg), [v2 dark-lane contrast diagnostic image](projects/m7-ptolemy-cluster-2013-03-10/docs/images/m7-20130310-bxt-nxt-v2-dark-lane-contrast.jpg), and [v2 cluster-core judge crop](projects/m7-ptolemy-cluster-2013-03-10/docs/images/m7-20130310-v2-judge-01-cluster-core.jpg) - compressed review outputs.
+
+Comet Catalina 2016-01-09 planning notes:
+
+- [Current status](projects/comet-catalina-2016-01-09/docs/status.md) - source inventory, mixed-camera findings, calibration candidates, and current planning state.
+- [Processing pipeline](projects/comet-catalina-2016-01-09/docs/pipeline.md) - first comet workflow plan with star-aligned, comet-aligned, and 60D diagnostic branches.
+- [Processing journey](projects/comet-catalina-2016-01-09/docs/processing-journey.md) - chronological setup record and first moving-target decisions.
+- [Comet Catalina processing research](projects/comet-catalina-2016-01-09/docs/research/01-comet-catalina-processing.md) - C/2013 US10 facts, ephemeris seed, and PixInsight CometAlignment implications.
+- [Original 2016 processing evidence](projects/comet-catalina-2016-01-09/docs/original-2016-processing.md) - historical DSS/Photoshop artifacts, old comet coordinates, and finished-work reference notes.
+- [T1i no-flat linked-STF preview](projects/comet-catalina-2016-01-09/docs/images/catalina-t1i-nodark-noflat-linked-stf.jpg), [T1i flat34 linked-STF preview](projects/comet-catalina-2016-01-09/docs/images/catalina-t1i-nodark-flat34-linked-stf.jpg), [no-flat comet crop](projects/comet-catalina-2016-01-09/docs/images/catalina-t1i-nodark-noflat-comet-crop.jpg), and [flat34 comet crop](projects/comet-catalina-2016-01-09/docs/images/catalina-t1i-nodark-flat34-comet-crop.jpg) - first diagnostic previews before CometAlignment.
+- [No-flat comet-aligned preview](projects/comet-catalina-2016-01-09/docs/images/catalina-t1i-noflat-comet-aligned-linked-stf.jpg) and [no-flat comet-aligned crop](projects/comet-catalina-2016-01-09/docs/images/catalina-t1i-noflat-comet-aligned-comet-crop.jpg) - first PixInsight CometAlignment diagnostic.
+- [No-flat star-aligned SPCC preview](projects/comet-catalina-2016-01-09/docs/images/catalina-t1i-noflat-star-aligned-spcc-linked-stf.jpg), [no-flat star-aligned SPCC crop](projects/comet-catalina-2016-01-09/docs/images/catalina-t1i-noflat-star-aligned-spcc-comet-crop.jpg), [SPCC-transfer comet-aligned preview](projects/comet-catalina-2016-01-09/docs/images/catalina-t1i-noflat-comet-aligned-spcc-transfer-linked-stf.jpg), [SPCC-transfer comet-aligned crop](projects/comet-catalina-2016-01-09/docs/images/catalina-t1i-noflat-comet-aligned-spcc-transfer-comet-crop.jpg), [flat34 SPCC preview](projects/comet-catalina-2016-01-09/docs/images/catalina-t1i-flat34-star-aligned-spcc-linked-stf.jpg), and [flat34 SPCC crop](projects/comet-catalina-2016-01-09/docs/images/catalina-t1i-flat34-star-aligned-spcc-comet-crop.jpg) - first color-calibrated Catalina checkpoints.
+- [2016 human edit vs 2026 SPCC full comparison](projects/comet-catalina-2016-01-09/docs/images/catalina-2016-human-vs-2026-spcc-full.jpg) and [matched crop comparison](projects/comet-catalina-2016-01-09/docs/images/catalina-2016-human-vs-2026-spcc-crops.jpg) - checkpoint showing why the next branch must be a historical-style presentation pass rather than another raw diagnostic preview.
+- [2026 real-data comet blend darktone checkpoint](projects/comet-catalina-2016-01-09/docs/images/catalina-t1i-noflat-real-comet-blend-v2-darktone.jpg), [darktone comet crop](projects/comet-catalina-2016-01-09/docs/images/catalina-t1i-noflat-real-comet-blend-v2-darktone-comet-crop.jpg), and [2016 vs 2026 darktone comparison](projects/comet-catalina-2016-01-09/docs/images/catalina-2016-human-vs-2026-real-comet-blend-v2-darktone-full.jpg) - previous real-data checkpoint, much better than the raw SPCC diagnostic but superseded by the ABE midtone branch.
+- [2026 ABE real-data comet blend midtone checkpoint](projects/comet-catalina-2016-01-09/docs/images/catalina-t1i-noflat-abe-real-comet-blend-v1-midtone.jpg), [ABE midtone comet crop](projects/comet-catalina-2016-01-09/docs/images/catalina-t1i-noflat-abe-real-comet-blend-v1-midtone-comet-crop.jpg), and [2016 vs 2026 ABE midtone comparison](projects/comet-catalina-2016-01-09/docs/images/catalina-2016-human-vs-2026-abe-real-comet-blend-v1-midtone-full.jpg) - archived best 2026 checkpoint after linear ABE cleanup and real-data comet-region blending; the project was stopped because it did not match the 2016 human processing.
 
 Rosette Nebula 2014 processing notes:
 
