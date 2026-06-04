@@ -20,7 +20,7 @@ For a full repeatable new-target workflow, follow [docs/new-project-playbook.md]
 
 For current licensed third-party processing, follow [docs/rc-astro-workflow.md](docs/rc-astro-workflow.md). BlurXTerminator, NoiseXTerminator, and StarXTerminator are available and should be used as documented there unless a target-specific plan calls for a stock-only diagnostic.
 
-Local archive roots and other private path details belong in ignored local files such as `.env` or `.env.local`, not in committed docs. Use placeholders and archive-relative paths in public notes.
+Local archive roots, artifact roots, symlink layouts, and other private path details belong in ignored local files such as `.env`, `.env.local`, or `.env.workdir-layout.md`, not in committed docs. If `.env.workdir-layout.md` exists, read it before assuming where generated project `work/` directories physically live. Use placeholders and archive-relative paths in public notes.
 
 ## Repository Layout
 
@@ -30,7 +30,7 @@ scripts/                      Shared PowerShell and PixInsight JavaScript automa
 projects/<target-slug>/       One target/session per project
   docs/                       Project notes, status, pipeline, research
   docs/images/                Small checked-in comparison images only
-  work/                       Generated PixInsight outputs, ignored by git
+  work/                       Generated PixInsight outputs, ignored by git; may be a local symlink
 ```
 
 Use lowercase hyphenated project slugs, for example `m31-andromeda-2013` or `orion-2026-01`.

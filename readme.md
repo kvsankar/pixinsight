@@ -10,6 +10,8 @@ This repository is organized for repeatable PixInsight processing across multipl
 - `projects/` - one folder per imaging target/session.
 - `docs/` - repository-level notes that are not tied to a single target.
 
+Generated `projects/<slug>/work` directories are ignored by git and may be symlinked to local artifact storage. If present, read the ignored local note `.env.workdir-layout.md` for machine-specific layout details.
+
 The current processed targets are `projects/m31-andromeda-2013`, `projects/rosette-2014-03-02`, `projects/horsehead-flame-2013-2016`, `projects/orion-nebula-m42-2013`, `projects/trifid-lagoon-2014`, and `projects/m7-ptolemy-cluster-2013-03-10`.
 
 The current review-stage targets are `projects/m45-pleiades-2013-12-30`, `projects/m81-m82-2014-03-03`, `projects/markarian-chain-2014-03-03`, `projects/omega-centauri-2014-05-04`, `projects/eta-carinae-2013-03-10`, and `projects/canis-major-2013-01-14`.

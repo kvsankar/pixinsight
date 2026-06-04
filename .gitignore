@@ -1,4 +1,5 @@
 # PixInsight generated data and large intermediates
+projects/*/work
 projects/*/work/
 .env
 .env.*
@@ -27,3 +28,7 @@ __pycache__/
 *.tmp
 *.bak
 *.bak-*
+
+# Local artifact migration helpers; these can contain machine-specific paths.
+scripts/move-workdirs-staged.ps1
+scripts/drain-workdirs-to-nas-progress.ps1
