@@ -1753,6 +1753,125 @@
           edge("cm-phase2", "cm-v2", "Restrained nonlinear polish"),
           edge("cm-v2", "cm-judge", "Narrow crop audit for noise, halos, and star shapes")
         ]
+      },
+      {
+        id: "m7-ptolemy",
+        title: "M7 / Ptolemy Cluster 2013-03-10",
+        status: "Checkpointed with the regular 120s no-dark BXT/NXT MaskedStretch as the accepted presentation image. The darker v2 contrast branch measured differently but did not make a meaningful visual improvement, so it remains a diagnostic.",
+        stats: {
+          target: "M7 / Ptolemy Cluster / NGC 6475",
+          data: "5 x 120s lead branch, 8 x 60s sibling",
+          outcome: "Accepted regular presentation branch"
+        },
+        docs: [
+          ["Status", "projects/m7-ptolemy-cluster-2013-03-10/docs/status.md"],
+          ["Pipeline", "projects/m7-ptolemy-cluster-2013-03-10/docs/pipeline.md"],
+          ["Journey", "projects/m7-ptolemy-cluster-2013-03-10/docs/processing-journey.md"],
+          ["Research", "projects/m7-ptolemy-cluster-2013-03-10/docs/research/01-m7-ptolemy-cluster-processing.md"],
+          ["Original evidence", "projects/m7-ptolemy-cluster-2013-03-10/docs/original-2013-processing.md"]
+        ],
+        roots: ["m7-source"],
+        nodes: [
+          {
+            id: "m7-source",
+            title: "2013 M7 archive and historical attempt",
+            status: "reference",
+            note: "The archive has separate 120s, 60s, 30s, and 1s groups plus a historical DSS/Photoshop attempt. The single-frame 30s/1s groups are excluded from first integrations.",
+            images: [
+              img("2013 cropped/edited reference", "projects/m7-ptolemy-cluster-2013-03-10/docs/images/original-2013-attempt-01-cropped-edited.jpg", "Historical visual reference only.")
+            ]
+          },
+          {
+            id: "m7-wbpp-120",
+            title: "120s no-dark/no-flats WBPP",
+            status: "accepted",
+            note: "Primary branch: 5/5 frames registered, 0 rejected, with a 5201 x 3460 autocropped master. Warmer matching darks are deferred as diagnostics only.",
+            images: [
+              img("120s WBPP linked STF", "projects/m7-ptolemy-cluster-2013-03-10/docs/images/m7-20130310-wbpp-120s-nodark-linked-stf.jpg", "Color-faithful linked-STF preview."),
+              img("120s WBPP unlinked STF", "projects/m7-ptolemy-cluster-2013-03-10/docs/images/m7-20130310-wbpp-120s-nodark-unlinked-stf.jpg", "Unlinked diagnostic preview.")
+            ]
+          },
+          {
+            id: "m7-wbpp-60",
+            title: "60s no-dark/no-flats sibling",
+            status: "diagnostic",
+            note: "Sibling branch: 8/8 frames registered, 0 rejected, but the 4770 x 2230 autocrop is much narrower than the 120s branch. Keep as a star-color/saturation comparison.",
+            images: [
+              img("60s WBPP linked STF", "projects/m7-ptolemy-cluster-2013-03-10/docs/images/m7-20130310-wbpp-60s-nodark-linked-stf.jpg", "60s linked-STF preview."),
+              img("60s WBPP unlinked STF", "projects/m7-ptolemy-cluster-2013-03-10/docs/images/m7-20130310-wbpp-60s-nodark-unlinked-stf.jpg", "60s unlinked diagnostic preview.")
+            ]
+          },
+          {
+            id: "m7-phase2",
+            title: "120s solved/SPCC linear branch",
+            status: "accepted",
+            note: "ABE, ImageSolver, SPCC, SCNR, and stock MLT completed. The solve confirmed the same-night ED80/reducer scale: 480.31 mm and 1.851 arcsec/px.",
+            images: [
+              img("120s Phase 2 SCNR linked STF", "projects/m7-ptolemy-cluster-2013-03-10/docs/images/m7-20130310-phase2-120s-scnr-linked-stf.jpg", "Solved/SPCC/SCNR linked preview.")
+            ]
+          },
+          {
+            id: "m7-bxt",
+            title: "Conservative 120s BXT/NXT",
+            status: "accepted",
+            note: "Mild star-field settings from the 120s SCNR checkpoint: BXT stars 0.12, halos 0.01, nonstellar 0.10; NXT luminance/color 0.52/0.76.",
+            images: [
+              img("BXT/NXT linear linked STF", "projects/m7-ptolemy-cluster-2013-03-10/docs/images/m7-20130310-bxt-nxt-linear-linked-stf.jpg", "Linear plugin checkpoint.")
+            ]
+          },
+          {
+            id: "m7-stretch",
+            title: "Accepted MaskedStretch bg075",
+            status: "accepted",
+            note: "Accepted presentation image from the BXT/NXT branch. The sky is intentionally kept low to avoid a gray open-cluster field.",
+            images: [
+              img("BXT/NXT MaskedStretch bg075", "projects/m7-ptolemy-cluster-2013-03-10/docs/images/m7-20130310-bxt-nxt-maskedstretch-bg075.jpg", "Accepted 2026 checkpoint image.")
+            ]
+          },
+          {
+            id: "m7-v2-contrast",
+            title: "V2 dark-lane contrast sibling",
+            status: "diagnostic",
+            note: "A sibling nonlinear polish from the regular MaskedStretch branch. Mild large-scale local contrast and a lower-shadow S-curve measured darker, but visual review found little practical difference, so this branch was not promoted.",
+            images: [
+              img("V2 dark-lane contrast", "projects/m7-ptolemy-cluster-2013-03-10/docs/images/m7-20130310-bxt-nxt-v2-dark-lane-contrast.jpg", "Higher-contrast sibling review image.")
+            ]
+          },
+          {
+            id: "m7-judge",
+            title: "LLM-as-judge narrow crops",
+            status: "diagnostic",
+            note: "First crop set checks cluster-core clipping, medium-bright star shape/color, background texture, and corner stars.",
+            images: [
+              img("Judge cluster core", "projects/m7-ptolemy-cluster-2013-03-10/docs/images/m7-20130310-judge-01-cluster-core.jpg", "Bright core and saturation check."),
+              img("Judge medium star field", "projects/m7-ptolemy-cluster-2013-03-10/docs/images/m7-20130310-judge-02-medium-star-field.jpg", "Representative star color/shape check."),
+              img("Judge background star-cloud", "projects/m7-ptolemy-cluster-2013-03-10/docs/images/m7-20130310-judge-03-background-star-cloud.jpg", "Background texture and chroma speckle check."),
+              img("Judge corner stars", "projects/m7-ptolemy-cluster-2013-03-10/docs/images/m7-20130310-judge-04-corner-stars.jpg", "Corner shape/registration check.")
+            ]
+          },
+          {
+            id: "m7-v2-judge",
+            title: "V2 dark-lane judge crops",
+            status: "diagnostic",
+            note: "Matched crop set for the dark-lane contrast sibling. These use the same geometry as the v1 crops so noise, star shape, and clipping can be compared directly.",
+            images: [
+              img("V2 judge cluster core", "projects/m7-ptolemy-cluster-2013-03-10/docs/images/m7-20130310-v2-judge-01-cluster-core.jpg", "Bright core and saturation check."),
+              img("V2 judge medium star field", "projects/m7-ptolemy-cluster-2013-03-10/docs/images/m7-20130310-v2-judge-02-medium-star-field.jpg", "Representative star color/shape check."),
+              img("V2 judge background star-cloud", "projects/m7-ptolemy-cluster-2013-03-10/docs/images/m7-20130310-v2-judge-03-background-star-cloud.jpg", "Background dark-lane/noise check."),
+              img("V2 judge corner stars", "projects/m7-ptolemy-cluster-2013-03-10/docs/images/m7-20130310-v2-judge-04-corner-stars.jpg", "Corner shape/registration check.")
+            ]
+          }
+        ],
+        edges: [
+          edge("m7-source", "m7-wbpp-120", "Process deepest homogeneous group first"),
+          edge("m7-source", "m7-wbpp-60", "Inspect shorter-exposure sibling separately"),
+          edge("m7-wbpp-120", "m7-phase2", "Promote 120s because it preserves the larger field"),
+          edge("m7-phase2", "m7-bxt", "Try conservative BXT/NXT before stretch"),
+          edge("m7-bxt", "m7-stretch", "Restrained open-cluster stretch"),
+          edge("m7-stretch", "m7-judge", "Crop audit before accepting or polishing"),
+          edge("m7-stretch", "m7-v2-contrast", "Increase dark-lane contrast on a sibling branch"),
+          edge("m7-v2-contrast", "m7-v2-judge", "Matched crop audit for the darker branch")
+        ]
       }
     ];
 
