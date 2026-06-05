@@ -40,9 +40,9 @@ For no-flats command examples, make sure `PI_FLAT_DIR` and `PI_FLAT_DIRS` are no
 Status:
 
 - Complete/rejected as baseline: `wbpp-20140303-good-dark31-45-noflats`
-- Complete/accepted as baseline: `wbpp-20140303-good-nodark-noflats-control`
+- Complete/legacy baseline: `wbpp-20140303-good-nodark-noflats-control`
+- Complete/accepted upstream branch: `wbpp-20140303-good-cool24-33-dark28-33-noflats`
 - Deferred diagnostic: `wbpp-20140303-good-dark31-45-flat3200-test`
-- Deferred diagnostic: cool-dark branch using `dark/canon-eos-60d/library-01/180s-1600iso/*c`
 
 Command examples assume:
 
@@ -103,7 +103,36 @@ Template:
   -Fresh
 ```
 
-Outcome: completed and accepted as the current baseline. It still has residual vertical patterning, but it produced a calmer solved/SPCC-calibrated linear checkpoint than the dark branch.
+Outcome: completed and accepted as the first usable legacy baseline. It still has residual vertical patterning, but it produced a calmer solved/SPCC-calibrated linear checkpoint than the dark branch.
+
+### Run: Cool-Light / Cool-Dark Diagnostic
+
+Purpose: test whether dropping the hottest lights and using the smaller, cooler `library-01` dark set can reduce the vertical red/blue pattern noise that limited both the no-dark and broad warm-dark branches.
+
+Inputs:
+
+- Lights: 33 selected CR2 frames from `by-date/20140303-coorg-keemale-m81-m82/good`, limited to +24 through +33 C.
+- Darks: `dark/canon-eos-60d/library-01/180s-1600iso/28c`, `31c`, `32c`, and `33c`, 15 CR2 darks total.
+- Flats: none.
+- Bias: none.
+
+The actual run staged the selected lights under ignored project `work/` inputs, then ran WBPP as a named diagnostic:
+
+```powershell
+& .\scripts\run-wbpp-phase1.ps1 `
+  -ProjectDir $project `
+  -OutputSubdir 'wbpp-20140303-good-cool24-33-dark28-33-noflats' `
+  -LightDirs @('<ignored-work-selected-cool-light-dir>') `
+  -DarkDirs @(
+    (Join-Path $archive 'dark\canon-eos-60d\library-01\180s-1600iso\28c'),
+    (Join-Path $archive 'dark\canon-eos-60d\library-01\180s-1600iso\31c'),
+    (Join-Path $archive 'dark\canon-eos-60d\library-01\180s-1600iso\32c'),
+    (Join-Path $archive 'dark\canon-eos-60d\library-01\180s-1600iso\33c')
+  ) `
+  -Fresh
+```
+
+Outcome: completed. WBPP calibrated 33 lights, rejected 2 low-scoring frames, registered/integrated 31, and produced the accepted upstream master. Matched v4-geometry reference-STF crops showed the branch is much calmer than the warm-dark branch and cleaner than the no-dark branch, at the cost of lower total integration time.
 
 ### Run: 2014-03-02 Flat Diagnostic
 
@@ -136,6 +165,8 @@ Status:
 - Complete/accepted as legacy baseline: `02-linear-20140303-good-nodark-noflats-control`
 - Complete/rejected diagnostic: `02-linear-20140303-good-nodark-bxt-nxt`
 - Complete/deferred diagnostic: `02-linear-20140303-good-nodark-nxt-calm`
+- Complete/accepted stock-linear diagnostic: `02-linear-20140303-good-cool24-33-dark28-33-noflats`
+- Complete/demoted plugin comparison: `02-linear-20140303-good-cool24-33-dark28-33-bxt-nxt-calm`
 
 For each accepted Phase 1 master:
 
@@ -182,7 +213,7 @@ Potential Phase 2 risks:
 - If SPCC background neutralization makes the whole field muddy or green-brown, keep a no-BN branch.
 - If solving fails at the ED80/reducer seed, inspect the raw master and logs before trusting EXIF `50.0 mm`.
 
-### Run: BXT/NXT Linear Branch
+### Run: Original No-Dark BXT/NXT Linear Branch
 
 Purpose: test the licensed RC Astro workflow on the accepted no-dark baseline without carrying forward the old MLT denoise.
 
@@ -220,6 +251,43 @@ work/02-linear-20140303-good-nodark-bxt-nxt/02g-bxt-nxt.xisf
 
 Visual review of a background crop showed worse colored scratch/streak noise than the legacy v4 branch. A subsequent NXT-only diagnostic from `02d-scnr.xisf` reduced chroma in the darker v2 version but still left higher luminance texture than v4. A closer M81 crop then showed v4 is also compromised by vertical colored streaking, so no nonlinear/plugin branch is accepted as final.
 
+### Run: Cool-Dark BXT/NXT Calm Branch
+
+Purpose: retest the licensed RC Astro workflow after the upstream cool-light/cool-dark diagnostic reduced the colored vertical pattern noise.
+
+Input:
+
+```text
+work/02-linear-20140303-good-cool24-33-dark28-33-noflats/02c-spcc.xisf
+```
+
+Settings were intentionally calmer than the rejected no-dark plugin branch:
+
+```text
+BlurXTerminator AI4:
+  sharpenStars=0.16
+  adjustHalos=0.01
+  sharpenNonstellar=0.22
+  autoNonstellarPsf=true
+
+NoiseXTerminator AI3:
+  colorSeparation=true
+  frequencySeparation=true
+  denoise=0.56
+  denoiseColor=0.76
+  denoiseLf=0.18
+  denoiseLfColor=0.58
+  frequencyScale=4
+  iterations=2
+  detail=0.10
+```
+
+Outcome: completed and kept as a comparison branch after SN-preserve v2 was accepted. The linear checkpoint is:
+
+```text
+work/02-linear-20140303-good-cool24-33-dark28-33-bxt-nxt-calm/02g-bxt-nxt.xisf
+```
+
 ## Phase 3 - Nonlinear Processing
 
 Target-specific nonlinear priorities:
@@ -233,10 +301,12 @@ Target-specific nonlinear priorities:
 
 Candidate set:
 
-1. Clean no-dark/no-flats candidate from the accepted no-dark branch.
-2. Flat-diagnostic candidate only if the flat branch clearly improves vignetting without artifacts.
-3. Dark-calibrated candidate is rejected as baseline.
-4. Old-reference-style candidate if the clean candidate is too subdued compared with the 2014 finished-work image.
+1. Accepted final v1: cool-light/cool-dark SN-preserve v2 from the accepted cool-light/cool-dark upstream branch.
+2. Cool-light/cool-dark BXT/NXT calm candidate as a background-clean comparison only; it makes M82/SN too overexposed/smoothed.
+3. Stock cool-light/cool-dark candidate if the SN-preserve branch feels too dark/subtle.
+4. No-dark/no-flats v4 candidate as a legacy reference only.
+5. Flat-diagnostic candidate only if the flat branch clearly improves vignetting/background without artifacts.
+6. Dark-calibrated broad warm-dark candidate is rejected as baseline.
 
 Status:
 
@@ -248,26 +318,46 @@ Status:
 - Complete: v4 tighter detail crop, `docs/images/m81-m82-20140303-v4-detail-tight-crop.jpg`
 - Complete/rejected: BXT/NXT v1 tight crop, `docs/images/m81-m82-20140303-bxt-nxt-v1-tight-crop.jpg`
 - Complete/diagnostic: NXT-only v2 dark tight crop, `docs/images/m81-m82-20140303-nxt-calm-v2-dark-tight-crop.jpg`
+- Complete/current stock cool-dark proof: `docs/images/m81-m82-20140303-cooldark-v1-tight-crop.jpg`
+- Complete/demoted BXT/NXT calm comparison: `docs/images/m81-m82-20140303-cooldark-bxt-nxt-calm-v1-tight-crop.jpg`
+- Complete/accepted final v1: `docs/images/m81-m82-20140303-final-v1.jpg`
+- Complete/accepted SN-preserve branch: `docs/images/m81-m82-20140303-cooldark-sn-preserve-v2-tight-crop.jpg`
 
-No current presentation branch is accepted as final. The legacy v4 tighter detail crop remains the least-bad reference, but close-crop review shows it still carries objectionable vertical colored streaking. The BXT/NXT v1 tight crop used the same centered framing but made the background read as colored scratch/streak noise. The darker NXT-only v2 diagnostic reduced chroma but did not clearly beat v4 because luminance texture remained higher.
+The accepted final v1 is a 20% tighter presentation crop from the cool-light/cool-dark SN-preserve v2 tight crop. It removes the half-in/half-out edge galaxy above M81, reduces the objectionable vertical red/blue streaking that blocked v4, and avoids the over-bright/smoothed M82 core of the BXT/NXT calm crop. It is intentionally subtler and uses only 31 integrated frames with no-flat/archive-limited background constraints.
 
-Next nonlinear work should wait until an upstream diagnostic improves the integrated master. Further BXT/NXT tuning on the current no-dark/no-flats stack is unlikely to solve the pattern noise.
+The SN-preserve branch uses `scripts/pjsr/03u-m81-m82-sn-preserve.js`, which hard-applies a low-background STF through HistogramTransformation and then uses restrained curves only. It intentionally skips BXT/NXT, HDRMT, and LHE so point-like structure in M82 is not smoothed into the galaxy core.
 
-## Review Checkpoint
+SN-preserve v2 settings:
 
-Before finalizing, provide:
+```text
+Input: work/02-linear-20140303-good-cool24-33-dark28-33-noflats/02e-linear-nr.xisf
+targetBackground=0.115
+shadows=-2.8
+k07=0.043
+k22=0.205
+k52=0.525
+k83=0.850
+satAmount=0.038
+```
+
+This project is closed for this processing pass. Any future v2 work should start from the cool-light/cool-dark branch, not the old no-dark branch. The only meaningful upstream test left is the same-trip flat set against the cool-light/cool-dark selection.
+
+## Final Checkpoint
+
+Accepted final and retained comparison set:
 
 - historical reference: `docs/images/original-2014-finished-work.jpg`;
 - linked-STF WBPP preview;
-- accepted Phase 2 linear linked-STF preview;
-- clean nonlinear candidate;
-- optional flat diagnostic preview if run;
-- optional SN 2014J annotated review copy;
+- cool-dark Phase 2 linear linked-STF preview;
+- accepted final v1: `docs/images/m81-m82-20140303-final-v1.jpg`;
+- accepted cool-dark SN-preserve branch: `docs/images/m81-m82-20140303-cooldark-sn-preserve-v2-tight-crop.jpg`;
+- BXT/NXT calm and stock cool-dark proofs for comparison;
+- unmarked and approximate annotated M82/SN close crops;
 - rejected diagnostics with one-line reasons.
 
-Review questions:
+Final decision:
 
-1. Which upstream diagnostic should be tried next: same-trip flats, cool-dark library, or alternate rejection/integration settings?
-2. Can the integrated master be improved enough that M81's faint arms and M82's dust lane survive without the sky becoming streaky or smudged?
-3. If upstream diagnostics do not improve the pattern noise, should M81/M82 remain an archive-limited reference result rather than a final?
-4. Should SN 2014J be emphasized only after a cleaner presentation branch exists?
+1. Accept the 20% tighter SN-preserve v2 crop as final v1.
+2. Keep the marked SN 2014J crop as review context only.
+3. Keep BXT/NXT calm as a comparison branch because it is cleaner but over-smooths/over-brightens M82.
+4. Stop further processing for this pass.

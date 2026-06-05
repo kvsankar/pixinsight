@@ -12,9 +12,9 @@ This repository is organized for repeatable PixInsight processing across multipl
 
 Generated `projects/<slug>/work` directories are ignored by git and may be symlinked to local artifact storage. If present, read the ignored local note `.env.workdir-layout.md` for machine-specific layout details.
 
-The current processed targets are `projects/m31-andromeda-2013`, `projects/rosette-2014-03-02`, `projects/horsehead-flame-2013-2016`, `projects/orion-nebula-m42-2013`, `projects/trifid-lagoon-2014`, and `projects/m7-ptolemy-cluster-2013-03-10`.
+The current processed targets are `projects/m31-andromeda-2013`, `projects/rosette-2014-03-02`, `projects/horsehead-flame-2013-2016`, `projects/orion-nebula-m42-2013`, `projects/trifid-lagoon-2014`, `projects/m7-ptolemy-cluster-2013-03-10`, and `projects/m81-m82-2014-03-03`.
 
-The current review-stage targets are `projects/m45-pleiades-2013-12-30`, `projects/m81-m82-2014-03-03`, `projects/markarian-chain-2014-03-03`, `projects/omega-centauri-2014-05-04`, `projects/eta-carinae-2013-03-10`, and `projects/canis-major-2013-01-14`.
+The current review-stage targets are `projects/m45-pleiades-2013-12-30`, `projects/markarian-chain-2014-03-03`, `projects/omega-centauri-2014-05-04`, `projects/eta-carinae-2013-03-10`, and `projects/canis-major-2013-01-14`.
 
 The current stopped comet-processing experiment is `projects/comet-catalina-2016-01-09`.
 
@@ -56,15 +56,16 @@ M45 / Pleiades 2013-12-30 review notes:
 - [Original 2013 processing evidence](projects/m45-pleiades-2013-12-30/docs/original-2013-processing.md) - historical local artifacts and finished-work reference.
 - [2013 finished-work reference](projects/m45-pleiades-2013-12-30/docs/images/original-2013-finished-work.jpg), [2026 v1 full-frame candidate](projects/m45-pleiades-2013-12-30/docs/images/m45-20131230-v1-polish.jpg), and [2026 v2 portrait crop](projects/m45-pleiades-2013-12-30/docs/images/m45-20131230-v2-portrait-crop.jpg) - compressed comparison images.
 
-M81 / M82 2014-03-03 review notes:
+M81 / M82 2014-03-03 processing notes:
 
-- [Current status](projects/m81-m82-2014-03-03/docs/status.md) - source inventory, completed dark/no-dark WBPP diagnostics, Phase 2 solves, legacy v3/v4 crop outputs, rejected plugin diagnostics, and review questions.
-- [Processing pipeline](projects/m81-m82-2014-03-03/docs/pipeline.md) - WBPP, Phase 2, RC Astro BXT/NXT branch, and nonlinear workflow/current processing record for the galaxy pair.
-- [Review checkpoint](projects/m81-m82-2014-03-03/docs/review-2026-05-28.md) - least-bad v4 reference crop, rejected BXT/NXT v1, NXT-only diagnostic, accepted no-dark branch, rejected dark branch, and upstream calibration questions.
+- [Final v1](projects/m81-m82-2014-03-03/docs/final-v1.md) - accepted cool-dark SN-preserve result, 20% tighter presentation crop, selected data, caveats, and deliverables.
+- [Current status](projects/m81-m82-2014-03-03/docs/status.md) - source inventory, completed dark/no-dark/cool-dark WBPP diagnostics, Phase 2 solves, legacy v3/v4 crops, rejected plugin diagnostics, accepted cool-dark SN-preserve final, and closeout notes.
+- [Processing pipeline](projects/m81-m82-2014-03-03/docs/pipeline.md) - WBPP, Phase 2, RC Astro BXT/NXT branches, cool-dark diagnostic, SN-preserve branch, and final processing record for the galaxy pair.
+- [Review checkpoint](projects/m81-m82-2014-03-03/docs/review-2026-05-28.md) - dated checkpoint for the rejected v4/BXT/NXT state before the 2026-06-04 cool-dark rescue pass.
 - [Processing journey](projects/m81-m82-2014-03-03/docs/processing-journey.md) - chronological planning record and decision trail.
 - [M81 / M82 processing research](projects/m81-m82-2014-03-03/docs/research/01-m81-m82-processing.md) - target-specific facts and processing implications for M81, M82, and SN 2014J.
 - [Original 2014 processing evidence](projects/m81-m82-2014-03-03/docs/original-2014-processing.md) - historical DSS/Photoshop artifacts and finished-work reference.
-- [2014 finished-work reference](projects/m81-m82-2014-03-03/docs/images/original-2014-finished-work.jpg), [2026 v4 tight crop](projects/m81-m82-2014-03-03/docs/images/m81-m82-20140303-v4-detail-tight-crop.jpg), [rejected BXT/NXT v1 tight crop](projects/m81-m82-2014-03-03/docs/images/m81-m82-20140303-bxt-nxt-v1-tight-crop.jpg), and [NXT-only v2 diagnostic](projects/m81-m82-2014-03-03/docs/images/m81-m82-20140303-nxt-calm-v2-dark-tight-crop.jpg) - compressed comparison images.
+- [2014 finished-work reference](projects/m81-m82-2014-03-03/docs/images/original-2014-finished-work.jpg), [accepted final v1](projects/m81-m82-2014-03-03/docs/images/m81-m82-20140303-final-v1.jpg), [accepted SN-preserve branch crop](projects/m81-m82-2014-03-03/docs/images/m81-m82-20140303-cooldark-sn-preserve-v2-tight-crop.jpg), [M82 close crop](projects/m81-m82-2014-03-03/docs/images/m81-m82-20140303-m82-close-cooldark-sn-preserve-v2.jpg), [demoted cool-dark BXT/NXT calm crop](projects/m81-m82-2014-03-03/docs/images/m81-m82-20140303-cooldark-bxt-nxt-calm-v1-tight-crop.jpg), [stock cool-dark proof](projects/m81-m82-2014-03-03/docs/images/m81-m82-20140303-cooldark-v1-tight-crop.jpg), [legacy v4 tight crop](projects/m81-m82-2014-03-03/docs/images/m81-m82-20140303-v4-detail-tight-crop.jpg), [rejected BXT/NXT v1 tight crop](projects/m81-m82-2014-03-03/docs/images/m81-m82-20140303-bxt-nxt-v1-tight-crop.jpg), and [NXT-only v2 diagnostic](projects/m81-m82-2014-03-03/docs/images/m81-m82-20140303-nxt-calm-v2-dark-tight-crop.jpg) - compressed comparison images.
 
 Markarian Chain 2014-03-03 processing notes:
 

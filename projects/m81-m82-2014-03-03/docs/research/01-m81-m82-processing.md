@@ -71,4 +71,4 @@ The supernova is historically interesting, but the final image should probably s
 6. Preserve a no-BN SPCC diagnostic if background neutralization muddies the field.
 7. Build a clean nonlinear wide-pair candidate first, then decide whether to crop or annotate SN 2014J.
 
-After running Phase 1 and Phase 2, the dark-calibrated branch was rejected because it produced severe post-SPCC vertical chroma streaking. The no-dark/no-flats branch is the current baseline. This increases residual pattern/noise risk, but it produces the cleaner review candidate for this dataset.
+After running Phase 1 and Phase 2, the broad warm-dark branch was rejected because it produced severe post-SPCC vertical chroma streaking. A no-dark/no-flats branch became the first usable baseline, but later close-crop review still found objectionable colored vertical patterning. The accepted final v1 uses a cooler-light/cooler-dark diagnostic branch and an SN-preserving nonlinear pass, trading some integration time for a cleaner background and more legible M82/SN 2014J-era point-source structure.

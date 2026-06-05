@@ -1,9 +1,10 @@
 # M81 / M82 2014-03-03 Processing - Status
 
-**As of:** 2026-05-28 IST, the M81/M82 project has completed Phase 1 dark/no-dark WBPP diagnostics, Phase 2 linear processing for both branches, legacy v3/v4 nonlinear crops, BXT/NXT/NXT-only plugin diagnostics, and close-crop review.
-**Pipeline progress:** 85%, nonlinear comparison is complete but no presentation branch is accepted as final. Legacy v4 is the least-bad reference image, while the next useful work is upstream calibration/integration refinement.
+**As of:** 2026-06-05 IST, the M81/M82 project is accepted and closed for this processing pass. Phase 1 dark/no-dark/cool-dark WBPP diagnostics, Phase 2 linear processing, legacy nonlinear crops, rejected plugin diagnostics, cool-light/cool-dark rescue processing, and the M82/SN-preserving final branch are complete.
+**Pipeline progress:** Complete. Final v1 is the cool-light/cool-dark SN-preserve v2 crop, tightened by 20% after acceptance to remove the half-in/half-out edge galaxy above M81. It supersedes the BXT/NXT calm crop because M82/SN 2014J visibility is a hard review feature; the tradeoff is a subtler/darker presentation.
 
 For the proposed workflow, see [Processing pipeline](pipeline.md).
+For the accepted result, see [Final v1](final-v1.md).
 For the review checkpoint, see [Review checkpoint](review-2026-05-28.md).
 For the chronological reasoning log, see [Processing journey](processing-journey.md).
 For target-specific research, see [M81 / M82 processing research](research/01-m81-m82-processing.md).
@@ -13,9 +14,10 @@ For historical local artifacts, see [Original 2014 processing evidence](original
 
 ```text
 PHASE 0 - Source inventory and project setup       COMPLETE
-PHASE 1 - Calibration + integration                COMPLETE FOR DARK + NO-DARK CONTROL
-PHASE 2 - Linear post-integration                  COMPLETE FOR DARK + NO-DARK CONTROL
-PHASE 3 - Nonlinear processing/export              COMPARISONS COMPLETE; FINAL BLOCKED BY PATTERN NOISE
+PHASE 1 - Calibration + integration                COMPLETE FOR DARK, NO-DARK, AND COOL-DARK DIAGNOSTICS
+PHASE 2 - Linear post-integration                  COMPLETE FOR DARK, NO-DARK, AND COOL-DARK DIAGNOSTICS
+PHASE 3 - Nonlinear processing/export              ACCEPTED COOL-DARK SN-PRESERVE V2 FINAL
+PHASE 4 - Final docs / closeout                    COMPLETE
 ```
 
 ## Dataset Summary
@@ -31,10 +33,13 @@ PHASE 3 - Nonlinear processing/export              COMPARISONS COMPLETE; FINAL B
 | Main exposure pattern | 180s, ISO 1600 |
 | Light temperature range | +24 to +49 C |
 | Primary usable integration | 45 x 180s = 135 min / 2h15m |
+| Accepted final integration | 31 x 180s = 93 min from a 33-light +24 to +33 C subset after WBPP rejected 2 frames |
 | Historical DSS integration | 40 x 180s = 120 min / 2h, 49 darks, no flats |
 | Historical reference | `docs/images/original-2014-finished-work.jpg` |
-| Least-bad reference, not final | `docs/images/m81-m82-20140303-v4-detail-tight-crop.jpg` |
-| Current blocker | Close-crop review shows vertical colored streaking in both BXT/NXT v1 and legacy v4; this is likely upstream pattern noise, not a nonlinear polish problem |
+| Legacy reference, not final | `docs/images/m81-m82-20140303-v4-detail-tight-crop.jpg` |
+| Accepted final | `docs/images/m81-m82-20140303-final-v1.jpg` |
+| Accepted final branch | `docs/images/m81-m82-20140303-cooldark-sn-preserve-v2-tight-crop.jpg` |
+| Current blocker | None for this processing pass. Residual caveats are archive-limited depth, no accepted flats, and the deliberate darker/subtler SN-preserving presentation. |
 
 ## Archive Search Results
 
@@ -55,6 +60,7 @@ No other by-date folders matching the M81/M82 alias search were found.
 | Candidate | Frames | Exposure | ISO | Temp | Decision |
 | --- | ---: | ---: | ---: | --- | --- |
 | `20140303-coorg-keemale-m81-m82/good` | 45 CR2 | 180s | 1600 | +24 to +49 C | Primary branch |
+| Cool-light diagnostic subset from `good` | 33 CR2 selected, 31 integrated after WBPP rejection | 180s | 1600 | +24 to +33 C | Accepted final upstream branch; drops 12 hotter lights |
 | Historical DSS subset from `good` | 40 CR2 | 180s | 1600 | +24 to +49 C | Comparison only; old DSS omitted the final five +30 C frames |
 | `20140303-coorg-keemale-m81-m82/framing-trials` | 8 CR2 | 30s/40s | 3200/1600 | +38 to +42 C | Reject from first integration |
 
@@ -90,10 +96,10 @@ Temperature counts for the 45 `good` frames:
 
 Current calibration decision:
 
-1. Reject the dark-calibrated branch as the nonlinear baseline. It completed, but every light required automatic output pedestal and the SPCC/SCNR/MLT preview showed severe red/blue vertical chroma streaking.
-2. Use the no-dark/no-flats branch as the current baseline. It has residual vertical patterning but produces a calmer solved/SPCC-calibrated linear checkpoint and better nonlinear review candidate.
-3. Do not set flats globally in `.env`; run the 2014-03-02 flat set only as a named diagnostic branch if vignetting/background artifacts become the main blocker.
-4. Keep the cool-dark `library-01` set as a deferred diagnostic only if a new dark-calibration investigation is needed.
+1. Reject the broad warm-dark `library-02` branch as the nonlinear baseline. It completed, but every light required automatic output pedestal and the SPCC/SCNR/MLT preview showed severe red/blue vertical chroma streaking.
+2. Keep the no-dark/no-flats branch as the legacy baseline/reference. It is useful for comparison but no longer the best candidate because it still shows visible red/blue vertical streaks in close crops.
+3. Accepted the cool-light/cool-dark `library-01` diagnostic as the final upstream branch. It uses less integration time, but the matched linear crop and nonlinear proof both show much calmer colored pattern noise.
+4. Do not set flats globally in `.env`; run the 2014-03-02 flat set only as a named diagnostic branch if vignetting/background artifacts become the main blocker.
 5. Treat historical `.cal.tif`, DSS `Autosave.tif`, and PSD/TIFF/JPEG outputs as references, not modern PixInsight inputs.
 
 ## Decisions So Far
@@ -118,13 +124,21 @@ Current calibration decision:
 - Rejected BXT/NXT v1 after visual review showed colored scratch/streak noise in the background crop.
 - Tested NXT-only calm variants from the SCNR linear checkpoint. NXT v2 reduced chroma noise but still did not clearly beat legacy v4 because luminance texture remained higher.
 - Close-crop review of M81 showed neither BXT/NXT v1 nor legacy v4 is acceptable as a clean final. V4 remains the least-bad reference only; further nonlinear/plugin tuning is deferred until calibration or integration diagnostics improve the underlying pattern noise.
+- Staged the 33 cooler `good` lights from +24 to +33 C and ran `wbpp-20140303-good-cool24-33-dark28-33-noflats` with `library-01` +28 to +33 C darks. WBPP calibrated 33 lights, rejected 2 low-scoring frames, registered/integrated 31, and produced a new master.
+- Ran Phase 2 on the cool-light/cool-dark master. It solved, SPCC-calibrated, SCNR-corrected, and produced a stock linear NR checkpoint.
+- Compared matched v4-geometry Phase 2 crops. The warm-dark branch remained dramatically streaked; the no-dark branch showed colored vertical marks; the cool-dark branch was visibly calmer.
+- Produced a stock cool-dark nonlinear proof and a conservative cool-dark BXT/NXT calm proof. The BXT/NXT calm crop reduced the old colored-streak failure without the scratchy background of the earlier no-dark BXT/NXT branch.
+- User review then flagged the BXT/NXT calm M82 crop as overexposed/smoothed compared with the old processing, where the SN 2014J-era point source was visible. Added `scripts/pjsr/03u-m81-m82-sn-preserve.js` and produced SN-preserve v1/v2 branches from the stock cool-dark linear NR checkpoint, avoiding BXT/NXT and HDR/LHE. SN-preserve v2 became the accepted final branch.
+- Accepted SN-preserve v2 as final v1 on 2026-06-05 IST and exported final aliases: `docs/images/m81-m82-20140303-final-v1.jpg` and `work/03-nonlinear-20140303-cooldark-sn-preserve-v2/m81-m82-20140303-final-v1.tif`.
+- Tightened final v1 by 20% from the accepted branch crop, creating `work/03-nonlinear-20140303-cooldark-sn-preserve-v2/03u-m81-m82-cooldark-sn-preserve-v2-final-v1-crop.xisf`, then regenerated the final TIFF/JPEG aliases. This removes the half-in/half-out edge galaxy at the 11 o'clock position of M81 while preserving the accepted processing.
 
-## Review Questions
+## Final Decision
 
-1. Which upstream diagnostic should be tried next: same-trip flats, cool-dark library, or different rejection/integration settings?
-2. Can any calibration branch reduce the vertical red/blue streaking enough that BXT/NXT becomes useful later?
-3. Should M81/M82 be paused as an archive-limited result if the upstream diagnostics do not improve the pattern noise?
-4. Should a separate SN 2014J annotated crop be produced only after a cleaner presentation branch exists?
+1. Use SN-preserve v2 as final v1 for this processing pass.
+2. Keep the unmarked 20% tighter final crop as the accepted presentation image.
+3. Keep the marked M82/SN crop only as an approximate review annotation, not as a presentation image or astrometric identification.
+4. Keep BXT/NXT calm, stock cool-dark, no-dark v4, and NXT-only branches as diagnostics/comparisons only.
+5. Close M81/M82 unless a future v2 specifically tests same-trip flats on the accepted cool-light/cool-dark branch.
 
 ## Outputs
 
@@ -134,7 +148,7 @@ Current calibration decision:
 | `work/wbpp-20140303-good-dark31-45-noflats/master/masterLight_BIN-1_5202x3464_EXPOSURE-180.00s_FILTER-NoFilter_RGB_autocrop.xisf` | Dark-calibrated WBPP master, rejected as baseline |
 | `docs/images/m81-m82-20140303-wbpp-dark-linked-stf.jpg` | Linked-STF preview of dark-calibrated WBPP master |
 | `docs/images/m81-m82-20140303-wbpp-dark-unlinked-stf.jpg` | Unlinked-STF preview of dark-calibrated WBPP master |
-| `work/wbpp-20140303-good-nodark-noflats-control/master/masterLight_BIN-1_5202x3464_EXPOSURE-180.00s_FILTER-NoFilter_RGB_autocrop.xisf` | No-dark WBPP master, accepted as current baseline |
+| `work/wbpp-20140303-good-nodark-noflats-control/master/masterLight_BIN-1_5202x3464_EXPOSURE-180.00s_FILTER-NoFilter_RGB_autocrop.xisf` | No-dark WBPP master, accepted as legacy baseline |
 | `docs/images/m81-m82-20140303-wbpp-nodark-linked-stf.jpg` | Linked-STF preview of no-dark WBPP master |
 | `docs/images/m81-m82-20140303-wbpp-nodark-unlinked-stf.jpg` | Unlinked-STF preview of no-dark WBPP master |
 | `work/02-linear-20140303-good-dark31-45-noflats/02e-linear-nr.xisf` | Dark-calibrated Phase 2 checkpoint, rejected as baseline |
@@ -152,11 +166,11 @@ Current calibration decision:
 | `docs/images/m81-m82-20140303-v2-calm-sky-crop.jpg` | Previous v2 calm-sky JPEG review candidate |
 | `work/03-nonlinear-20140303-nodark-v1/03u-m81-m82-v3-detail.xisf` | v3 full-frame detail-preserving polish XISF |
 | `docs/images/m81-m82-20140303-v3-detail-full.jpg` | v3 full-frame detail-preserving polish JPEG |
-| `work/03-nonlinear-20140303-nodark-v1/03u-m81-m82-v3-detail-recentered-crop.xisf` | Current v3 recentered detail crop XISF |
-| `work/03-nonlinear-20140303-nodark-v1/m81-m82-20140303-v3-detail-recentered-crop.tif` | Current v3 recentered detail crop TIFF export |
-| `docs/images/m81-m82-20140303-v3-detail-recentered-crop.jpg` | Current v3 recentered detail crop JPEG review candidate |
-| `work/03-nonlinear-20140303-nodark-v1/03u-m81-m82-v4-detail-tight-crop.xisf` | Current v4 tighter detail crop XISF |
-| `work/03-nonlinear-20140303-nodark-v1/m81-m82-20140303-v4-detail-tight-crop.tif` | Current v4 tighter detail crop TIFF export |
+| `work/03-nonlinear-20140303-nodark-v1/03u-m81-m82-v3-detail-recentered-crop.xisf` | Historical v3 recentered detail crop XISF |
+| `work/03-nonlinear-20140303-nodark-v1/m81-m82-20140303-v3-detail-recentered-crop.tif` | Historical v3 recentered detail crop TIFF export |
+| `docs/images/m81-m82-20140303-v3-detail-recentered-crop.jpg` | Historical v3 recentered detail crop JPEG review candidate |
+| `work/03-nonlinear-20140303-nodark-v1/03u-m81-m82-v4-detail-tight-crop.xisf` | Historical v4 tighter detail crop XISF |
+| `work/03-nonlinear-20140303-nodark-v1/m81-m82-20140303-v4-detail-tight-crop.tif` | Historical v4 tighter detail crop TIFF export |
 | `docs/images/m81-m82-20140303-v4-detail-tight-crop.jpg` | Least-bad v4 tighter detail crop JPEG reference; not accepted as final |
 | `work/02-linear-20140303-good-nodark-bxt-nxt/02f-bxt.xisf` | BXT linear checkpoint from accepted no-dark SPCC image, rejected diagnostic |
 | `work/02-linear-20140303-good-nodark-bxt-nxt/02g-bxt-nxt.xisf` | BXT/NXT linear checkpoint, rejected diagnostic |
@@ -172,3 +186,33 @@ Current calibration decision:
 | `docs/images/m81-m82-20140303-nxt-calm-v2-dark-tight-crop.jpg` | NXT-only v2 dark tight-crop diagnostic |
 | `work/03-nonlinear-20140303-nxt-calm-v2-dark/03u-m81-m82-nxt-calm-v2-dark-tight-crop.xisf` | NXT-only v2 dark tight-crop XISF diagnostic |
 | `work/03-nonlinear-20140303-nxt-calm-v2-dark/m81-m82-20140303-nxt-calm-v2-dark-tight-crop.tif` | NXT-only v2 dark tight-crop TIFF diagnostic |
+| `work/wbpp-20140303-good-cool24-33-dark28-33-noflats/master/masterLight_BIN-1_5202x3464_EXPOSURE-180.00s_FILTER-NoFilter_RGB_autocrop.xisf` | Cool-light/cool-dark WBPP master; 31 x 180s after WBPP rejection |
+| `docs/images/m81-m82-20140303-wbpp-cooldark-linked-stf.jpg` | Linked-STF preview of cool-light/cool-dark WBPP master |
+| `docs/images/m81-m82-20140303-wbpp-cooldark-unlinked-stf.jpg` | Unlinked-STF preview of cool-light/cool-dark WBPP master |
+| `work/02-linear-20140303-good-cool24-33-dark28-33-noflats/02e-linear-nr.xisf` | Stock Phase 2 cool-light/cool-dark linear NR checkpoint |
+| `docs/images/m81-m82-20140303-phase2-cooldark-linear-linked-stf.jpg` | Linked-STF preview of stock cool-light/cool-dark Phase 2 checkpoint |
+| `docs/images/m81-m82-20140303-phase2-warmdark-v4crop-refstf.jpg` | Matched reference-STF crop showing rejected warm-dark streaking |
+| `docs/images/m81-m82-20140303-phase2-nodark-v4crop-refstf.jpg` | Matched reference-STF crop of no-dark baseline |
+| `docs/images/m81-m82-20140303-phase2-cooldark-v4crop-refstf.jpg` | Matched reference-STF crop showing improved cool-dark upstream master |
+| `work/03-nonlinear-20140303-cooldark-v1/03u-m81-m82-cooldark-v1-polish.xisf` | Stock cool-light/cool-dark nonlinear proof XISF |
+| `docs/images/m81-m82-20140303-cooldark-v1-polish.jpg` | Stock cool-light/cool-dark full-frame proof JPEG |
+| `docs/images/m81-m82-20140303-cooldark-v1-tight-crop.jpg` | Stock cool-light/cool-dark tight-crop proof JPEG |
+| `work/02-linear-20140303-good-cool24-33-dark28-33-bxt-nxt-calm/02g-bxt-nxt.xisf` | Conservative cool-light/cool-dark BXT/NXT calm linear checkpoint |
+| `work/03-nonlinear-20140303-cooldark-bxt-nxt-calm-v1/03u-m81-m82-cooldark-bxt-nxt-calm-v1-polish.xisf` | Demoted BXT/NXT calm full-frame comparison XISF |
+| `docs/images/m81-m82-20140303-cooldark-bxt-nxt-calm-v1-polish.jpg` | Demoted BXT/NXT calm full-frame comparison JPEG |
+| `work/03-nonlinear-20140303-cooldark-bxt-nxt-calm-v1/03u-m81-m82-cooldark-bxt-nxt-calm-v1-tight-crop.xisf` | Demoted BXT/NXT calm tight-crop comparison XISF |
+| `docs/images/m81-m82-20140303-cooldark-bxt-nxt-calm-v1-tight-crop.jpg` | Demoted BXT/NXT calm tight-crop comparison; cleaner sky but M82/SN overexposed/smoothed |
+| `scripts/pjsr/03u-m81-m82-sn-preserve.js` | SN-preserving nonlinear script: low-background hard STF plus restrained curves, no BXT/NXT/HDR/LHE |
+| `work/03-nonlinear-20140303-cooldark-m82-safe-v1/03u-m81-m82-cooldark-m82-safe-v1-polish.xisf` | First lower-stretch M82-safe proof from MaskedStretch/polish script |
+| `docs/images/m81-m82-20140303-cooldark-m82-safe-v1-tight-crop.jpg` | M82-safe v1 tight-crop proof, lower contrast but still not enough SN separation |
+| `work/03-nonlinear-20140303-cooldark-sn-preserve-v1/03u-m81-m82-cooldark-sn-preserve-v1.xisf` | SN-preserve v1 proof, darker/subtler |
+| `docs/images/m81-m82-20140303-cooldark-sn-preserve-v1-tight-crop.jpg` | SN-preserve v1 tight-crop proof |
+| `work/03-nonlinear-20140303-cooldark-sn-preserve-v2/03u-m81-m82-cooldark-sn-preserve-v2.xisf` | Accepted SN-preserve v2 full-frame XISF |
+| `docs/images/m81-m82-20140303-cooldark-sn-preserve-v2.jpg` | Accepted SN-preserve v2 full-frame JPEG |
+| `work/03-nonlinear-20140303-cooldark-sn-preserve-v2/03u-m81-m82-cooldark-sn-preserve-v2-tight-crop.xisf` | Accepted SN-preserve v2 tight-crop XISF |
+| `docs/images/m81-m82-20140303-cooldark-sn-preserve-v2-tight-crop.jpg` | Accepted SN-preserve v2 tight-crop branch JPEG |
+| `work/03-nonlinear-20140303-cooldark-sn-preserve-v2/03u-m81-m82-cooldark-sn-preserve-v2-final-v1-crop.xisf` | Accepted final v1 presentation crop XISF, 20% tighter than branch crop |
+| `work/03-nonlinear-20140303-cooldark-sn-preserve-v2/m81-m82-20140303-final-v1.tif` | Accepted final v1 TIFF export, 2633 x 1671 |
+| `docs/images/m81-m82-20140303-final-v1.jpg` | Accepted final v1 JPEG, 922 x 585 |
+| `docs/images/m81-m82-20140303-m82-close-cooldark-sn-preserve-v2.jpg` | Current unmarked M82/SN close-crop review image |
+| `docs/images/m81-m82-20140303-m82-close-cooldark-sn-preserve-v2-sn2014j-marked.jpg` | Approximate annotated M82/SN review crop; annotation only, not a presentation image |

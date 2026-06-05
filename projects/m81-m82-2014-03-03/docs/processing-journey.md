@@ -149,7 +149,7 @@ centerX=0.462 centerY=0.497 width=0.78 height=0.72
 
 A JPEG component check measured the M81/M82 pair midpoint about 123 px left and 83 px below the v2 frame center. The v3 crop puts the pair midpoint within about 1 px of the frame center.
 
-Current review candidate:
+Then-current review candidate:
 
 ```text
 docs/images/m81-m82-20140303-v3-detail-recentered-crop.jpg
@@ -281,3 +281,188 @@ NXT-only v2 reduced chroma metrics versus v4, but sky high-pass/luminance textur
 Closer M81 crops changed the acceptance decision. BXT/NXT v1 is not acceptable because it makes the residual artifacts read as colored scratch/streak noise. Legacy v4 is less smeared, but it is also not a satisfying final because the same vertical red/blue streaking remains visible across the galaxy and sky.
 
 Decision: v4 remains only the least-bad reference image. Stop tuning nonlinear polish and plugin strengths on the current no-dark/no-flats stack. The next meaningful M81/M82 work should revisit upstream calibration or integration: same-trip flat diagnostic, cool-dark diagnostic, or rejection/integration settings.
+
+## 2026-06-04 - Cool-Light / Cool-Dark Rescue Diagnostic
+
+User feedback confirmed M81/M82 is the only current target that still feels unsatisfying. Since the 2026-05-28 review showed the old failure was upstream colored vertical pattern noise, not just polish taste, the next diagnostic was the cool-dark branch that had previously been deferred.
+
+The run selected only the cooler lights from the 2014-03-03 `good` folder:
+
+```text
+Selected lights: 33 x 180s ISO1600, +24 to +33 C
+Rejected by WBPP: 2 low-scoring calibrated frames
+Integrated: 31 x 180s = 93 min
+Dark support: library-01 180s ISO1600 +28, +31, +32, +33 C darks
+Flats/bias: none
+```
+
+WBPP branch:
+
+```text
+work/wbpp-20140303-good-cool24-33-dark28-33-noflats/
+```
+
+Phase 2 branch:
+
+```text
+work/02-linear-20140303-good-cool24-33-dark28-33-noflats/
+```
+
+The raw WBPP previews were not pretty because the no-flat master still has strong color/background structure, but the Phase 2 result mattered more. Matched v4-geometry reference-STF crops showed the warm-dark branch was still dramatically streaked, the no-dark branch still carried red/blue vertical marks, and the cool-dark branch was visibly calmer.
+
+Comparison previews:
+
+```text
+docs/images/m81-m82-20140303-phase2-warmdark-v4crop-refstf.jpg
+docs/images/m81-m82-20140303-phase2-nodark-v4crop-refstf.jpg
+docs/images/m81-m82-20140303-phase2-cooldark-v4crop-refstf.jpg
+```
+
+A stock nonlinear proof from the cool-dark linear NR checkpoint was produced first:
+
+```text
+work/03-nonlinear-20140303-cooldark-v1/03u-m81-m82-cooldark-v1-polish.xisf
+docs/images/m81-m82-20140303-cooldark-v1-tight-crop.jpg
+```
+
+It improved the main streaking failure but was conservative and muted. A second proof used the licensed BXT/NXT workflow from the cool-dark `02c-spcc.xisf` checkpoint, before stock MLT denoise, with calmer settings than the rejected no-dark plugin branch:
+
+```text
+BlurXTerminator AI4:
+  sharpenStars=0.16
+  adjustHalos=0.01
+  sharpenNonstellar=0.22
+
+NoiseXTerminator AI3:
+  denoise=0.56
+  denoiseColor=0.76
+  denoiseLf=0.18
+  denoiseLfColor=0.58
+  frequencyScale=4
+  iterations=2
+  detail=0.10
+```
+
+The nonlinear proof used MaskedStretch target background `0.085`, the existing M81/M82 polish script, and the same tight crop geometry as v4:
+
+```text
+centerX=0.462
+centerY=0.497
+width=0.66
+height=0.62
+```
+
+Then-current review candidate:
+
+```text
+work/03-nonlinear-20140303-cooldark-bxt-nxt-calm-v1/03u-m81-m82-cooldark-bxt-nxt-calm-v1-polish.xisf
+docs/images/m81-m82-20140303-cooldark-bxt-nxt-calm-v1-polish.jpg
+work/03-nonlinear-20140303-cooldark-bxt-nxt-calm-v1/03u-m81-m82-cooldark-bxt-nxt-calm-v1-tight-crop.xisf
+docs/images/m81-m82-20140303-cooldark-bxt-nxt-calm-v1-tight-crop.jpg
+```
+
+Decision: promote the cool-dark BXT/NXT calm crop to the then-current review candidate, not final. It is cleaner than legacy v4 in the key failure mode and does not show the scratchy colored background that rejected the earlier no-dark BXT/NXT branch. The tradeoff is lower integration time and remaining no-flat/archive-limited background quality. If this still does not satisfy, the next upstream test should be the same-trip flat set against the cool-light/cool-dark branch, not more tuning on the old no-dark stack.
+
+## 2026-06-04 - M82 / SN 2014J Preservation Review
+
+User review of the old M82 crop versus the new crop showed a new hard requirement: the old processing made the SN 2014J-era point source visibly separable in M82, while the cool-dark BXT/NXT calm branch made M82 read overexposed/smoothed.
+
+Decision: demote the BXT/NXT calm crop from current candidate to comparison branch. It still has the cleanest sky of the recent attempts, but the M82 core/inner disk is too filled-in for this target because SN 2014J visibility matters.
+
+First, close crops were generated from the legacy v4, stock cool-dark, and BXT/NXT calm crops:
+
+```text
+docs/images/m81-m82-20140303-m82-close-legacy-v4.jpg
+docs/images/m81-m82-20140303-m82-close-cooldark-stock-v1.jpg
+docs/images/m81-m82-20140303-m82-close-cooldark-bxt-nxt-calm-v1.jpg
+```
+
+A lower-stretch `m82-safe-v1` proof from the stock cool-dark linear NR checkpoint helped slightly but still used the older MaskedStretch/polish script family, including HDR/LHE behavior that is not ideal for a small point embedded in M82:
+
+```text
+work/03-nonlinear-20140303-cooldark-m82-safe-v1/
+docs/images/m81-m82-20140303-cooldark-m82-safe-v1-tight-crop.jpg
+docs/images/m81-m82-20140303-m82-close-cooldark-m82-safe-v1.jpg
+```
+
+Next, a dedicated SN-preserve script was added:
+
+```text
+scripts/pjsr/03u-m81-m82-sn-preserve.js
+```
+
+This script starts from the stock cool-dark linear NR checkpoint, hard-applies a low-background STF through HistogramTransformation, and then applies restrained curves only. It intentionally skips BXT/NXT, HDRMT, and LHE so M82 point-source structure is not smoothed into the galaxy body.
+
+SN-preserve v1 was too dark/subtle. SN-preserve v2 became the accepted final branch:
+
+```text
+work/03-nonlinear-20140303-cooldark-sn-preserve-v2/03u-m81-m82-cooldark-sn-preserve-v2.xisf
+docs/images/m81-m82-20140303-cooldark-sn-preserve-v2.jpg
+work/03-nonlinear-20140303-cooldark-sn-preserve-v2/03u-m81-m82-cooldark-sn-preserve-v2-tight-crop.xisf
+docs/images/m81-m82-20140303-cooldark-sn-preserve-v2-tight-crop.jpg
+docs/images/m81-m82-20140303-m82-close-cooldark-sn-preserve-v2.jpg
+```
+
+Settings:
+
+```text
+targetBackground=0.115
+shadows=-2.8
+k07=0.043
+k22=0.205
+k52=0.525
+k83=0.850
+satAmount=0.038
+```
+
+An approximate annotated M82 review crop was also generated:
+
+```text
+docs/images/m81-m82-20140303-m82-close-cooldark-sn-preserve-v2-sn2014j-marked.jpg
+```
+
+This is annotation only, not a presentation image and not an astrometric identification. The unmarked crop is the real review image.
+
+## 2026-06-05 - Final V1 Accepted
+
+User review accepted the SN-preserve v2 branch. The project is closed for this processing pass.
+
+Accepted final:
+
+```text
+docs/images/m81-m82-20140303-final-v1.jpg
+work/03-nonlinear-20140303-cooldark-sn-preserve-v2/m81-m82-20140303-final-v1.tif
+```
+
+Accepted branch source:
+
+```text
+work/03-nonlinear-20140303-cooldark-sn-preserve-v2/03u-m81-m82-cooldark-sn-preserve-v2-tight-crop.xisf
+docs/images/m81-m82-20140303-cooldark-sn-preserve-v2-tight-crop.jpg
+```
+
+Final decision:
+
+1. Use SN-preserve v2 as final v1.
+2. Keep the unmarked final image as the presentation output.
+3. Keep the marked M82/SN crop only as review context.
+4. Keep the BXT/NXT calm branch as a comparison, not the accepted result, because it over-brightens/smooths M82.
+5. Leave any same-trip flat experiment for a future v2, not this closed pass.
+
+## 2026-06-05 - Final V1 Crop Tightened
+
+User requested a further 20% crop to remove the half-in/half-out edge galaxy at the 11 o'clock position of M81. Applied a centered DynamicCrop to the accepted SN-preserve v2 branch crop:
+
+```text
+Input:  work/03-nonlinear-20140303-cooldark-sn-preserve-v2/03u-m81-m82-cooldark-sn-preserve-v2-tight-crop.xisf
+Output: work/03-nonlinear-20140303-cooldark-sn-preserve-v2/03u-m81-m82-cooldark-sn-preserve-v2-final-v1-crop.xisf
+Crop:   centerX=0.5 centerY=0.5 width=0.8 height=0.8
+Size:   3291 x 2089 -> 2633 x 1671
+```
+
+Regenerated final aliases:
+
+```text
+docs/images/m81-m82-20140303-final-v1.jpg
+work/03-nonlinear-20140303-cooldark-sn-preserve-v2/m81-m82-20140303-final-v1.tif
+```

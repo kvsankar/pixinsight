@@ -783,13 +783,14 @@
       {
         id: "m81-m82",
         title: "M81 / M82 2014-03-03",
-        status: "Not concluded. No presentation image has been accepted; legacy v4 is only the least-bad noisy reference while upstream calibration/integration diagnostics remain open.",
+        status: "Accepted final v1 from the cool-light/cool-dark SN-preserve branch. The final prioritizes M82/SN 2014J visibility over the smoother but over-bright BXT/NXT calm branch.",
         stats: {
           target: "Bode's Galaxy and Cigar Galaxy",
-          data: "45 x 180s Canon EOS 60D",
-          outcome: "Blocked by vertical pattern noise"
+          data: "31 x 180s accepted from a cooler 33-light Canon EOS 60D subset",
+          outcome: "Final v1 accepted"
         },
         docs: [
+          ["Final v1", "projects/m81-m82-2014-03-03/docs/final-v1.md"],
           ["Status", "projects/m81-m82-2014-03-03/docs/status.md"],
           ["Review", "projects/m81-m82-2014-03-03/docs/review-2026-05-28.md"],
           ["Pipeline", "projects/m81-m82-2014-03-03/docs/pipeline.md"],
@@ -824,9 +825,9 @@
             status: "paused",
             note: "Calmer than the dark branch, but close crops still show vertical colored pattern noise.",
             images: [
-              img("No-dark WBPP", "projects/m81-m82-2014-03-03/docs/images/m81-m82-20140303-wbpp-nodark-linked-stf.jpg", "Accepted baseline preview."),
+              img("No-dark WBPP", "projects/m81-m82-2014-03-03/docs/images/m81-m82-20140303-wbpp-nodark-linked-stf.jpg", "Legacy baseline preview."),
               img("No-dark WBPP unlinked STF", "projects/m81-m82-2014-03-03/docs/images/m81-m82-20140303-wbpp-nodark-unlinked-stf.jpg", "Unlinked diagnostic preview."),
-              img("No-dark Phase 2 ABE", "projects/m81-m82-2014-03-03/docs/images/m81-m82-20140303-phase2-nodark-abe-linked-stf.jpg", "ABE checkpoint for accepted baseline."),
+              img("No-dark Phase 2 ABE", "projects/m81-m82-2014-03-03/docs/images/m81-m82-20140303-phase2-nodark-abe-linked-stf.jpg", "ABE checkpoint for legacy baseline."),
               img("No-dark Phase 2", "projects/m81-m82-2014-03-03/docs/images/m81-m82-20140303-phase2-nodark-linear-linked-stf.jpg", "Linear checkpoint preview."),
               img("MaskedStretch v1", "projects/m81-m82-2014-03-03/docs/images/m81-m82-20140303-maskedstretch-v1.jpg", "First nonlinear stretch.")
             ]
@@ -873,22 +874,42 @@
             ]
           },
           {
-            id: "m81-paused",
-            title: "No accepted final",
-            status: "paused",
-            note: "All current leaves are diagnostics. The next meaningful work is upstream: same-trip flats, cooler dark library, or alternate rejection/integration settings before another BXT/NXT attempt.",
-            images: []
+            id: "m81-cooldark",
+            title: "Cool-light / cool-dark rescue",
+            status: "accepted support",
+            note: "Dropping the hotter lights and using the smaller cooler dark library reduced the colored vertical pattern noise enough to make a final branch viable.",
+            images: [
+              img("Cool-dark WBPP linked STF", "projects/m81-m82-2014-03-03/docs/images/m81-m82-20140303-wbpp-cooldark-linked-stf.jpg", "Cooler-light/cooler-dark integration preview."),
+              img("Cool-dark Phase 2", "projects/m81-m82-2014-03-03/docs/images/m81-m82-20140303-phase2-cooldark-linear-linked-stf.jpg", "Solved/SPCC cool-dark linear checkpoint."),
+              img("Matched cool-dark crop", "projects/m81-m82-2014-03-03/docs/images/m81-m82-20140303-phase2-cooldark-v4crop-refstf.jpg", "Matched reference-STF crop showing improved pattern noise."),
+              img("Stock cool-dark proof", "projects/m81-m82-2014-03-03/docs/images/m81-m82-20140303-cooldark-v1-tight-crop.jpg", "Stock nonlinear cool-dark proof."),
+              img("BXT/NXT calm comparison", "projects/m81-m82-2014-03-03/docs/images/m81-m82-20140303-cooldark-bxt-nxt-calm-v1-tight-crop.jpg", "Cleaner but M82/SN structure was too smoothed.")
+            ]
+          },
+          {
+            id: "m81-final",
+            title: "Accepted final v1",
+            status: "accepted",
+            note: "SN-preserve v2 is darker and subtler than the plugin branch, but keeps M82 and the SN 2014J-era point-source cue more legible. Final v1 uses a 20% tighter crop to remove the half-in/half-out edge galaxy above M81.",
+            images: [
+              img("Final v1", "projects/m81-m82-2014-03-03/docs/images/m81-m82-20140303-final-v1.jpg", "Accepted final result."),
+              img("SN-preserve branch crop", "projects/m81-m82-2014-03-03/docs/images/m81-m82-20140303-cooldark-sn-preserve-v2-tight-crop.jpg", "Accepted branch crop before final alias."),
+              img("M82 close crop", "projects/m81-m82-2014-03-03/docs/images/m81-m82-20140303-m82-close-cooldark-sn-preserve-v2.jpg", "Unmarked close crop for M82/SN review."),
+              img("M82 SN review annotation", "projects/m81-m82-2014-03-03/docs/images/m81-m82-20140303-m82-close-cooldark-sn-preserve-v2-sn2014j-marked.jpg", "Approximate review annotation only.")
+            ]
           }
         ],
         edges: [
           edge("m81-source", "m81-dark", "Follow historical dark-supported path"),
           edge("m81-source", "m81-nodark", "Control branch after dark overcorrection risk"),
+          edge("m81-source", "m81-cooldark", "Cooler-light/cooler-dark rescue after pattern-noise review"),
           edge("m81-nodark", "m81-v4", "Nonlinear crop refinements"),
           edge("m81-nodark", "m81-bxt", "Try RC Astro workflow before old MLT"),
           edge("m81-nodark", "m81-nxt", "Test whether BXT caused the artifacts"),
-          edge("m81-v4", "m81-paused", "Rejected for final: vertical red/blue pattern noise remains"),
-          edge("m81-bxt", "m81-paused", "Rejected for final: artifacts sharpen into colored scratches"),
-          edge("m81-nxt", "m81-paused", "Deferred: calmer color but rougher luminance texture")
+          edge("m81-v4", "m81-cooldark", "Rejected for final: vertical red/blue pattern noise remains"),
+          edge("m81-bxt", "m81-cooldark", "Rejected for final: artifacts sharpen into colored scratches"),
+          edge("m81-nxt", "m81-cooldark", "Deferred: calmer color but rougher luminance texture"),
+          edge("m81-cooldark", "m81-final", "Accept SN-preserve v2 after M82/SN review")
         ]
       },
       {

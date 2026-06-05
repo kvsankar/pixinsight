@@ -4,11 +4,12 @@ This page gives a compact view of the processing path for each target processed 
 
 ## M81 / M82 2014-03-03
 
-Current result: legacy v4 tight crop is the least-bad reference from the no-dark/no-flats branch, but no branch is accepted as final. BXT/NXT and NXT-only plugin branches are rejected/deferred diagnostics for this target.
+Current result: accepted final v1 from the cool-light/cool-dark SN-preserve v2 branch, using a 20% tighter presentation crop to remove the half-in/half-out edge galaxy above M81. It supersedes the BXT/NXT calm crop because M82/SN 2014J visibility matters more than the smoother plugin background.
 
 Detailed notes:
 
 - [Review checkpoint](../projects/m81-m82-2014-03-03/docs/review-2026-05-28.md)
+- [Final v1](../projects/m81-m82-2014-03-03/docs/final-v1.md)
 - [Status](../projects/m81-m82-2014-03-03/docs/status.md)
 - [Processing journey](../projects/m81-m82-2014-03-03/docs/processing-journey.md)
 - [Pipeline](../projects/m81-m82-2014-03-03/docs/pipeline.md)
@@ -20,6 +21,11 @@ Detailed notes:
 - [2026 v4 tight crop](../projects/m81-m82-2014-03-03/docs/images/m81-m82-20140303-v4-detail-tight-crop.jpg)
 - [Rejected BXT/NXT v1 tight crop](../projects/m81-m82-2014-03-03/docs/images/m81-m82-20140303-bxt-nxt-v1-tight-crop.jpg)
 - [NXT-only v2 diagnostic](../projects/m81-m82-2014-03-03/docs/images/m81-m82-20140303-nxt-calm-v2-dark-tight-crop.jpg)
+- [Cool-dark stock proof](../projects/m81-m82-2014-03-03/docs/images/m81-m82-20140303-cooldark-v1-tight-crop.jpg)
+- [Cool-dark BXT/NXT calm comparison](../projects/m81-m82-2014-03-03/docs/images/m81-m82-20140303-cooldark-bxt-nxt-calm-v1-tight-crop.jpg)
+- [Accepted final v1](../projects/m81-m82-2014-03-03/docs/images/m81-m82-20140303-final-v1.jpg)
+- [Cool-dark SN-preserve v2 accepted branch](../projects/m81-m82-2014-03-03/docs/images/m81-m82-20140303-cooldark-sn-preserve-v2-tight-crop.jpg)
+- [M82 close crop, unmarked](../projects/m81-m82-2014-03-03/docs/images/m81-m82-20140303-m82-close-cooldark-sn-preserve-v2.jpg)
 
 Summary process:
 
@@ -41,15 +47,22 @@ Summary process:
 16. Exported `m81-m82-20140303-bxt-nxt-v1-tight-crop.jpg` with the same tight centered crop as v4 for direct comparison, then rejected it after visual crop review showed worse colored scratch/streak noise in the background.
 17. Tested NXT-only calm variants from the SCNR linear checkpoint. The darker v2 diagnostic reduced chroma but still had worse luminance/high-pass sky texture than v4.
 18. Close-crop review of M81 showed v4 is also not final-quality; it is only the least-bad reference until upstream calibration/integration improves the vertical pattern noise.
+19. Revisited upstream calibration with a cool-light/cool-dark diagnostic: selected 33 +24 to +33 C lights, calibrated with the smaller `library-01` +28 to +33 C dark set, and integrated 31 frames after WBPP rejected 2.
+20. Ran Phase 2 on the cool-light/cool-dark master and compared matched v4-geometry linear crops. The branch was visibly calmer than both the rejected warm-dark branch and the legacy no-dark branch.
+21. Exported a stock cool-dark nonlinear proof that reduced the colored-streak failure but stayed conservative/muted.
+22. Ran a calmer BXT/NXT pass from the cool-dark SPCC checkpoint; it cleaned the background but was demoted after M82 looked overexposed/smoothed and SN 2014J-era point-source visibility became a hard requirement.
+23. Added `scripts/pjsr/03u-m81-m82-sn-preserve.js`, promoted `m81-m82-20140303-cooldark-sn-preserve-v2-tight-crop.jpg`, and accepted it as final v1 on 2026-06-05.
 
 Primary feedback signals to watch:
 
 - The wide temperature range may make the primary dark calibration too aggressive for cooler frames.
 - The dark-calibrated branch confirmed that risk through pedestal warnings and vertical chroma streaking.
-- The accepted no-dark branch still has residual vertical patterning, so legacy v4 is only a least-bad reference rather than a polished final.
+- The accepted no-dark branch still has residual vertical patterning, so legacy v4 is only a reference rather than a polished final.
 - BXT/NXT v1 showed why visual crop review matters: aggregate metrics looked better, but the background artifacts became more objectionable.
 - NXT-only v2 lowered chroma noise but did not solve the underlying no-dark pattern/luminance texture.
-- Further plugin tuning should wait for a cleaner integrated master.
+- The cool-light/cool-dark branch is the first upstream diagnostic that materially improves the objectionable colored pattern noise.
+- BXT/NXT is not automatically better for this target; the smoother branch hides the M82/SN detail that made the old processing historically interesting.
+- The project is closed for this pass. Any future v2 should start from the cool-light/cool-dark SN-preserve branch, not the old no-dark stack.
 - The old green/brown finished-work background is useful historical context but not color truth.
 - M81's faint arms and M82's dust/starburst structure should stay visible without making the sky noisy.
 - SN 2014J can be checked or annotated separately, while the main review image stays unmarked.
