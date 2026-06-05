@@ -28,6 +28,7 @@ Start here for the repository structure:
 - [Image picks](index.html) - selected finals and presentation candidates with full-screen lightbox review.
 - [Project intent](intent.html) - short explanation of the AI-assisted processing experiment and what it does or does not claim.
 - [Project gallery](project-gallery.html) - static project/process tree viewer with thumbnail lightbox review.
+- [Sankar's astrophotography gallery](https://sankara.net/astrophotography/) - public astrophotography reference page.
 - [New project playbook](docs/new-project-playbook.md) - repeatable archive inventory, target research, planning, processing, review, and finalization procedure for new targets.
 - [RC Astro plugin workflow](docs/rc-astro-workflow.md) - shared BXT/NXT/SXT phase order, guardrails, branch naming, and older-target reprocessing notes.
 - [Processing summaries](docs/processing-summaries.md) - concise process summaries for completed and review-stage targets.
