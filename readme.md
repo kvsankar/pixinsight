@@ -16,7 +16,7 @@ The current processed targets are `projects/m31-andromeda-2013`, `projects/roset
 
 The current review-stage targets are `projects/m45-pleiades-2013-12-30`, `projects/markarian-chain-2014-03-03`, `projects/omega-centauri-2014-05-04`, `projects/eta-carinae-2013-03-10`, and `projects/canis-major-2013-01-14`.
 
-The current stopped comet-processing experiment is `projects/comet-catalina-2016-01-09`.
+The current stopped experiments are `projects/comet-catalina-2016-01-09` and `projects/moon-video-stack`.
 
 ## Documentation
 
@@ -122,6 +122,12 @@ Comet Catalina 2016-01-09 planning notes:
 - [2016 human edit vs 2026 SPCC full comparison](projects/comet-catalina-2016-01-09/docs/images/catalina-2016-human-vs-2026-spcc-full.jpg) and [matched crop comparison](projects/comet-catalina-2016-01-09/docs/images/catalina-2016-human-vs-2026-spcc-crops.jpg) - checkpoint showing why the next branch must be a historical-style presentation pass rather than another raw diagnostic preview.
 - [2026 real-data comet blend darktone checkpoint](projects/comet-catalina-2016-01-09/docs/images/catalina-t1i-noflat-real-comet-blend-v2-darktone.jpg), [darktone comet crop](projects/comet-catalina-2016-01-09/docs/images/catalina-t1i-noflat-real-comet-blend-v2-darktone-comet-crop.jpg), and [2016 vs 2026 darktone comparison](projects/comet-catalina-2016-01-09/docs/images/catalina-2016-human-vs-2026-real-comet-blend-v2-darktone-full.jpg) - previous real-data checkpoint, much better than the raw SPCC diagnostic but superseded by the ABE midtone branch.
 - [2026 ABE real-data comet blend midtone checkpoint](projects/comet-catalina-2016-01-09/docs/images/catalina-t1i-noflat-abe-real-comet-blend-v1-midtone.jpg), [ABE midtone comet crop](projects/comet-catalina-2016-01-09/docs/images/catalina-t1i-noflat-abe-real-comet-blend-v1-midtone-comet-crop.jpg), and [2016 vs 2026 ABE midtone comparison](projects/comet-catalina-2016-01-09/docs/images/catalina-2016-human-vs-2026-abe-real-comet-blend-v1-midtone-full.jpg) - archived best 2026 checkpoint after linear ABE cleanup and real-data comet-region blending; the project was stopped because it did not match the 2016 human processing.
+
+Moon video stack stopped experiment:
+
+- [Current status](projects/moon-video-stack/docs/status.md) - staged Moon video sources, AutoStakkert output grouping, same-phase combine attempt, and stop decision.
+- [Processing pipeline](projects/moon-video-stack/docs/pipeline.md) - paused lunar/planetary video stacking workflow and resume guardrails.
+- [Processing journey](projects/moon-video-stack/docs/processing-journey.md) - chronological record of the AutoStakkert setup, phase-mixing discovery, combine attempt, and stop decision.
 
 Rosette Nebula 2014 processing notes:
 
