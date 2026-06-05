@@ -4,6 +4,8 @@ This is an experiment to see how far generative AI can help with astrophotograph
 
 This repository is organized for repeatable PixInsight processing across multiple astrophotography targets.
 
+Project page: [kvsankar.github.io/pixinsight](https://kvsankar.github.io/pixinsight/)
+
 ## Layout
 
 - `scripts/` - shared PowerShell drivers and PixInsight JavaScript process scripts.
